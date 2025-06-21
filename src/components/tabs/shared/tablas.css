@@ -1,0 +1,41 @@
+.tablaList {
+  width: 100%;
+  border-collapse: collapse;
+  /* margin-block: 15px; */
+}
+.tablaList, .tablaList th, .tablaList td {
+  border: 1px solid #444;
+}
+/* Título */
+th {
+  background-color: #444;
+  color: white;
+  padding: 5px;
+  font-size: 1.2em;
+}
+/* todas las celdas */
+td { padding: 8px; }
+tr:nth-child(even) {background-color: #303030;}
+
+/* (ID - Descr - Cant - Acc) */
+tr td:nth-child(1),
+tr td:nth-child(4),
+tr td:nth-child(5),
+tr td:nth-child(6)
+{
+  width: 50px;
+  text-align: center;
+}
+
+/* Cantidad */
+
+/* 
+  <tr>
+    <th>ID</th>
+    <th>Producto</th>
+    <th>Descripcion</th>
+    <th>Cantidad</th>
+    <th>Precio</th>
+    <th>Acciones</th>
+  </tr>
+*/

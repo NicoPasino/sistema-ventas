@@ -1,0 +1,23 @@
+.formNueva{
+  background-color: #222;
+  /* width: 100%; */
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  gap: 35px;
+  margin-bottom: 15px;
+}
+.formNueva label {
+  display: block; 
+}
+.formNueva input {
+  padding: 5px;
+}
+.formNueva select {
+  padding: 5px;
+  width: 150px;
+}
+
+.inputS { width: 70px;}

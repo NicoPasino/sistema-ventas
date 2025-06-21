@@ -1,0 +1,50 @@
+/* @import url(header.css); */
+:root{
+  --navLiColor: rgb(0, 204, 204);
+}
+.nav {
+  background-color: #111;
+  /* margin: 0; */
+  /* height: 100%; */
+  width: 250px;
+  box-shadow: 10px 0 15px #0004;
+  /* left: 0; */
+}
+.nav div {
+  background-color: #000;
+  padding-block: 15px;
+  display: flex;
+  justify-content: center;
+}
+.nav div h3 { 
+  margin: 15px;
+  color: var(--blueText);
+  text-transform: uppercase;
+}
+.nav ul { 
+  margin: 0;
+  padding: 0;
+}
+.nav li {
+  list-style-type: none; 
+  padding-inline: 15px;
+  margin: 5px;
+  height: 40px;
+
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  cursor: pointer;
+  color: white;
+}
+.nav li:hover {
+  background-color: #222;
+}
+.nav li:hover, .currentTab {
+  color: cyan !important;
+}
+.nav li svg {
+  /* color: var(--navLiColor); */
+  margin-right: 10px;
+  height: 20px;
+}

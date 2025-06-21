@@ -1,0 +1,33 @@
+:root{
+  --blueText: dodgerblue;
+}
+.header {
+  font-size: 1.2em;
+  color: var(--blueText);
+  padding: 15px;
+  margin: 0;
+
+  display: flex;
+  justify-content: space-between;
+  background-color: #111;
+}
+.headerLeft {
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+}
+p{ margin: 0; }
+.tabName {
+  color: gray;
+}
+.userName {
+  font-weight: 700;
+}
+svg {
+  height: 30px;
+}
+.menuIcon{ 
+  color: var(--colorSecondary);
+  cursor: pointer;
+}
+.menuIcon:hover{ color: var(--colorLight); }
