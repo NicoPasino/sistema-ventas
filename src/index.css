@@ -23,5 +23,6 @@ body {
   /* min-height: 100vh; */
 }
 
-button.colorVerdeClaro { color: #3cff3c; }
-button.colorRojoClaro { color: #ff7676; }
+.colorVerdeClaro { color: #3cff3c; }
+.colorRojoClaro { color: #ff7676; }
+.colorGris { color: gray}

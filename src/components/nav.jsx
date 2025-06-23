@@ -22,7 +22,7 @@ export function Nav({ tab }) {
         <Li name={"Inicio"}> <HomeIcon /> </Li>
         {/* <Li name={"Clientes"}> <ClientesIcon /> </Li> */}
         <Li name={"Productos"}> <ProductosIcon /> </Li>
-        {/* <Li name={"Ventas"}> <VentasIcon /> </Li> */}
+        <Li name={"Ventas"}> <VentasIcon /> </Li>
         <Li name={"Reportes"}> <ReportesIcon /> </Li>
         {/* <Li name={"Reportes"}> <ReportesIcon /> </Li> */}
       </ul>
