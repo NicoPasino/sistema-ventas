@@ -1,42 +1,43 @@
-import { TablaList } from "./shared/tablaList";
-import './shared/formTabla.css';
-import { ReloadIcon } from "../icons";
-// import productos from "../../productos.json"; // json
 import { useEffect, useState } from 'react';
-import { agregarProducto, obtenerProductos, eliminarProducto,
-actualizarProducto, obtenerProductoPorID } from '../../database/db';
+import './shared/formTabla.css';
+import { productosDB } from "../../database/db";
+import { TablaList } from "./shared/tablaList";
+import { ReloadIcon } from "../icons";
 
 export default function Productos() {
   const [productos, setProductos] = useState([]);
   
+  // TODO: Exportar como customHook para usar en "Productos" y "Ventas"
   const cargarProductos = async () => {
-    const datos = await obtenerProductos();
+    const datos = await productosDB.obtenerProductos();
     setProductos(datos);
   };
   useEffect(() => {
     cargarProductos();
   }, []);
   
+  // TODO: exportar
   const agregar = async () => {
     const nuevo = {
-      ID: Date.now(),
       Producto: 'Nuevo producto',
-      Descripcion: 'Descripción de prueba',
-      Cantidad: 1,
-      Precio: 10.0,
+      Descripcion: 'Descripción del producto',
+      Cantidad: Math.round(Math.random()*8)+1,
+      Precio: Math.round(Math.random()*90),
+      Fecha: Date.now(),
     };
-    await agregarProducto(nuevo);
+    await productosDB.agregarProducto(nuevo);
     cargarProductos();
   };
   const eliminar = async (id) => {
-    const respuestaConfirm = confirm("Realmente quieres eliminar este producto?")
+    const respuestaConfirm = confirm("Realmente quieres eliminar este elemento?")
     if (!respuestaConfirm) return
-    eliminarProducto(id);
+    productosDB.eliminarProducto(id);
     cargarProductos();
   }
   
   return (
     <div className="productos">
+      {/* TODO: Exportar buscador */}
       <div className="productosHeader">
         <div className="prodHeadL">
           <button style={{padding: 0}} title="Recargar Todo" onClick={cargarProductos}> <ReloadIcon /> </button>
@@ -55,7 +56,7 @@ export default function Productos() {
           <button>Mostrar</button>
         </div>
       </div>
-      <TablaList lista={productos} acciones={{eliminar}}/>
+      <TablaList tipo={"productos"} lista={productos} acciones={{eliminar}}/>
     </div>
   )
 }

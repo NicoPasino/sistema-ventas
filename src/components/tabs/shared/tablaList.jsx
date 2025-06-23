@@ -1,41 +1,46 @@
+import { useEffect, useState } from 'react';
 import './tablas.css'
 
-export function TablaList ({lista, acciones}) {
-  return (
-    // tabla de productos
-    <table className="tablaList">
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Producto</th>
-          <th>Descripción</th>
-          <th>Cantidad</th>
-          <th>Precio</th>
-          <th>Acciones</th>
-        </tr>
-      </thead>
-      <tbody>
-        {!lista ? "ERROR - Sin lista!" : 
-        lista.length === 0 ? (
+const tablas = {
+  productos: ["ID", "Producto", "Descripcion", "Cantidad", "Precio"],
+  ventas: ["ID", "Cliente", "Productos", "Cantidad", "Precio"],
+  none: [""],
+}
+
+export function TablaList ({tipo="none", lista=[""], acciones}) {
+  const [error, setError] = useState();
+
+  useEffect(() => {
+    if (!tipo || tipo === "none") setError("ERROR DE CÓDIGO: Tipo de tabla no definido.")
+    if (!lista) setError("ERROR DE CÓDIGO: Sin lista!.")
+  }, [tipo, lista]);
+
+  const Tabla = () => {
+    return (
+      <table className="tablaList">
+        <thead>
           <tr>
-            <td> - </td>
-            <td> Sin Productos! </td>
-            <td> Agregue nuevos productos! </td>
-            <td> - </td>
-            <td> - </td>
-            <td> - </td>
+            { tablas[tipo].map((e) => <th key={tipo+e}>{e}</th>)}
+            <th>Acciones</th>
           </tr>
-        ) : lista.map((producto) => (
-          <tr key={producto.ID}>
-            <td>{producto.ID}</td>
-            <td>{producto.Producto}</td>
-            <td>{producto.Descripcion}</td>
-            <td>{producto.Cantidad}</td>
-            <td>${producto.Precio}</td>
-            <td><button onClick={()=> {acciones.eliminar(producto.ID)}} className={'colorRojoClaro'} >Eliminar</button></td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
-  )
+        </thead>
+        <tbody>
+          {
+            lista.length === 0 
+            ? <tr><td colSpan={20} className='colorGris'>La lista está vacía!.</td></tr>
+            : lista.map((elemento) => 
+                <tr key={elemento.ID}>
+                  {tablas[tipo].map((e) =>
+                    <td key={elemento.ID+e}>{elemento[e]}</td>
+                  )}
+                  <td><button onClick={()=> acciones.eliminar(elemento.ID)} className={'colorRojoClaro'}> Eliminar </button></td>
+                </tr>
+              )
+          }
+        </tbody>
+      </table>
+    )
+  }
+  
+  return <> { error ? <p className='colorRojoClaro'>{error}</p> : <Tabla />} </>
 }
