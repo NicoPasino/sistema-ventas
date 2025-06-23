@@ -1,5 +1,3 @@
-//TODO: juntar productosDB y ventasDB?
-
 import { openDB } from 'idb'; // npm install idb
 
 const initDB = async () => {
@@ -13,71 +11,47 @@ const initDB = async () => {
         db.createObjectStore("ventas", { keyPath: 'ID', autoIncrement: true });
         console.log(`tabla de ventas creada!`)
       }
+      if (!db.objectStoreNames.contains("reportes")) {
+        db.createObjectStore("reportes", { keyPath: 'ID', autoIncrement: true });
+        console.log(`tabla de reportes creada!`)
+      }
     },
   });
 };
 
-export class productosDB {
-  // agregar un producto
-  static agregarProducto = async (producto) => {
-    const db = await initDB("productos");
-    await db.add('productos', producto);
+// Clase genérica para manejar cualquier tabla
+export class DBTable {
+  constructor(tableName) {
+    this.tableName = tableName;
+  }
+
+  agregar = async (item) => {
+    const db = await initDB();
+    await db.add(this.tableName, item);
   };
-  
-  // obtener todos los productos
-  static obtenerProductos = async () => {
-    const db = await initDB("productos");
-    return db.getAll('productos');
+
+  obtenerTodos = async () => {
+    const db = await initDB();
+    return db.getAll(this.tableName);
   };
-  
-  // eliminar un producto
-  static eliminarProducto = async (id) => {
-    const db = await initDB("productos");
-    await db.delete('productos', id);
+
+  eliminar = async (id) => {
+    const db = await initDB();
+    await db.delete(this.tableName, id);
   };
-  
-  // actualizar un producto
-  static actualizarProducto = async (producto) => {
-    const db = await initDB("productos");
-    await db.put('productos', producto);
+
+  actualizar = async (item) => {
+    const db = await initDB();
+    await db.put(this.tableName, item);
   };
-  
-  // obtener un producto por ID
-  static obtenerProductoPorID = async (id) => {
-    const db = await initDB("productos");
-    return db.get('productos', id);
+
+  obtenerPorID = async (id) => {
+    const db = await initDB();
+    return db.get(this.tableName, id);
   };
 }
 
-export class ventasDB {
-  
-  // agregar una Venta
-  static agregarVenta = async (venta) => {
-    const db = await initDB("ventas");
-    await db.add('ventas', venta);
-  };
-  
-  // obtener todos las Ventas
-  static obtenerVentas = async () => {
-    const db = await initDB("ventas");
-    return db.getAll('ventas');
-  };
-  
-  // eliminar una Venta
-  static eliminarVenta = async (id) => {
-    const db = await initDB("ventas");
-    await db.delete('ventas', id);
-  };
-  
-  // actualizar una Venta
-  static actualizarVenta = async (venta) => {
-    const db = await initDB("ventas");
-    await db.put('ventas', venta);
-  };
-  
-  // obtener una Venta por ID
-  static obtenerVentaPorID = async (id) => {
-    const db = await initDB("ventas");
-    return db.get('ventas', id);
-  };
-}
+// Instancias específicas para cada tabla
+export const productosDB = new DBTable('productos');
+export const ventasDB = new DBTable('ventas');
+export const reportesDB = new DBTable('reportes');
