@@ -1,36 +1,19 @@
+// import { useEffect, useState } from "react";
 import { FormNueva } from "./shared/formNueva";
 import { TablaList } from "./shared/tablaList";
-import { ventasDB } from "../../database/db";
-import { useEffect, useState } from "react";
+import { ventasDB as itemsDB } from "../../database/db";
+import { useItems } from "../useItems";
+import { ReloadIcon } from "../icons";
 
 export default function Ventas() {
-  const [ventas, setVentas] = useState([]);
-
-  const cargarVentas = async () => {
-    const datos = await ventasDB.obtenerVentas();
-    setVentas(datos);
-  };
-  useEffect(() => {
-    cargarVentas();
-  }, []);
-
-  const agregar = async () => {
-    const nuevo = {
-      Cliente: 'Cliente ' + String(Date.now()).at(-1),
-      Productos: 'Descripción de venta',
-      Cantidad: Math.round(Math.random()*8)+1,
-      Precio: Math.round(Math.random()*90),
-      Fecha: Date.now(),
-    };
-    await ventasDB.agregarVenta(nuevo);
-    cargarVentas();
-  };
+  const { items, agregar, eliminar, recargarItems } = useItems({itemsDB}); // ventasDB as itemsDB
 
   return (
     <>
       {/* <FormNueva /> */}
+      <button style={{padding: 0}} title="Recargar Todo" onClick={() => recargarItems(itemsDB)}> <ReloadIcon /> </button>
       <button onClick={agregar} className="colorVerdeClaro">+ Nuevo</button>
-      <TablaList tipo={"ventas"} lista={ventas}/>
+      <TablaList tipo={"ventas"} lista={items} acciones={{eliminar}}/>
     </>
   )
 }

@@ -1,46 +1,19 @@
-import { useEffect, useState } from 'react';
+// import { useEffect, useState } from 'react';
 import './shared/formTabla.css';
-import { productosDB } from "../../database/db";
+import { productosDB as itemsDB } from "../../database/db";
 import { TablaList } from "./shared/tablaList";
 import { ReloadIcon } from "../icons";
+import { useItems } from '../useItems';
 
 export default function Productos() {
-  const [productos, setProductos] = useState([]);
-  
-  // TODO: Exportar como customHook para usar en "Productos" y "Ventas"
-  const cargarProductos = async () => {
-    const datos = await productosDB.obtenerProductos();
-    setProductos(datos);
-  };
-  useEffect(() => {
-    cargarProductos();
-  }, []);
-  
-  // TODO: exportar
-  const agregar = async () => {
-    const nuevo = {
-      Producto: 'Nuevo producto',
-      Descripcion: 'Descripción del producto',
-      Cantidad: Math.round(Math.random()*8)+1,
-      Precio: Math.round(Math.random()*90),
-      Fecha: Date.now(),
-    };
-    await productosDB.agregarProducto(nuevo);
-    cargarProductos();
-  };
-  const eliminar = async (id) => {
-    const respuestaConfirm = confirm("Realmente quieres eliminar este elemento?")
-    if (!respuestaConfirm) return
-    productosDB.eliminarProducto(id);
-    cargarProductos();
-  }
+  const { items, agregar, eliminar, recargarItems } = useItems({itemsDB}); // productosDB as itemsDB
   
   return (
     <div className="productos">
-      {/* TODO: Exportar buscador */}
+      {/* // TODO: Exportar buscador */}
       <div className="productosHeader">
         <div className="prodHeadL">
-          <button style={{padding: 0}} title="Recargar Todo" onClick={cargarProductos}> <ReloadIcon /> </button>
+          <button style={{padding: 0}} title="Recargar Todo" onClick={() => recargarItems(itemsDB)}> <ReloadIcon /> </button>
         </div>
         <form className="prodHeadMid">
           <div className="form-group">
@@ -56,7 +29,7 @@ export default function Productos() {
           <button>Mostrar</button>
         </div>
       </div>
-      <TablaList tipo={"productos"} lista={productos} acciones={{eliminar}}/>
+      <TablaList tipo={"productos"} lista={items} acciones={{eliminar}}/>
     </div>
   )
 }
