@@ -45,7 +45,7 @@ export class DBTable {
     await db.put(this.tableName, item);
   };
 
-  obtenerPorID = async (id) => {
+  obtenerPorId = async (id) => {
     const db = await initDB();
     return db.get(this.tableName, id);
   };

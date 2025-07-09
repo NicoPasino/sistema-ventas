@@ -1,12 +1,15 @@
-import { HomeIcon, ClientesIcon, ProductosIcon, VentasIcon, ReportesIcon } from './icons';
+import { useContext } from 'react';
+import { HomeIcon, ClientesIcon, ProductosIcon, VentasIcon, ReportesIcon, NewIcon, ProveedoresIcon } from './icons';
 import './nav.css'
+import { UserSettingsContext } from '../userSettingsContext.jsx';
 
-export function Nav({ tab }) {
-  const {currentTab, handleTab} = tab
+export function Nav() {
+  const {getTab, handleTab} = useContext(UserSettingsContext)
+  // const {currentTab, handleTab} = tab
     
-  function Li ({name, children}) {
+  function Tab ({name, children}) {
     return (
-      <li className={currentTab === name ? 'currentTab': ''} onClick={() => handleTab(name)}>
+      <li className={getTab === name ? 'currentTab': ''} onClick={() => handleTab(name)}>
         {children}
         {name}
       </li>
@@ -15,17 +18,39 @@ export function Nav({ tab }) {
 
   return (
     <div className='nav'>
-      <div>
+      <div className='navHead'>
         <h3>Menú</h3>
       </div>
-      <ul>
-        <Li name={"Inicio"}> <HomeIcon /> </Li>
-        {/* <Li name={"Clientes"}> <ClientesIcon /> </Li> */}
-        <Li name={"Productos"}> <ProductosIcon /> </Li>
-        <Li name={"Ventas"}> <VentasIcon /> </Li>
-        <Li name={"Reportes"}> <ReportesIcon /> </Li>
-        {/* <Li name={"Reportes"}> <ReportesIcon /> </Li> */}
-      </ul>
+
+      <dl>
+        {/* Inicio */}
+        <dt>
+          <Tab name={"Inicio"}> <HomeIcon /> </Tab>
+        </dt>
+
+        {/* Productos */}
+        <dt>
+          <Tab name={"Productos"}> <ProductosIcon /> </Tab>
+        </dt>
+        <dd>
+          <Tab name={"Producto"}> <NewIcon /> </Tab>
+          <Tab name={"Proveedores"}> <ProveedoresIcon /> </Tab>
+        </dd>
+
+        {/* Ventas */}
+        <dt>
+          <Tab name={"Ventas"}> <VentasIcon /> </Tab>
+        </dt>
+        <dd>
+          <Tab name={"Venta"}> <NewIcon /> </Tab>
+          <Tab name={"Clientes"}> <ClientesIcon /> </Tab>
+        </dd>
+
+        {/* Reportes */}
+        <dt>
+          <Tab name={"Reportes"}> <ReportesIcon /> </Tab>
+        </dt>
+      </dl>
     </div>
   )
 }

@@ -26,3 +26,20 @@ body {
 .colorVerdeClaro { color: #3cff3c; }
 .colorRojoClaro { color: #ff7676; }
 .colorGris { color: gray}
+
+.flex{display: flex;}
+.flexEnd{
+  display: flex;
+  justify-content: flex-end;
+}
+.flexSeparados{
+  display: flex;
+  justify-content: space-between;
+}
+.separados {
+  columns: 2;
+}
+hr {
+  margin-bottom: 25px;
+  border-color: gray;
+}

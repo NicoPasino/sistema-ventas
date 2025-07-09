@@ -1,22 +1,27 @@
 import Inicio from "./Inicio";
 import Clientes from "./Clientes";
-import Productos from "./Productos";
-import Ventas from "./Ventas";
+import Productos, { Producto } from "./Productos/Productos.jsx";
+import Ventas, { Venta } from "./Ventas/Ventas.jsx";
 import Reportes from "./Reportes";
+import { useContext } from "react";
+import { UserSettingsContext } from "../../userSettingsContext.jsx";
 
 const componentes = {
   Inicio: <Inicio />,
   Clientes: <Clientes />,
   Productos: <Productos />,
+  Producto: <Producto />,
   Ventas: <Ventas />,
+  Venta: <Venta />,
   Reportes: <Reportes />,
   NotFound: <h1>Vista no encontrada</h1>
 };
 
-export function Main ({vista}) {
+export function Main () {
+  const {getTab} = useContext(UserSettingsContext)
   return (
     <main>
-      {componentes[vista] || componentes["NotFound"] }
+      {componentes[getTab] || componentes["NotFound"] }
     </main>
   );
 }

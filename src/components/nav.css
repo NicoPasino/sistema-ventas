@@ -3,32 +3,35 @@
   --navLiColor: rgb(0, 204, 204);
 }
 .nav {
+  /* position: fixed; */
   background-color: #111;
   /* margin: 0; */
-  /* height: 100%; */
+  /* top: 55px; */
+  height: 100vh;
   width: 250px;
   box-shadow: 10px 0 15px #0004;
   /* left: 0; */
 }
-.nav div {
+.nav .navHead {
   background-color: #000;
   padding-block: 15px;
   display: flex;
   justify-content: center;
 }
-.nav div h3 { 
+.nav .navHead h3 {
   margin: 15px;
   color: var(--blueText);
   text-transform: uppercase;
 }
-.nav ul { 
+
+.nav dl {
   margin: 0;
   padding: 0;
 }
 .nav li {
   list-style-type: none; 
   padding-inline: 15px;
-  margin: 5px;
+  margin-block: 5px;
   height: 40px;
 
   display: flex;
@@ -44,7 +47,18 @@
   color: cyan !important;
 }
 .nav li svg {
-  /* color: var(--navLiColor); */
   margin-right: 10px;
   height: 20px;
+}
+
+.nav dt {
+  background-color: #0003;
+  margin-top: 15px;
+}
+.nav dd {
+  margin-left: 15px; 
+}
+.nav dd li{
+  height: 30px;
+  /* padding: 0; */
 }

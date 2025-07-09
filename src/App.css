@@ -1,18 +1,22 @@
 .view { 
-  /* height: 100%; */
-  height: 100vh;
+  height: 100%;
+  /* height: 100vh; */
   /* width: 100vw; */
   display: flex;
 }
-.body {
-  /* height: 100vh; */
+
+.body { /* header + main */
+  height: 100vh;
   width: 100%;
   overflow: hidden;
 }
 main {
   padding: 25px;
+  /* height: 85vh; */
+  height: 85%;
   overflow: auto;
-  height: 84%;
+  /* background-color: red; */
+  /* height: 99%; */
   /* width: 100vw; */
   /* height: 100vh; */
 }

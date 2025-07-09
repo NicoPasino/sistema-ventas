@@ -1,16 +1,15 @@
-// import { useEffect, useState } from 'react';
-import './shared/formTabla.css';
-import { productosDB as itemsDB } from "../../database/db";
-import { TablaList } from "./shared/tablaList";
-import { ReloadIcon } from "../icons";
-import { useItems } from '../useItems';
+import './formSearch.css'
+import { useContext } from 'react';
+import { ReloadIcon } from "../../icons";
+import { nuevoItem } from "../../../provicional/nuevoItem" // ! provisional
+import { UserSettingsContext } from '../../../userSettingsContext';
 
-export default function Productos() {
-  const { items, agregar, eliminar, recargarItems } = useItems({itemsDB}); // productosDB as itemsDB
+export function FormSearch({props, tipo}) {
+  const { handleTab } = useContext(UserSettingsContext);
+  const { itemsDB, recargarItems, agregar } = props
   
   return (
-    <div className="productos">
-      {/* // TODO: Exportar buscador */}
+    <>
       <div className="productosHeader">
         <div className="prodHeadL">
           <button style={{padding: 0}} title="Recargar Todo" onClick={() => recargarItems(itemsDB)}> <ReloadIcon /> </button>
@@ -25,11 +24,10 @@ export default function Productos() {
           {/* <button>🔍</button> */}
         </form>
         <div className="prodHeadR">
-          <button onClick={agregar} className="colorVerdeClaro">+ Nuevo</button>
-          <button>Mostrar</button>
+          <button onClick={() => agregar({nuevoItem})} className='colorRojoClaro'>Test</button>
+          <button onClick={() => handleTab(tipo)} className="colorVerdeClaro">+ Nuevo</button>
         </div>
       </div>
-      <TablaList tipo={"productos"} lista={items} acciones={{eliminar}}/>
-    </div>
+    </>
   )
 }

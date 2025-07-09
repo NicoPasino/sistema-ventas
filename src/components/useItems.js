@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 
+// TODO: Manejo de error
+
 export function useItems({itemsDB}) {
   const [ items, setItems ] = useState([]);
   
@@ -19,7 +21,7 @@ export function useItems({itemsDB}) {
     await itemsDB.actualizar(nuevoDato);
     recargarItems(itemsDB);
   };
-  const obtenerPorId = async (id) => {
+  const obtenerItem = async (id) => {
     await itemsDB.obtenerPorId(id);
     recargarItems(itemsDB);
   };
@@ -30,5 +32,5 @@ export function useItems({itemsDB}) {
     recargarItems(itemsDB);
   };
 
-  return { items, agregar, actualizar, obtenerPorId, eliminar, recargarItems }
+  return { items, agregar, actualizar, obtenerItem, eliminar, recargarItems }
 }

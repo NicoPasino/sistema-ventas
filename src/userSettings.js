@@ -3,6 +3,7 @@ export const defaultUser = { nombre: 'Usuario', tab: 'Inicio' };
 
 export class userSettings {
   static newUser({nombre}) {
+    // TODO:
     // un solo usuario?
     // contraseña ?
     // comprobar q no se repita el nombre.
