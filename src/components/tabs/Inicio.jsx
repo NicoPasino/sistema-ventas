@@ -1,29 +1,67 @@
+import { useContext } from "react";
+import { getDate } from "../../utils/time/getDate";
 import { TarjetaBlanca } from "./shared/tarjetaBlanca";
+import { UserSettingsContext } from "../../userSettingsContext";
+import { ventasDB, productosDB } from "../../database/db";
+import { useItems } from "../useItems";
+
+const fecha = getDate();
 
 export default function Inicio() {
+  const {getUser} = useContext(UserSettingsContext);
+  // const ventas = useItems({itemsDB: ventasDB});
+  const productos = useItems({itemsDB: productosDB});
+
   return (
     <>
-      <h1>Inicio</h1>
-      <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ipsam ipsum consectetur beatae tempora debitis nulla, iste aliquam a doloremque voluptatibus eaque saepe, dolore soluta voluptate recusandae nihil iure iusto quos eveniet, minus aut facere similique! Quae simili qui perferendis assumenda. Praesentium explicabo repudiandae molestiae sapiente, nihil tempora voluptate asperiores minus ipsum illum similique quidem? Fuga voluptas aut soluta modi id! Quo quam fugit obcaecati dolore, maxime repudiandae maiores nostrum dolorum delectus dolores at soluta. Dolores iste sit, consequatur placeat sequi repellendus inventore reiciendis natus asperiores neque quisquam est maiores nemo debitis enim, nulla ipsum dolor itaque laudantium quibusdam quae officia non? Omnis, ex, inventore deserunt eveniet animi id veritatis magnam tempore, sit quisquam officia corporis esse ducimus. Impedit aut, porro ea modi minus omnis dolorum neque vitae fugiat tempore eos nostrum earum saepe dolores alias et, soluta accusamus. Obcaecati, consequatur velit possimus qui cupiditate dolores. Praesentium, a, delectus quam voluptatum, officiis officia aut inventore nostrum suscipit sunt consequatur? Iste optio nesciunt perferendis id cum eum vitae velit. Laboriosam ea cumque voluptas tempora sint, commodi dolorem. <br /> <br />
-      Lorem ipsum, dolor sit amet consectetur adipisicing elit. Assumenda asperiores necessitatibus veniam atque possimus consectetur quibusdam vel, quod odio eum velit. Et tempore ullam alias sed placeat officia consectetur unde? Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla maiores ex accusamus fugiat ullam pariatur.</p>
+      <div className="simpleCard">
+        <span className="fecha">{fecha.m} {fecha.d}, {fecha.y}</span>
+        <p> Bienvenido al Sistema <b>{getUser}</b></p>
+      </div>
+      
       <br />
       <div className="divTarjetas">
-        <TarjetaBlanca title="Productos más vendidos">
+        <TarjetaBlanca title="Productos con bajo Stock">
           <dl>
-            <dt>Mi Producto:</dt>
-            <dd>Vendido <b>7</b> veces</dd>
-            <dt>Otro:</dt>
-            <dd>Vendido <b>4</b> veces</dd>
+            {
+              productos.items.length === 0
+              ? <dt className='colorGris'>La lista de Productos está vacía!.</dt>
+              : productos.items.map((prod) => {
+                  if(prod.Cantidad<= 15){
+                    return (
+                      <div key={prod.ID}>
+                        <dt>{prod.Producto}: <b>{prod.Cantidad}</b>.</dt>
+                        {/* <dd>Cantidad:<b>{prod.Cantidad}</b> </dd> */}
+                      </div>
+                    )
+                  }
+                }
+              )
+            }
           </dl>
         </TarjetaBlanca>
-        <TarjetaBlanca title="Clientes frecuentes" text="Muy pronto..."> </TarjetaBlanca>
+
+        <TarjetaBlanca title="Clientes frecuentes">
+          <span className="colorGris">Muy pronto...</span> 
+          {/* <dl>
+            {
+              ventas.items.length === 0
+              ? <dt className='colorGris'>La lista de Ventas está vacía!.</dt>
+              : ventas.items.map((venta) => {
+                  return (
+                    <div key={venta.ID}>
+                      <dt>{venta.Cliente}:</dt>
+                      <dd>Compró <b>{venta.Cantidad}</b> productos</dd>
+                    </div>
+                  )
+                }
+              )
+            }
+          </dl> */}
+        </TarjetaBlanca>
+
         <TarjetaBlanca title="Últimos Reportes">
-          <dl>
-            <dt>Cliente 1:</dt>
-            <dd>El producto <b>FS-003</b> tiene varios....</dd>
-            <dt>Cliente 2:</dt>
-            <dd>El paquete de mi pedido viene con un....</dd>
-          </dl>
+          <span className="colorGris">Muy pronto...</span> 
         </TarjetaBlanca>
       </div>
     </>

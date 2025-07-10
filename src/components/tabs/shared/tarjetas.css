@@ -1,3 +1,9 @@
+.simpleCard {
+  background-color: #444;
+  box-shadow: 2px 2px 10px #111;
+  padding: 15px;
+  border-radius: 5px;
+}
 .divTarjetas {
   /* background-color: #222; */
   border-radius: 15px;
@@ -34,4 +40,15 @@
 
 .tarjetaBlanca p + dl dd { 
   color: rgb(164, 164, 164);
+}
+
+.fecha {
+  color: cornsilk;
+  font-size: 2em;
+  text-transform: capitalize;
+}
+
+.tarjetaBlanca dl {
+  max-height: 200px;
+  overflow: auto;
 }
