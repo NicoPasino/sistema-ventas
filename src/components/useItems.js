@@ -32,5 +32,10 @@ export function useItems({itemsDB}) {
     recargarItems(itemsDB);
   };
 
-  return { items, agregar, actualizar, obtenerItem, eliminar, recargarItems }
+  
+  const buscarItems = async (campo, valor) => {
+    setItems(await itemsDB.buscarPorCampo(campo, valor));
+  }
+
+  return { items, agregar, actualizar, obtenerItem, eliminar, recargarItems, buscarItems }
 }

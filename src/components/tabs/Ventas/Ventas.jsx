@@ -5,12 +5,12 @@ import { FormSearch } from "../shared/formSearch";
 import { FormNuevaVenta } from "./formNuevaVenta";
 
 export default function Ventas() {
-  const { items, agregar, eliminar, recargarItems } = useItems({itemsDB}); // ventasDB as itemsDB
+  const itemsManage = useItems({itemsDB}); // ventasDB as itemsDB
 
   return (
     <div className="ventas">
-      <FormSearch tipo={"Venta"} props={{itemsDB, agregar, recargarItems}}/>
-      <TablaList tipo={"ventas"} lista={items} acciones={{eliminar}}/>
+      <FormSearch tipo={"Venta"} itemsManage={itemsManage} itemsDB={itemsDB} />
+      <TablaList tipo={"ventas"} lista={itemsManage.items} acciones={{}} />
     </div>
   )
 }

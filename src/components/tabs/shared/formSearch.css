@@ -32,3 +32,5 @@ svg { height: 28px; }
 .prodHeadR button {
   width: 150px;
 }
+
+.form-group { display: flex; }

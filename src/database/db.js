@@ -49,6 +49,20 @@ export class DBTable {
     const db = await initDB();
     return db.get(this.tableName, id);
   };
+
+  // buscar por un campo específico
+  buscarPorCampo = async (campo = "ID", valor) => {
+    const db = await initDB();
+    const allItems = await db.getAll(this.tableName);
+    if (!valor) {
+      return allItems;
+    }
+    return allItems.filter(item => {
+      const fieldValue = item[campo];
+      if (fieldValue === undefined || fieldValue === null) return false;
+      return String(fieldValue).toLowerCase().includes(String(valor).toLowerCase());
+    });
+  }
 }
 
 // Instancias específicas para cada tabla
