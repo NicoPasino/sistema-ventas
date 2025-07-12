@@ -1,9 +1,9 @@
 import { productosDB as itemsDB } from "../../../database/db";
-import { TablaList } from "../shared/tablaList";
 import { useItems } from '../../useItems';
 import { FormSearch } from '../shared/formSearch';
 import { FormNuevoProducto } from "./formNuevoProducto";
 import { useState } from "react";
+import { TablaProductos } from "./tablaProductos";
 
 export default function Productos() {
   const itemsManage = useItems({itemsDB}); // productosDB as itemsDB
@@ -13,9 +13,9 @@ export default function Productos() {
     !idProducto ? 
       <div>
         <FormSearch tipo={"Producto"} itemsManage={itemsManage} itemsDB={itemsDB}/>
-        <TablaList tipo={"productos"} itemsManage={itemsManage} setIdProducto={setIdProducto}/>
+        <TablaProductos itemsManage={itemsManage} setIdProducto={setIdProducto}/>
       </div>
-      : <FormNuevoProducto id={idProducto} setIdProducto={setIdProducto} reload={itemsManage.recargarItems}/>
+    : <FormNuevoProducto id={idProducto} setIdProducto={setIdProducto} reload={itemsManage.recargarItems}/>
   )
 }
 

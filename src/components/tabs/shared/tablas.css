@@ -17,23 +17,30 @@ th {
 td { padding: 8px; }
 tr:nth-child(even) {background-color: #303030;}
 
-/* TODO: cambiar */
+
+
+
 tr td{
   text-align: center;
 }
-tr td:nth-child(1){ width: 30px; }
-tr td:nth-child(2),
-tr td:nth-child(3){
+.tablaColID{ 
+  width: 30px; 
+}
+.tablaColNombre, .tablaColDetalles{
   text-align: start;
 }
-tr td:nth-child(4),
-tr td:nth-child(5){
-  width: 60px;
+.tablaColCantidad {
+  width: 50px;
+  text-align: end;
 }
-tr td:nth-child(5){ text-align: end; }
-tr td:nth-child(6){
-  width: 85px;
+.tablaColPrecio{
+  width: 80px;
+  text-align: end;
 }
+.tablaColAcciones {
+  width: 80px;
+}
+
 
 .iconEdit svg{
   width: 23px;
@@ -52,16 +59,18 @@ tr td:nth-child(6){
   -o-transform: scale(1.1);
 }
 
+.svgDisabled svg{
+  filter: none !important;
+  cursor: default;
+  color: gray !important;
+  transform: none !important;
+  -webkit-transform: none !important;
+  -moz-transform: none !important;
+  -ms-transform: none !important;
+  -o-transform: none !important;
+  -webkit-filter: none !important;
+}
+
 .svgView svg { color: #69f}
 .svgEdit svg { color: #7f7}
 .svgDelete svg { color: #f55}
-/* 
-  <tr>
-    <th>ID</th>
-    <th>Producto</th>
-    <th>Descripcion</th>
-    <th>Cantidad</th>
-    <th>Precio</th>
-    <th>Acciones</th>
-  </tr>
-*/

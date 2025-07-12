@@ -13,9 +13,9 @@ export function FormNuevaVenta() {
     const query = Object.fromEntries(new window.FormData(event.target));
     if (!newItems[0]) return alert("se requiere al menos un producto.");
 
-    const Productos = newItems.map(item => item.producto.ID).join(", "); // split(", ")
+    const Productos = newItems.map(item => item.producto.Producto + ` (x${item.cantidad})`).join(", "); // split(", ")
     const Cantidad = newItems.map(item => item.cantidad).join(", ");
-    const Total = newItems.map(item => item.total).join(", ");
+    const Total = newItems.reduce((acc, producto) => acc + producto.total, 0);
 
     const nuevoItem = {...query, Productos, Cantidad, Total };
     agregar({nuevoItem});

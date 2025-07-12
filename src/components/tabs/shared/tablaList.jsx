@@ -28,22 +28,28 @@ export function TablaList ({tipo="none", itemsManage, setIdProducto}) {
         </thead>
         <tbody>
           {
-            items.length === 0 
+            //! SIN USO
+            // TODO: REF: unir productos y ventas
+            // TODO: REF: unir productos y ventas
+            // TODO: REF: unir productos y ventas
+            // TODO: REF: unir productos y ventas
+
+            /* items.length === 0 
             ? <tr><td colSpan={20} className='colorGris'>La lista está vacía!.</td></tr>
-            : items.map((elemento) => 
-                <tr key={elemento.ID}>
+            : items.map((item) =>
+                <tr key={item.ID}>
                   {tablas[tipo].map((e) =>
-                    <td key={elemento.ID+e}>
-                      {e=="Precio" && "$ "}{elemento[e]}
+                    <td key={item.ID+e}>
+                      {e=="Precio" && "$ "} {item[e]}
                     </td>
                   )}
                   <td>
-                    {/* <i className='iconEdit svgView' onClick={()=> console.log(elemento.ID)}> <ViewIcon /> </i> */}
-                    {tipo == "productos" && <i className='iconEdit svgEdit' onClick={()=> setIdProducto(elemento.ID)}> <EditIcon /> </i>}
-                    <i className='iconEdit svgDelete' onClick={()=> eliminar(elemento.ID)}> <DeleteIcon /> </i>
+                    <i className='iconEdit svgView' onClick={()=> console.log(item.ID)}> <ViewIcon /> </i>
+                    {tipo == "productos" && <i className='iconEdit svgEdit' onClick={()=> setIdProducto(item.ID)}> <EditIcon /> </i>}
+                    <i className='iconEdit svgDelete' onClick={()=> eliminar(item.ID)}> <DeleteIcon /> </i>
                   </td>
                 </tr>
-              )
+              ) */
           }
         </tbody>
       </table>
