@@ -22,8 +22,8 @@ export function useItems({itemsDB}) {
     recargarItems(itemsDB);
   };
   const obtenerItem = async (id) => {
-    await itemsDB.obtenerPorId(id);
-    recargarItems(itemsDB);
+    return await itemsDB.obtenerPorId(id);
+    // recargarItems(itemsDB);
   };
   const eliminar = async (id) => {
     const respuestaConfirm = confirm("Realmente quieres eliminar este elemento?"); // TODO: modal

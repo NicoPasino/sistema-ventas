@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { DeleteIcon, EditIcon, ViewIcon } from '../../icons';
 import './tablas.css'
 
 const tablas = {
@@ -7,13 +8,14 @@ const tablas = {
   none: [""],
 }
 
-export function TablaList ({tipo="none", lista=[""], acciones}) {
+export function TablaList ({tipo="none", itemsManage, setIdProducto}) {
+  const {items, eliminar} = itemsManage;
   const [error, setError] = useState();
 
   useEffect(() => {
     if (!tipo || tipo === "none") setError("ERROR DE CÓDIGO: Tipo de tabla no definido.")
-    if (!lista) setError("ERROR DE CÓDIGO: Sin lista!.")
-  }, [tipo, lista]);
+    if (!items) setError("ERROR DE CÓDIGO: Sin lista!.")
+  }, [tipo, items]);
 
   const Tabla = () => {
     return (
@@ -26,14 +28,20 @@ export function TablaList ({tipo="none", lista=[""], acciones}) {
         </thead>
         <tbody>
           {
-            lista.length === 0 
+            items.length === 0 
             ? <tr><td colSpan={20} className='colorGris'>La lista está vacía!.</td></tr>
-            : lista.map((elemento) => 
+            : items.map((elemento) => 
                 <tr key={elemento.ID}>
                   {tablas[tipo].map((e) =>
-                    <td key={elemento.ID+e}>{elemento[e]}</td>
+                    <td key={elemento.ID+e}>
+                      {e=="Precio" && "$ "}{elemento[e]}
+                    </td>
                   )}
-                  <td><button onClick={()=> acciones.eliminar(elemento.ID)} className={'colorRojoClaro'}> Eliminar </button></td>
+                  <td>
+                    {/* <i className='iconEdit svgView' onClick={()=> console.log(elemento.ID)}> <ViewIcon /> </i> */}
+                    {tipo == "productos" && <i className='iconEdit svgEdit' onClick={()=> setIdProducto(elemento.ID)}> <EditIcon /> </i>}
+                    <i className='iconEdit svgDelete' onClick={()=> eliminar(elemento.ID)}> <DeleteIcon /> </i>
+                  </td>
                 </tr>
               )
           }

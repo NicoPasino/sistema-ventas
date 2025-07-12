@@ -10,7 +10,7 @@ export default function Ventas() {
   return (
     <div className="ventas">
       <FormSearch tipo={"Venta"} itemsManage={itemsManage} itemsDB={itemsDB} />
-      <TablaList tipo={"ventas"} lista={itemsManage.items} acciones={{}} />
+      <TablaList tipo={"ventas"} itemsManage={itemsManage}/>
     </div>
   )
 }
