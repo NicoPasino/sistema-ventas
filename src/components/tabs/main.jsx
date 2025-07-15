@@ -5,6 +5,7 @@ import Ventas, { Venta } from "./Ventas/Ventas.jsx";
 import Reportes from "./Reportes";
 import { useContext } from "react";
 import { UserSettingsContext } from "../../userSettingsContext.jsx";
+import Proveedores from "./Proveedores.jsx";
 
 const componentes = {
   Inicio: <Inicio />,
@@ -13,6 +14,7 @@ const componentes = {
   Producto: <Producto />,
   Ventas: <Ventas />,
   Venta: <Venta />,
+  Proveedores: <Proveedores />,
   Reportes: <Reportes />,
   NotFound: <h1>Vista no encontrada</h1>
 };

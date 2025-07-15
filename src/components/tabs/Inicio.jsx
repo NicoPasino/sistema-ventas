@@ -30,7 +30,7 @@ export default function Inicio() {
                   if(prod.Cantidad<= 15){
                     return (
                       <div key={prod.ID}>
-                        <dt>{prod.Producto}: <b>{prod.Cantidad}</b>.</dt>
+                        <dt><b>{prod.Producto}</b>: {prod.Cantidad}.</dt>
                         {/* <dd>Cantidad:<b>{prod.Cantidad}</b> </dd> */}
                       </div>
                     )
@@ -41,24 +41,9 @@ export default function Inicio() {
           </dl>
         </TarjetaBlanca>
 
-        <TarjetaBlanca title="Clientes frecuentes">
-          <span className="colorGris">Muy pronto...</span> 
-          {/* <dl>
-            {
-              ventas.items.length === 0
-              ? <dt className='colorGris'>La lista de Ventas está vacía!.</dt>
-              : ventas.items.map((venta) => {
-                  return (
-                    <div key={venta.ID}>
-                      <dt>{venta.Cliente}:</dt>
-                      <dd>Compró <b>{venta.Cantidad}</b> productos</dd>
-                    </div>
-                  )
-                }
-              )
-            }
-          </dl> */}
-        </TarjetaBlanca>
+        {/* <TarjetaBlanca title="Clientes frecuentes">
+          <span className="colorGris">Muy pronto...</span>
+        </TarjetaBlanca> */}
 
         <TarjetaBlanca title="Últimos Reportes">
           <span className="colorGris">Muy pronto...</span> 

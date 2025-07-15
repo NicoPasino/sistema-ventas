@@ -2,14 +2,14 @@
 
 ## 📝 Aplicación web para la gestión de ventas, inventario y clientes, orientada a pequeñas y medianas empresas.
 
-
+<!-- 
 ## 🚀 Funcionalidades principales:
 - Registro y gestión de productos
-- Carrito de compras y procesamiento de ventas
+- Registro y gestión de ventas
+- Aviso de bajo stock
 - Módulo de clientes
 - Reportes de ventas diarios/mensuales
-- Control de stock
-
+ -->
 
 ## 🛠️ Tecnologías utilizadas:
 - Lenguaje(s): JavaScript.
@@ -31,9 +31,18 @@ Nicolás Pasino - nico_pasino@hotmail.com,
 ...
 <!-- ... ![texto alternativo explicando la imagen](/assets/images/electrocat.png) -->
 
+<!-- 
+💡 Posibles mejoras / Roadmap
+...
+- Gestión de cuentas
+- Exportación de reportes (PDF/Excel)
+- Dashboard con gráficos interactivo 
+-->
+
+<!--   
 ⚙️ Instalación y ejecución
 ...
-<!--   ```bash
+```bash
   # Clonar el repositorio
   git clone https://github.com/usuario/sistema-ventas.git
 
@@ -47,21 +56,14 @@ Nicolás Pasino - nico_pasino@hotmail.com,
   npm start
   ``` -->
 
-
+<!-- 
 📦 Estructura del proyecto (opcional)
 ...
-<!-- sistema-ventas/
+sistema-ventas/
 ├── src/
 │   ├── components/
 │   ├── pages/
 │   └── services/
 ├── public/
 └── README.md -->
-<!-- Una breve guía de carpetas y archivos, especialmente si el proyecto es grande. -->
-
-💡 Posibles mejoras / Roadmap
-...
-
-<!-- - Autenticación de usuarios
-- Exportación de reportes (PDF/Excel)
-- Dashboard con gráficos interactivo -->
+<!-- (Una breve guía de carpetas y archivos, especialmente si el proyecto es grande). -->
