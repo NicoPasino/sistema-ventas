@@ -22,14 +22,23 @@
   background-color: #333;
   box-shadow: 2px 2px 10px #111;
   padding: 15px;
-  /* margin-block: 20px; */
   width: 350px;
   border-radius: 5px;
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
   -ms-border-radius: 5px;
   -o-border-radius: 5px;
+  transition: .5s;
+  -webkit-transition: .5s;
+  -moz-transition: .5s;
+  -ms-transition: .5s;
+  -o-transition: .5s;
 }
+.tarjetaBlanca:hover {
+  background-color: #444449;
+}
+
+
 .tarjetaBlanca h2 {
   margin-top: 0;
   font-weight: 500;
@@ -51,4 +60,24 @@
 .tarjetaBlanca dl {
   max-height: 200px;
   overflow: auto;
+}
+
+.tarjetaBlancaFooter {
+  display: flex;
+  justify-content: end;
+  color: #0000;
+  transition: .5s;
+}
+.tarjetaBlanca:hover .tarjetaBlancaFooter {
+  color: rgb(150, 47, 205);
+  cursor: pointer;
+  transition: .5s;
+  -webkit-transition: .5s;
+  -moz-transition: .5s;
+  -ms-transition: .5s;
+  -o-transition: .5s;
+}
+.tarjetaBlancaFooter:hover {
+  text-decoration: underline;
+  color: rgb(207, 117, 255) !important;
 }

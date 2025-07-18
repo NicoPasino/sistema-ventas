@@ -21,7 +21,7 @@ export default function Inicio() {
       
       <br />
       <div className="divTarjetas">
-        <TarjetaBlanca title="Productos con bajo Stock">
+        <TarjetaBlanca title="Productos con bajo Stock" footer={"Productos"}>
           <dl>
             {
               productos.items.length === 0
@@ -41,11 +41,11 @@ export default function Inicio() {
           </dl>
         </TarjetaBlanca>
 
-        {/* <TarjetaBlanca title="Clientes frecuentes">
+        <TarjetaBlanca title="Clientes frecuentes" footer={"Ventas"}>
           <span className="colorGris">Muy pronto...</span>
-        </TarjetaBlanca> */}
+        </TarjetaBlanca>
 
-        <TarjetaBlanca title="Últimos Reportes">
+        <TarjetaBlanca title="Últimos Reportes" /* footer={"Reportes"} */>
           <span className="colorGris">Muy pronto...</span> 
         </TarjetaBlanca>
       </div>
