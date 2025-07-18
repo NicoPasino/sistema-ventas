@@ -20,7 +20,8 @@ export function FormNuevaVenta() {
     const nuevoItem = {...query, Productos, Cantidad, Total };
     agregar({nuevoItem});
 
-    console.log("VENTA CREADA ✅");
+    event.target.reset();
+    alert("VENTA CREADA ✅");
     // TODO: Modal + clear
   }
 

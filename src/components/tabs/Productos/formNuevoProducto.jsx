@@ -17,11 +17,13 @@ export function FormNuevoProducto({id, setIdProducto, reload}) {
       actualizar({nuevoDato});
       setIdProducto();
       reload(productosDB);
-      console.log("Producto Actualizado ✅");
+      event.target.reset();
+      alert("Producto Actualizado ✅");
     }
     else {
       agregar({nuevoItem});
-      console.log("Producto Creado ✅");
+      event.target.reset();
+      alert("Producto Creado ✅");
     }
   }
 

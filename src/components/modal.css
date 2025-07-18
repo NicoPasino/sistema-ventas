@@ -1,0 +1,19 @@
+/* modal css */
+.modal {
+  position: fixed;
+  top: 5%;
+  margin-inline: 40vw;
+  width: 400px;
+  height: 80px;
+  background-color: rgba(255, 255, 255, 0.8);
+  color: black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 5px 5px 15px #0008;
+  border-radius: 15px;
+  -webkit-border-radius: 15px;
+  -moz-border-radius: 15px;
+  -ms-border-radius: 15px;
+  -o-border-radius: 15px;
+}
