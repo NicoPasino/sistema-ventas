@@ -2,16 +2,19 @@ import { useContext } from "react";
 import { getDate } from "../../utils/time/getDate";
 import { TarjetaBlanca } from "./shared/tarjetaBlanca";
 import { UserSettingsContext } from "../../userSettingsContext";
-import { ventasDB, productosDB } from "../../database/db";
+import { clientesAPI, ventasAPI, productosAPI } from "../../services/apiClient";
 import { useItems } from "../useItems";
 
 const fecha = getDate();
 
 export default function Inicio() {
   const {getUser} = useContext(UserSettingsContext);
-  // const ventas = useItems({itemsDB: ventasDB});
-  const productos = useItems({itemsDB: productosDB});
+  // const ventas = useItems({itemsDB: ventasAPI});
+  const productos = useItems({itemsDB: productosAPI});
+  const clientes = useItems({itemsDB: clientesAPI});
 
+  const errorMensaje = (mensaje) => <p className='colorRojoClaro'>{mensaje}</p>;
+  
   return (
     <>
       <div className="simpleCard">
@@ -21,34 +24,54 @@ export default function Inicio() {
       
       <br />
       <div className="divTarjetas">
-        <TarjetaBlanca title="Productos con bajo Stock" footer={"Productos"}>
-          <dl>
-            {
-              productos.items.length === 0
-              ? <dt className='colorGris'>La lista de Productos está vacía!.</dt>
-              : productos.items.map((prod) => {
-                  if(prod.Cantidad<= 15){
-                    return (
-                      <div key={prod.ID}>
-                        <dt><b>{prod.Producto}</b>: {prod.Cantidad}.</dt>
-                        {/* <dd>Cantidad:<b>{prod.Cantidad}</b> </dd> */}
-                      </div>
-                    )
-                  }
-                }
-              )
-            }
-          </dl>
+        <TarjetaBlanca title="📉 Productos con poco stock" footer={"Productos"}>
+          { productos.items.error ? errorMensaje(productos.items.error) : <BajoStock lista={productos.items}/> }
         </TarjetaBlanca>
 
-        <TarjetaBlanca title="Clientes frecuentes" footer={"Ventas"}>
-          <span className="colorGris">Muy pronto...</span>
+        <TarjetaBlanca title="🏆 Top 5 Clientes" footer={"Ventas"}>
+          { clientes.items.error ? errorMensaje(clientes.items.error) : <TopClientes lista={clientes.items}/> }
         </TarjetaBlanca>
 
-        <TarjetaBlanca title="Últimos Reportes" /* footer={"Reportes"} */>
+        <TarjetaBlanca title="🏆 Top Productos Vendidos" /* footer={"Ventas"} */>
           <span className="colorGris">Muy pronto...</span> 
         </TarjetaBlanca>
       </div>
     </>
   )
+}
+
+function BajoStock({lista}){
+  if (!lista) return <span className='colorGris'>La lista de Productos está vacía!.</span>
+  else return (
+    <ul>
+      {lista.map((prod, i) => {
+        if(prod.cantidad<= 15){
+          return ( <li key={i}>
+              <strong>{prod.nombre}</strong> — <span className="colorGrisClaro">{prod.cantidad} en stock.</span>
+            </li> )
+        }
+      })}
+    </ul>
+  )
+}
+
+function TopClientes({ lista }) {
+  const topClientes = [...lista]
+    .sort((a, b) => b.nroCompras - a.nroCompras)
+    .slice(0, 7);
+
+  if (!lista) return <span className='colorGris'>La lista de Clientes está vacía!.</span>
+  else return (
+    <ul>
+      {topClientes.map((cliente, index) => {
+        if(cliente.nroCompras > 0){
+          return(
+            <li key={index}>
+              <strong>{cliente.nombre}</strong> — <span className="colorGrisClaro">{cliente.nroCompras} compras.</span>
+            </li>
+          )
+        }
+      })}
+    </ul>
+  );
 }

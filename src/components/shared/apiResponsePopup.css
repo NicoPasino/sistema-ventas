@@ -1,0 +1,60 @@
+.api-popup-overlay{
+  position:fixed;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:rgba(0, 0, 0, 0.8);
+  z-index:1200;
+}
+
+.api-popup{
+  width:320px;
+  max-width:90%;
+  background:#202020;
+  border-radius:8px;
+  box-shadow:0 8px 30px rgba(0, 0, 0, 0.352);
+  overflow:hidden;
+  font-family:inherit;
+  -webkit-border-radius:8px;
+  -moz-border-radius:8px;
+  -ms-border-radius:8px;
+  -o-border-radius:8px;
+}
+
+.api-popup-header{
+  padding:8px 16px;
+  border-bottom:1px solid #000;
+}
+
+.api-popup-body{
+  padding:16px;
+  color:#222;
+}
+
+.api-popup-actions{
+  padding:12px 16px;
+  /* border-top:1px solid #000; */
+  text-align:right;
+}
+
+.api-popup-close{
+  background:#0b74de;
+  color:#fff;
+  border:none;
+  padding:8px 12px;
+  border-radius:4px;
+  cursor:pointer;
+}
+
+.api-popup.error .api-popup-header{ background:#3b3b3bec; }
+.api-popup.error .api-popup-body{ color:#7a1f1f }
+
+.api-popup.success .api-popup-header{ background:#3b3b3bec; }
+.api-popup.success .api-popup-body{ color:#1f7a3a }
+
+.api-popup.warning .api-popup-header{ background:#3b3b3bec; }
+.api-popup.warning .api-popup-body{ color:#cc9619 }
+
+.api-popup.info .api-popup-header{ background:#3b3b3bec; }
+.api-popup.info .api-popup-body{ color:#0b3a66 }

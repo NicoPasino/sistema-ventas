@@ -1,4 +1,4 @@
-import { ventasDB as itemsDB } from "../../../database/db";
+import { ventasAPI as itemsDB } from "../../../services/apiClient";
 import { useItems } from "../../useItems";
 import { FormSearch } from "../shared/formSearch";
 import { FormNuevaVenta } from "./formNuevaVenta";

@@ -1,8 +1,9 @@
-import { productosDB as itemsDB } from "../../../database/db";
 import { useItems } from '../../useItems';
 import { FormSearch } from '../shared/formSearch';
-import { FormNuevoProducto } from "./formNuevoProducto";
 import { useState } from "react";
+
+import { productosAPI as itemsDB } from "../../../services/apiClient";
+import { FormNuevoProducto } from "./formNuevoProducto";
 import { TablaProductos } from "./tablaProductos";
 
 export default function Productos() {

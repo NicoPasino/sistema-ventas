@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { productosDB as itemsDB } from '../../../database/db';
+import { productosAPI as itemsDB } from '../../../services/apiClient';
 import { useItems } from "../../useItems";
 import { NewIcon, CancelIcon } from '../../icons';
 
@@ -13,14 +13,15 @@ export function ListNewItems({newItemsState, tipo}) {
   const inputCantRef = useRef();
 
   const getProducto = (id) => {
-    return items.find(e => e.ID == id);
+    return items.find(e => e.idPublica == id);
   }
 
-  useEffect(() => { // Cambiar el Total al agregar Productos
+  useEffect(() => { // (Cambiar el Total al agregar Productos)
     const cantTotal = newItems.reduce((acc, producto) => acc + producto.total, 0);
     setTotal(cantTotal);
   }, [newItems]);
 
+  // click ID
   function handleChangeIdProducto() {
     // TODO:
     const resProducto = getProducto(inputIDRef.current.value);
@@ -31,8 +32,9 @@ export function ListNewItems({newItemsState, tipo}) {
       return 
     }
 
-    inputProdRef.current.value = resProducto.Producto;
+    inputProdRef.current.value = resProducto.nombre; // (esto cambia el "Nombre del producto")
   }
+
   function handleNewItemForm() {
     const ref_idProducto = inputIDRef.current.value;
     const ref_cantidad = inputCantRef.current.value;
@@ -51,7 +53,7 @@ export function ListNewItems({newItemsState, tipo}) {
       keyId: Date.now(),
       producto: productoObj,
       cantidad: ref_cantidad,
-      total: productoObj.Precio * ref_cantidad,
+      total: productoObj.precio * ref_cantidad,
     }
     setNewItems([...newItems, newData ]);
     
@@ -63,13 +65,14 @@ export function ListNewItems({newItemsState, tipo}) {
     setNewItems(newItems.filter((e) => e.keyId !== id));
   }
     
+  // componente NuevoItemForm
   function NuevoItemForm ({producto, cantidad}) {
     return (
       <div className='group flexSeparados' style={{backgroundColor: "#222", width: "100%"}}>
-        <span><b>ID</b>: {producto.ID}</span>
-        <span className="w50"><b>Producto</b>: {producto.Producto}</span>
+        <span><b>ID</b>: {producto.idPublica}</span>
+        <span className="w50"><b>Producto</b>: {producto.nombre}</span>
         <span><b>Cant</b>: x{cantidad}</span>
-        {tipo === "Venta" && <span><b>Total</b>: ${producto.Precio * cantidad}</span>}
+        {tipo === "Venta" && <span><b>Total</b>: ${producto.precio * cantidad}</span>}
       </div>
     )
   }
@@ -86,6 +89,7 @@ export function ListNewItems({newItemsState, tipo}) {
         ))}
       </div>
       
+      {/* buscar item */}
       <div className='flex'>
         <div className='group flexSeparados'>
           <div>

@@ -24,8 +24,9 @@ body {
 }
 
 .colorVerdeClaro { color: #3cff3c; }
-.colorRojoClaro { color: #ff7676; }
+.colorRojoClaro { color: #ff7676 !important;}
 .colorGris { color: gray}
+.colorGrisClaro { color: rgb(184, 184, 184)}
 
 .flex{display: flex;}
 .flexEnd{
@@ -42,4 +43,8 @@ body {
 hr {
   margin-bottom: 25px;
   border-color: gray;
+}
+
+.pointer {
+  cursor: pointer;
 }

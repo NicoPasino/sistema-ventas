@@ -2,27 +2,33 @@ import '../shared/formNueva.css';
 import { useState } from 'react';
 import { NuevaVenta } from './nuevaVenta';
 import { useItems } from '../../useItems';
-import { ventasDB as itemsDB } from "../../../database/db";
+import { ventasAPI as itemsDB } from "../../../services/apiClient";
+import ApiResponsePopup from '../../shared/ApiResponsePopup';
 
 export function FormNuevaVenta() {
   const { agregar } = useItems({itemsDB}); // ventasDB
   const [newItems, setNewItems] = useState([]);  
-
-  function submitHandler(event) {
+  const [apiResponse, setApiResponse] = useState(null);
+  
+  async function submitHandler(event) {
     event.preventDefault();
     const query = Object.fromEntries(new window.FormData(event.target));
-    if (!newItems[0]) return alert("se requiere al menos un producto.");
+    if (!newItems[0]) return alert("se requiere al menos un producto."); // TODO: modal
 
-    const Productos = newItems.map(item => item.producto.Producto + ` (x${item.cantidad})`).join(", "); // split(", ")
-    const Cantidad = newItems.map(item => item.cantidad).join(", ");
-    const Total = newItems.reduce((acc, producto) => acc + producto.total, 0);
+    var ItemsId = newItems.map(i => i.producto.idPublica);
+    var ItemsCant = newItems.map(i => parseInt(i.cantidad));
 
-    const nuevoItem = {...query, Productos, Cantidad, Total };
-    agregar({nuevoItem});
-
-    event.target.reset();
-    alert("VENTA CREADA ✅");
-    // TODO: Modal + clear
+    const nuevoItem = {...query, ItemsId, ItemsCant };
+    var res = await agregar({nuevoItem});
+    
+    setApiResponse(res)
+    if(res.message || res.error) {
+      return;
+    }
+    else if (res.ok) {
+      event.target.reset();
+      setNewItems([]);
+    }
   }
 
   return (
@@ -30,6 +36,8 @@ export function FormNuevaVenta() {
       <h1>Nueva Venta:</h1>
 
       <NuevaVenta NItems={{newItems, setNewItems}}/>
+
+      <ApiResponsePopup response={apiResponse} onClose={() => setApiResponse(null)} />
 
       <div className='submitBtns'>
         <button type="reset" onClick={() => setNewItems([])}>Borrar</button>
@@ -41,20 +49,7 @@ export function FormNuevaVenta() {
 
 
 // TODO:
-//* Restar de Productos...
-//* manejo de error...
 
-/* let nuevoItem = {
-  Cliente: 'Nombre no válido.',
-  Productos: 'Productos no válidos.',
-  ProductosCant: 'Cantidad Productos no válidos.',
-  Cantidad: 1,
-  Precio: 1, // TODO: Cambiar por Total.
-  
-  // TipoDoc: "",
-  // TipoR: "",
-  // CuentaC: "",
-  // CUIT: "",
-  Descripcion: '-',
-  Fecha: Date.now(),
-}; */
+//* GuardarLocalmente Lista de productos + al sumar +1 que sea el ID primero de la lista (1001)
+//* Agregar solo un botón + para agregar el primer item?
+//* Avisar (si el item para agregar no fue agregado)

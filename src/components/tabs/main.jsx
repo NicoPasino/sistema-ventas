@@ -1,5 +1,5 @@
 import Inicio from "./Inicio";
-import Clientes from "./Clientes";
+import Clientes from "./Clientes/Clientes.jsx";
 import Productos, { Producto } from "./Productos/Productos.jsx";
 import Ventas, { Venta } from "./Ventas/Ventas.jsx";
 import Reportes from "./Reportes";
