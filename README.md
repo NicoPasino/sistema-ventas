@@ -1,6 +1,7 @@
-# 📌 Sistema de Ventas (En Desarrollo)
+# 📌 Sistema de Ventas
 
 ## 📝 Aplicación web para la gestión de ventas, inventario y clientes.
+ (Este proyecto aún está en Desarrollo).
 
 ## 🚀 Funcionalidades principales:
 - Registro y gestión de productos.
@@ -11,19 +12,40 @@
 <!-- - Reportes de ventas diarios/mensuales  -->
 
 ## 🛠️ Tecnologías utilizadas:
-- Lenguaje(s): JavaScript.
-- Frameworks: React, Entity Framework.
-- Base de datos: MySql <!-- , IndexedDB -->.
-- Back-end: .NET, C# <!--, Node.js -->.
+- Lenguaje(s): `JavaScript`.
+- Frameworks: `React`, `Entity Framework`.
+- Base de datos: `MySql`.
+- Back-end: `.NET`, `C#`.
 
 
+<!-- 
 ## 📌 Estado del proyecto:
 Este proyecto aún está en Desarrollo.
+-->
 
+## 📦 Estructura principal del proyecto
+```bash
+sistema-ventas/
+└── src/
+    ├───components
+    │   ├───shared
+    │   └───tabs #------------- (Vistas)
+    │       ├───Clientes
+    │       ├───Productos
+    │       ├───Ventas
+    │       ├───shared
+    │       └───Inicio.jsx #-- (Vista Principal)
+    └───services #------------ (Conección directa con API)
+    └───utils
+    └───Hooks
+    └───App.jsx #------------- (Componente principal de la App)
+```
 
 ## 🧑‍💻 Autor:
 Nicolás Pasino - nico_pasino@hotmail.com,
 [LinkedIn](https://www.linkedin.com/in/nicolas-pasino/) | [Portfolio](https://nicopasino.space)
+
+
 
 
 <!-- 
@@ -56,21 +78,3 @@ Nicolás Pasino - nico_pasino@hotmail.com,
   # Ejecutar
   npm start
   ``` -->
-
-
-📦 Estructura principal del proyecto
-...
-sistema-ventas/
-└── src/
-    ├───components
-    │   ├───shared
-    │   └───tabs ------------- (Vistas)
-    │       ├───Clientes
-    │       ├───Productos
-    │       ├───Ventas
-    │       ├───shared
-    │       └───Inicio.jsx -- (Vista Principal)
-    └───services ------------ (Conección directa con API)
-    └───utils
-    └───Hooks
-    └───App.jsx ------------- (Componente principal de la App)
