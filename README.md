@@ -1,21 +1,20 @@
-# 📌 Sistema de Ventas
+# 📌 Sistema de Ventas (En Desarrollo)
 
-## 📝 Aplicación web para la gestión de ventas, inventario y clientes, orientada a pequeñas y medianas empresas.
+## 📝 Aplicación web para la gestión de ventas, inventario y clientes.
 
-<!-- 
 ## 🚀 Funcionalidades principales:
-- Registro y gestión de productos
-- Registro y gestión de ventas
-- Aviso de bajo stock
-- Módulo de clientes
-- Reportes de ventas diarios/mensuales
- -->
+- Registro y gestión de productos.
+- Registro y gestión de ventas.
+- Aviso de bajo stock.
+- Clientes frecuentes.
+- Módulo de clientes.
+<!-- - Reportes de ventas diarios/mensuales  -->
 
 ## 🛠️ Tecnologías utilizadas:
 - Lenguaje(s): JavaScript.
-- Frameworks: React.
-- Base de datos: MySql, IndexedDB.
-- Otros: Node.js, Express.
+- Frameworks: React, Entity Framework.
+- Base de datos: MySql <!-- , IndexedDB -->.
+- Back-end: .NET, C# <!--, Node.js -->.
 
 
 ## 📌 Estado del proyecto:
@@ -27,8 +26,10 @@ Nicolás Pasino - nico_pasino@hotmail.com,
 [LinkedIn](https://www.linkedin.com/in/nicolas-pasino/) | [Portfolio](https://nicopasino.space)
 
 
+<!-- 
 ## 🖼️ Capturas de pantalla:
 ...
+-->
 <!-- ... ![texto alternativo explicando la imagen](/assets/images/electrocat.png) -->
 
 <!-- 
@@ -56,14 +57,20 @@ Nicolás Pasino - nico_pasino@hotmail.com,
   npm start
   ``` -->
 
-<!-- 
-📦 Estructura del proyecto (opcional)
+
+📦 Estructura principal del proyecto
 ...
 sistema-ventas/
-├── src/
-│   ├── components/
-│   ├── pages/
-│   └── services/
-├── public/
-└── README.md -->
-<!-- (Una breve guía de carpetas y archivos, especialmente si el proyecto es grande). -->
+└── src/
+    ├───components
+    │   ├───shared
+    │   └───tabs ------------- (Vistas)
+    │       ├───Clientes
+    │       ├───Productos
+    │       ├───Ventas
+    │       ├───shared
+    │       └───Inicio.jsx -- (Vista Principal)
+    └───services ------------ (Conección directa con API)
+    └───utils
+    └───Hooks
+    └───App.jsx ------------- (Componente principal de la App)

@@ -3,8 +3,8 @@ import { getDate } from "../../utils/time/getDate";
 import { TarjetaBlanca } from "./shared/tarjetaBlanca";
 import { UserSettingsContext } from "../../userSettingsContext";
 import { clientesAPI, ventasAPI, productosAPI } from "../../services/apiClient";
-import { Cargando, ListaVacia, ErrorMensaje } from "./shared/textosComponent";
-import { useItems } from "../useItems";
+import { Cargando, ListaVacia, ErrorMensaje, ListaVaciaT } from "./shared/textosComponent";
+import { useItems } from "../../Hooks/useItems";
 
 const fecha = getDate();
 
@@ -51,7 +51,7 @@ export default function Inicio() {
 }
 
 function BajoStock({lista}){
-  if (!lista) return <span className='colorGris'>La lista de Productos está vacía!.</span>
+  if (!lista) return <ListaVacia />
   else return (
     <ul>
       {lista.map((prod, i) => {
@@ -70,7 +70,7 @@ function TopClientes({ lista }) {
     .sort((a, b) => b.nroCompras - a.nroCompras)
     .slice(0, 7);
 
-  if (!lista) return <span className='colorGris'>La lista de Clientes está vacía!.</span>
+  if (!lista) return <ListaVacia />
   else return (
     <ul>
       {topClientes.map((cliente, index) => {
