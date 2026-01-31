@@ -1,8 +1,9 @@
-import { useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { getDate } from "../../utils/time/getDate";
 import { TarjetaBlanca } from "./shared/tarjetaBlanca";
 import { UserSettingsContext } from "../../userSettingsContext";
 import { clientesAPI, ventasAPI, productosAPI } from "../../services/apiClient";
+import { Cargando, ListaVacia, ErrorMensaje } from "./shared/textosComponent";
 import { useItems } from "../useItems";
 
 const fecha = getDate();
@@ -13,8 +14,6 @@ export default function Inicio() {
   const productos = useItems({itemsDB: productosAPI});
   const clientes = useItems({itemsDB: clientesAPI});
 
-  const errorMensaje = (mensaje) => <p className='colorRojoClaro'>{mensaje}</p>;
-  
   return (
     <>
       <div className="simpleCard">
@@ -25,11 +24,22 @@ export default function Inicio() {
       <br />
       <div className="divTarjetas">
         <TarjetaBlanca title="📉 Productos con poco stock" footer={"Productos"}>
-          { productos.items.error ? errorMensaje(productos.items.error) : <BajoStock lista={productos.items}/> }
+          { 
+            (productos.loading) ? <Cargando />
+            : (productos.items.error)
+              ? <ErrorMensaje msg={productos.items.error}/>
+              : <BajoStock lista={productos.items}/>
+          }
         </TarjetaBlanca>
 
         <TarjetaBlanca title="🏆 Top 5 Clientes" footer={"Ventas"}>
-          { clientes.items.error ? errorMensaje(clientes.items.error) : <TopClientes lista={clientes.items}/> }
+          { 
+            (clientes.loading)
+            ? <Cargando />
+            : (productos.items.error)
+              ? <ErrorMensaje msg={productos.items.error}/>
+              : <TopClientes lista={clientes.items}/>
+          }
         </TarjetaBlanca>
 
         <TarjetaBlanca title="🏆 Top Productos Vendidos" /* footer={"Ventas"} */>

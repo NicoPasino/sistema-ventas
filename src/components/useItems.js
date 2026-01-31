@@ -4,9 +4,12 @@ import { useEffect, useState } from "react";
 
 export function useItems({itemsDB}) {
   const [ items, setItems ] = useState([]);
+  const [ loading, setLoading ] = useState(true);
   
   const recargarItems = async (items) => {
+    setLoading(true);
     setItems(await items.obtenerTodos());
+    setLoading(false);
   }
 
   useEffect(() => {
@@ -42,5 +45,5 @@ export function useItems({itemsDB}) {
     setItems(await itemsDB.buscarPorCampo(campo, valor));
   }
 
-  return { items, agregar, actualizar, obtenerItem, eliminar, recargarItems, buscarItems }
+  return { items, agregar, actualizar, obtenerItem, eliminar, recargarItems, buscarItems, loading }
 }

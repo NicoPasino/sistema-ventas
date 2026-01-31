@@ -3,9 +3,10 @@
 
 import ApiResponsePopup from '../components/shared/ApiResponsePopup.jsx';
 
-// const BASE = import.meta.env.VITE_API_BASE_URL || 'https://localhost:7267/api/ventas';
-// const BASE = import.meta.env.VITE_API_BASE_URL || 'https://localhost:5000/api/ventas';
-const BASE = import.meta.env.VITE_API_BASE_URL || 'https://movies.nicopasino.space/api/ventas'; // TODO:
+const server = 'https://nicopasino.space/api/ventas';
+const local = 'https://localhost:7267/api/ventas';
+
+const BASE = import.meta.env.VITE_API_BASE_URL || local; // TODO:
 
 async function request(path, options = {}) {
   return await fetch(`${BASE}${path}`, { headers: { 'Content-Type': 'application/json' }, ...options, })

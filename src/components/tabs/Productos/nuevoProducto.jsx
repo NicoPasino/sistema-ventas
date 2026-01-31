@@ -9,9 +9,7 @@ export function NuevoProducto({obtenerItem, id}) {
     const obtenerProducto = async () => {
       if (id) {
         let res = await obtenerItem(id)
-        
-        // console.log("res: " + res); // BORRAR
-        
+                
         if(res.error) {
           setProducto(productoDefault); 
           setError(res.error);
