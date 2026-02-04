@@ -1,23 +1,16 @@
-import { useEffect, useState } from 'react';
 import { DeleteIcon, EditIcon, ViewIcon } from '../../icons';
-import { CargandoT, ListaVaciaT, ErrorMensaje } from '../shared/textosComponent';
+import { CargandoT, ListaVaciaT, ErrorMensajeT } from '../shared/textosComponent';
 import '../shared/tablas.css'
 
 const thProductos = ["Código", "Producto", "Descripción", "Categoría", "Stock", "Precio"]; // GUI
 
 export function TablaProductos ({itemsManage, setIdProducto}) {
-  const {items, eliminar} = itemsManage;
-  const [error, setError] = useState();
+  const {items, loading, error, eliminar} = itemsManage;
 
-  useEffect(() => {
-    if (items.error){
-      setError(items.error);
-    }
-  }, [items]);
-
-  function Contenido() {
+  function Contenido({lista}) {
+    if (error || lista.length === 0 || !lista) return <ListaVaciaT />;
     return (
-      items.map((item, i) => {
+      lista.map((item, i) => {
         const { idPublica, nombre, descripcion, categoria, cantidad, precio } = item;
 
         return (
@@ -39,7 +32,7 @@ export function TablaProductos ({itemsManage, setIdProducto}) {
     )
   }
 
-  const Tabla = () => {
+  // function Tabla(){
     return (
       <table className="tablaList">
         <thead>
@@ -47,17 +40,18 @@ export function TablaProductos ({itemsManage, setIdProducto}) {
         </thead>
         <tbody>
           {
-            itemsManage.loading 
+            loading 
               ? <CargandoT />
-              : ( error || items.length === 0 ) ? <ListaVaciaT /> : <Contenido />
+              : ( error ) 
+                ? <ErrorMensajeT msg={error} />
+                : <Contenido lista={items} />
           }
         </tbody>
       </table>
     )
-  }
-
+  // }
   
-  return <> { error ? <ErrorMensaje msg={"Error al conectar con la base de datos."} /> : <Tabla />} </>
+  // return <> { items.error ? "": <Tabla />} </>
 }
 
 // TODO: ver info completa

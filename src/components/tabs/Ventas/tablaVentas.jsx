@@ -1,23 +1,16 @@
-import { useEffect, useState } from 'react';
 import { DeleteIcon, EditIcon, ViewIcon } from '../../icons';
-import { CargandoT, ListaVaciaT, ErrorMensaje } from '../shared/textosComponent';
+import { CargandoT, ListaVaciaT, ErrorMensajeT } from '../shared/textosComponent';
 import '../shared/tablas.css'
 
 const thVentas = ["Código", "Cliente", "Productos", "Fecha", "Total"]; // GUI
 
 export function TablaVentas ({itemsManage}) {
-  const {items/* , eliminar */} = itemsManage;
-  const [error, setError] = useState();
+  const {items, loading, error/* , eliminar */} = itemsManage;
 
-  useEffect(() => {
-    if (items.error){
-      setError(items.error);
-    }
-  }, [items]);
-
-  function Contenido(){
+  function Contenido({lista}){
+    if (error || lista.length === 0 || !lista) return <ListaVaciaT />;
     return (
-      items.map((item, i) => {
+      lista.map((item, i) => {
         const { numero, cliente, detalle, fechaVenta, productos } = item;
 
         const fechaV = String(fechaVenta).slice(0, 10);
@@ -39,7 +32,7 @@ export function TablaVentas ({itemsManage}) {
     )
   }
   
-  const Tabla = () => {
+  // const Tabla = () => {
     return (
       <table className="tablaList">
         <thead>
@@ -47,21 +40,23 @@ export function TablaVentas ({itemsManage}) {
         </thead>
         <tbody>
           {
-            itemsManage.loading 
+            loading 
               ? <CargandoT />
-              : ( error || items.length === 0 ) ? <ListaVaciaT /> : <Contenido />
+              : ( error ) 
+                ? <ErrorMensajeT msg={error} />
+                : <Contenido lista={items} />
           }
         </tbody>
       </table>
     )
-  }
+  // }
   
-  return <> { error ? <ErrorMensaje msg={"Error al conectar con la base de datos."} /> : <Tabla />} </>
+  // return <> { error ? <ErrorMensaje msg={"Error al conectar con la base de datos."} /> : <Tabla />} </>
 }
 
 
 
 // TODO: 
-//* REF: combinar productos + ventas, exportando solo <tbody>
+//* REF: combinar productos + ventas, exportando solo <tbody> (reutilizar código)
 //* Feat: ver info completa
 

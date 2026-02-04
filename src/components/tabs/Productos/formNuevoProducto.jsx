@@ -1,5 +1,5 @@
 import '../shared/formNueva.css';
-import { useItems } from '../../useItems';
+import { useItems } from '../../../Hooks/useItems';
 import { productosAPI } from "../../../services/apiClient";
 import { NuevoProducto } from './nuevoProducto';
 import { useState } from 'react';

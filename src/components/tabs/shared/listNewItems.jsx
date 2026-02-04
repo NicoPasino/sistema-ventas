@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { productosAPI as itemsDB } from '../../../services/apiClient';
-import { useItems } from "../../useItems";
+import { useItems } from '../../../Hooks/useItems';
 import { NewIcon, CancelIcon } from '../../icons';
 
 export function ListNewItems({newItemsState, tipo}) {

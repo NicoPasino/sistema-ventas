@@ -1,7 +1,7 @@
 import '../shared/formNueva.css';
 import { useState } from 'react';
 import { NuevaVenta } from './nuevaVenta';
-import { useItems } from '../../useItems';
+import { useItems } from '../../../Hooks/useItems';
 import { ventasAPI as itemsDB } from "../../../services/apiClient";
 import ApiResponsePopup from '../../shared/ApiResponsePopup';
 

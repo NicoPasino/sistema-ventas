@@ -1,5 +1,5 @@
 import { ventasAPI as itemsDB } from "../../../services/apiClient";
-import { useItems } from "../../useItems";
+import { useItems } from '../../../Hooks/useItems';
 import { FormSearch } from "../shared/formSearch";
 import { FormNuevaVenta } from "./formNuevaVenta";
 import { TablaVentas } from "./tablaVentas";

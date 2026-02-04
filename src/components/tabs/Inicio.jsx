@@ -26,8 +26,8 @@ export default function Inicio() {
         <TarjetaBlanca title="📉 Productos con poco stock" footer={"Productos"}>
           { 
             (productos.loading) ? <Cargando />
-            : (productos.items.error)
-              ? <ErrorMensaje msg={productos.items.error}/>
+            : (productos.error)
+              ? <ErrorMensaje msg={productos.error}/>
               : <BajoStock lista={productos.items}/>
           }
         </TarjetaBlanca>
@@ -36,8 +36,8 @@ export default function Inicio() {
           { 
             (clientes.loading)
             ? <Cargando />
-            : (productos.items.error)
-              ? <ErrorMensaje msg={productos.items.error}/>
+            : (productos.error)
+              ? <ErrorMensaje msg={productos.error}/>
               : <TopClientes lista={clientes.items}/>
           }
         </TarjetaBlanca>

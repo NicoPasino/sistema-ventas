@@ -5,11 +5,26 @@ import { useEffect, useState } from "react";
 export function useItems({itemsDB}) {
   const [ items, setItems ] = useState([]);
   const [ loading, setLoading ] = useState(true);
+  const [ error, setError ] = useState(false);
   
-  const recargarItems = async (items) => {
+  const recargarItems = async (itemsDBArg) => {
     setLoading(true);
-    setItems(await items.obtenerTodos());
-    setLoading(false);
+    try {
+      const res = await itemsDBArg.obtenerTodos();
+
+      if (res?.error) setError(res.error);
+      else if (res?.message) setError(res.message);
+
+      setItems(Array.isArray(res) ? res : []);
+
+      // setItems([]); // TODO: borrarrrrrrrrrrrrrrrrrrrrrr
+      setLoading(false);
+    } catch (err) {
+      setError(err?.message || String(err));
+      setItems([]);
+    } finally {
+      setLoading(false);
+    }
   }
 
   useEffect(() => {
@@ -45,5 +60,5 @@ export function useItems({itemsDB}) {
     setItems(await itemsDB.buscarPorCampo(campo, valor));
   }
 
-  return { items, agregar, actualizar, obtenerItem, eliminar, recargarItems, buscarItems, loading }
+  return { items, agregar, actualizar, obtenerItem, eliminar, recargarItems, buscarItems, loading, error }
 }

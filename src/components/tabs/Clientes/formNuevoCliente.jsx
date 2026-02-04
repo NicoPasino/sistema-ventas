@@ -1,5 +1,5 @@
 import ApiResponsePopup from '../../shared/ApiResponsePopup';
-import { useItems } from '../../useItems';
+import { useItems } from '../../../Hooks/useItems';
 import { useState } from 'react';
 import { clientesAPI as itemsDB } from "../../../services/apiClient";
 import { NuevoCliente } from './nuevoCliente';

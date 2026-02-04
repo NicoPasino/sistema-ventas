@@ -6,3 +6,4 @@ export function ListaVaciaT(){ return <tr><td colSpan={20}><Cargando /></td></tr
 
 
 export function ErrorMensaje({msg = "Error."}){ return <p className='colorRojoClaro'>{msg}</p> };
+export function ErrorMensajeT({msg = "Error."}){ return <tr><td colSpan={20}><p className='colorRojoClaro'>{msg}</p></td></tr> };
