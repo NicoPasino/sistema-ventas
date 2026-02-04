@@ -6,7 +6,7 @@ export function TablaClientes ({itemsManage, setIdProducto}) {
   const {items, loading, error, eliminar} = itemsManage;
 
   function Contenido({lista}) {
-    if (error || lista.length === 0 || !lista) return <ListaVaciaT />;
+    if (!lista || lista.length === 0) return <ListaVaciaT />;
     return (
       items.map((item, i) => {
         const { nombre, correo, documento } = item;
@@ -23,24 +23,20 @@ export function TablaClientes ({itemsManage, setIdProducto}) {
     )
   }
   
-  // const Tabla = () => {
-    return (
-      <table className="tablaList">
-        <thead>
-          <tr><th></th><th>Nombre</th><th>Correo</th><th>Documento</th></tr>
-        </thead>
-        <tbody>
-          {
-            loading 
-              ? <CargandoT />
-              : ( error ) 
-                ? <ErrorMensajeT msg={error} />
-                : <Contenido lista={items} />
-          }
-        </tbody>
-      </table>
-    )
-  // }
-  
-  // return <> { error ? <ErrorMensaje msg={"Error al conectar con la base de datos."} /> : <Tabla />} </>
+  return (
+    <table className="tablaList">
+      <thead>
+        <tr><th></th><th>Nombre</th><th>Correo</th><th>Documento</th></tr>
+      </thead>
+      <tbody>
+        {
+          loading 
+            ? <CargandoT />
+            : ( error ) 
+              ? <ErrorMensajeT msg={error} />
+              : <Contenido lista={items} />
+        }
+      </tbody>
+    </table>
+  )
 }

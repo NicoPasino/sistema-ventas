@@ -17,8 +17,6 @@ export function useItems({itemsDB}) {
 
       setItems(Array.isArray(res) ? res : []);
 
-      // setItems([]); // TODO: borrarrrrrrrrrrrrrrrrrrrrrr
-      setLoading(false);
     } catch (err) {
       setError(err?.message || String(err));
       setItems([]);

@@ -50,7 +50,7 @@ export default function Inicio() {
   )
 }
 
-function BajoStock({lista}){
+function BajoStock({ lista }){
   if (!lista) return <ListaVacia />
   else return (
     <ul>
@@ -66,12 +66,13 @@ function BajoStock({lista}){
 }
 
 function TopClientes({ lista }) {
+  if (!lista) return <ListaVacia />
+
   const topClientes = [...lista]
     .sort((a, b) => b.nroCompras - a.nroCompras)
     .slice(0, 7);
 
-  if (!lista) return <ListaVacia />
-  else return (
+  return (
     <ul>
       {topClientes.map((cliente, index) => {
         if(cliente.nroCompras > 0){

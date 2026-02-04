@@ -8,7 +8,8 @@ export function TablaProductos ({itemsManage, setIdProducto}) {
   const {items, loading, error, eliminar} = itemsManage;
 
   function Contenido({lista}) {
-    if (error || lista.length === 0 || !lista) return <ListaVaciaT />;
+    if (!lista || lista.length == 0) return <ListaVaciaT />;
+
     return (
       lista.map((item, i) => {
         const { idPublica, nombre, descripcion, categoria, cantidad, precio } = item;
@@ -32,26 +33,22 @@ export function TablaProductos ({itemsManage, setIdProducto}) {
     )
   }
 
-  // function Tabla(){
-    return (
-      <table className="tablaList">
-        <thead>
-          <tr>{thProductos.map((e, i) => <th key={i}>{e}</th>)}<th>Acciones</th></tr>
-        </thead>
-        <tbody>
-          {
-            loading 
-              ? <CargandoT />
-              : ( error ) 
-                ? <ErrorMensajeT msg={error} />
-                : <Contenido lista={items} />
-          }
-        </tbody>
-      </table>
-    )
-  // }
-  
-  // return <> { items.error ? "": <Tabla />} </>
+  return (
+    <table className="tablaList">
+      <thead>
+        <tr>{thProductos.map((e, i) => <th key={i}>{e}</th>)}<th>Acciones</th></tr>
+      </thead>
+      <tbody>
+        {
+          loading 
+            ? <CargandoT />
+            : ( error ) 
+              ? <ErrorMensajeT msg={error} />
+              : <Contenido lista={items} setIdProducto={setIdProducto} eliminar={eliminar} />
+        }
+      </tbody>
+    </table>
+  )
 }
 
 // TODO: ver info completa
