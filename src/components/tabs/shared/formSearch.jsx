@@ -7,34 +7,51 @@ export function FormSearch({itemsManage, tipo, itemsDB}) {
   const { handleTab } = useContext(UserSettingsContext);
   const { recargarItems, buscarItems } = itemsManage;
 
-  const idSearchRef = useRef();
-  const nameSearchRef = useRef();
+  const numeroSearchRef = useRef();
+  const nombreSearchRef = useRef();
+  // const otroSearchRef = useRef();
+
+  const placeholderNumero = `Buscar por ${tipo == "Cliente" ? "Documento" : "Código"}`;
+  const placeholderNombre = `Buscar por ${tipo == "Producto" ? "Producto" : "Nombre"}`;
+  // const placeholderOtro = "Buscar Otro";
 
   function handleReload() {
-    idSearchRef.current.value = "";
-    nameSearchRef.current.value = "";
+    numeroSearchRef.current.value = "";
+    nombreSearchRef.current.value = "";
+    // otroSearchRef.current.value = "";
     recargarItems(itemsDB);
   }
   function handleSearch(campo) {
-    if (campo === "id") {
-      const valor = idSearchRef.current.value;
-      buscarItems("ID", valor);
+    const valorNumero = numeroSearchRef.current.value ?? "";
+    const valorNombre = nombreSearchRef.current.value ?? "";
+    // const valorOtro = otroSearchRef.current.value ?? "";
+
+    switch (campo) {
+      case "numero":
+        if (!valorNumero) return
+        buscarItems("numero", valorNumero);
+        break;
+      case "nombre":
+        if (!valorNombre) return
+        buscarItems("nombre", valorNombre);
+        break;
+      /* case "otro":
+        if (!valorOtro) return
+        buscarItems("otro", valorOtro);
+        break; */
+      default:
+        console.log(`Campo '${campo}' no soportado. (handleSearch)`);
+        break;
     }
-    else if (campo === "name"){
-      const valor = nameSearchRef.current.value;
-      if (tipo == "Venta") {
-        buscarItems("Cliente", valor);
-      }
-      else if (tipo == "Producto") {
-        buscarItems("Producto", valor);
-      }
-      else {
-        console.log("tipo no válido. (handleSearch)");
-      }
-    }
-    else {
-      console.log("campo no válido. (handleSearch)");
-    }
+  }
+
+  function ButtonSearch({ref, placeholder, campo, isNumber = false}) {
+    return (
+      <div className="form-group">
+        <input type={isNumber? "number" : "text"} className='input' ref={ref} placeholder={placeholder} autoComplete="off"/>
+        <button style={{padding: 0}} title={placeholder} onClick={() => handleSearch(campo)}>{<SearchIcon />}</button>
+      </div>
+    )
   }
   
   return (
@@ -43,14 +60,9 @@ export function FormSearch({itemsManage, tipo, itemsDB}) {
         <button style={{padding: 0}} title="Recargar Todo" onClick={() => handleReload()}> <ReloadIcon /> </button>
       </div>
       <div className="prodHeadMid">
-        <div className="form-group">
-          <input type="number" className='inputM' ref={idSearchRef} placeholder="Buscar ID" autoComplete="off"/>
-          <button style={{padding: 0}} title="Buscar por ID" onClick={() => handleSearch("id")}>{<SearchIcon />}</button>
-        </div>
-        <div className="form-group">
-          <input type="text" className='input' ref={nameSearchRef} placeholder="Buscar por nombre" autoComplete='off'/>
-          <button style={{padding: 0}} title="Buscar por Nombre" onClick={() => handleSearch("name")}>{<SearchIcon />}</button>
-        </div>
+        <ButtonSearch ref={numeroSearchRef} placeholder={placeholderNumero} campo="numero"/>
+        <ButtonSearch ref={nombreSearchRef} placeholder={placeholderNombre} campo="nombre"/>
+        {/* <ButtonSearch ref={otroSearchRef} placeholder={placeholderOtro} campo="otro"/> */}
       </div>
       <div className="prodHeadR">
         <button onClick={() => handleTab(tipo)} className="colorVerdeClaro">+ Nuevo</button>
@@ -58,3 +70,5 @@ export function FormSearch({itemsManage, tipo, itemsDB}) {
     </div>
   )
 }
+
+//TODO: si hay error queda todo en blanco, poner una alerta ()
