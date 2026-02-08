@@ -5,11 +5,17 @@ import { UserSettingsContext } from '../userSettingsContext.jsx';
 
 export function Nav() {
   const {getTab, handleTab} = useContext(UserSettingsContext)
-  // const {currentTab, handleTab} = tab
+
+  function handleTabClick(name, disabled){
+    if (!disabled) handleTab(name);
+  }
     
-  function Tab ({name, children}) {
+  function Tab ({name, children, disabled = false}) {
+    const styleCurrentTab = (getTab === name ? 'currentTab': '');
+    const styleDisabled = (disabled ? 'disabled' : '');
+
     return (
-      <li className={getTab === name ? 'currentTab': ''} onClick={() => handleTab(name)}>
+      <li className={`${styleCurrentTab} ${styleDisabled}`} onClick={() => handleTabClick(name, disabled)}>
         {children}
         {name}
       </li>
@@ -34,7 +40,7 @@ export function Nav() {
         </dt>
         <dd>
           <Tab name={"Producto"}> <NewIcon /> </Tab>
-          <Tab name={"Proveedores"}> <ProveedoresIcon /> </Tab>
+          <Tab name={"Proveedores"} disabled> <ProveedoresIcon /> </Tab>
         </dd>
 
         {/* Ventas */}
@@ -48,7 +54,7 @@ export function Nav() {
 
         {/* Reportes */}
         <dt>
-          <Tab name={"Reportes"}> <ReportesIcon /> </Tab>
+          <Tab name={"Reportes"} disabled> <ReportesIcon /> </Tab>
         </dt>
       </dl>
     </div>

@@ -1,8 +1,8 @@
 button {
-  padding: 8px;
+  padding: 5px;
   cursor: pointer;
 }
-svg { height: 28px; }
+svg { height: 25px; }
 .productosHeader {
   display: flex;
   justify-content: space-between;

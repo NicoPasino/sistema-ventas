@@ -32,7 +32,7 @@
   list-style-type: none; 
   padding-inline: 15px;
   margin-block: 5px;
-  height: 40px;
+  height: 35px;
 
   display: flex;
   justify-content: left;
@@ -59,10 +59,11 @@
   margin-left: 15px; 
 }
 .nav dd li{
-  height: 30px;
+  height: 25px;
   /* padding: 0; */
 }
 
-.disabled{
-  color: gray;
+.disabled, .nav li.disabled:hover {
+  color: gray !important;
+  cursor: default !important;
 }
