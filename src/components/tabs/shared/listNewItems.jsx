@@ -5,11 +5,10 @@ import { NewIcon, CancelIcon } from '../../icons';
 
 export function ListNewItems({newItemsState, tipo}) {
   const { newItems, setNewItems } = newItemsState;
-  const { items } = useItems({itemsDB}); // productosDB as itemsDB
+  const { items, loading, error } = useItems({itemsDB}); // productosDB as itemsDB
   const [total, setTotal] = useState(0);
 
   const inputIDRef = useRef();
-  const inputProdRef = useRef();
   const inputCantRef = useRef();
 
   const getProducto = (id) => {
@@ -18,31 +17,22 @@ export function ListNewItems({newItemsState, tipo}) {
 
   useEffect(() => { // (Cambiar el Total al agregar Productos)
     const cantTotal = newItems.reduce((acc, producto) => acc + producto.total, 0);
-    setTotal(cantTotal);
+    setTotal(cantTotal.toFixed(2));
   }, [newItems]);
 
-  // click ID
-  function handleChangeIdProducto() {
-    // TODO:
-    const resProducto = getProducto(inputIDRef.current.value);
-
-    if (!resProducto) {
-      inputProdRef.current.value = "";
-      inputProdRef.current.placeholder = "Producto No encontrado!.";
-      return 
-    }
-
-    inputProdRef.current.value = resProducto.nombre; // (esto cambia el "Nombre del producto")
+  // (Al cambiar ID)
+  function handleChangeIdProducto(evento) {
+    inputIDRef.current = evento.target.value;
   }
 
   function handleNewItemForm() {
-    const ref_idProducto = inputIDRef.current.value;
+    const ref_idProducto = inputIDRef.current;
     const ref_cantidad = inputCantRef.current.value;
     const productoObj = getProducto(ref_idProducto);
     
     let mensajeError = "";
     if (!ref_idProducto || !ref_cantidad) {
-      mensajeError = "Ingrese el ID y Cantidad del producto.";
+      mensajeError = "Seleccione un producto antes de agregar a la lista.";
     }
     else if (!productoObj) {
       mensajeError = `El Producto con id: ${ref_idProducto}, no se encontró.`;
@@ -57,29 +47,46 @@ export function ListNewItems({newItemsState, tipo}) {
     }
     setNewItems([...newItems, newData ]);
     
-    inputIDRef.current.value = 0;
-    inputProdRef.current.value = "";
+    inputIDRef.current = "";
     inputCantRef.current.value = 1;
   }
   function handleDelItem (id) {
     setNewItems(newItems.filter((e) => e.keyId !== id));
   }
-    
-  // componente NuevoItemForm
-  function NuevoItemForm ({producto, cantidad}) {
+
+  function ListaProductos() {
+    if (!items) return <input value={"(La lista está vacia)"} disabled/>
     return (
-      <div className='group flexSeparados' style={{backgroundColor: "#222", width: "100%"}}>
-        <span><b>ID</b>: {producto.idPublica}</span>
-        <span className="w50"><b>Producto</b>: {producto.nombre}</span>
-        <span><b>Cant</b>: x{cantidad}</span>
-        {tipo === "Venta" && <span><b>Total</b>: ${producto.precio * cantidad}</span>}
-      </div>
+      <select id="ListaProductos" disabled={loading} onChange={handleChangeIdProducto}>
+        <option value="">Seleccione un Producto</option>
+        {items.map((e, i) => ( <option key={i} value={e.idPublica}>{e.nombre}</option> ))}
+      </select>
     )
   }
-
+  
   return (
     <fieldset>
       <legend>Productos</legend>
+      {/* Buscar Producto */}
+      <div className='flex'>
+        <div className='group flexSeparados'>
+          <div>            
+            <label htmlFor="ListaProductos">Producto:</label>
+            {
+              (loading) ? <input value={"Cargando Productos..."} disabled/>
+                : (error) 
+                  ? <input value={"Error al cargar Productos."} disabled/>
+                  : <ListaProductos/>
+            }
+
+            <label htmlFor="cantidadProducto">Cantidad:</label>
+            <input className='inputXS' ref={inputCantRef} type="number" id="cantidadProducto" defaultValue={1} min={1}/>
+          </div>
+        </div>
+        <i className='btnSvg btnVerde' onClick={(e) => handleNewItemForm(e)} > <NewIcon /> </i>
+      </div>
+      
+      {/* Productos Agregados */}
       <div>
         {newItems.map((element, i) => (
           <div className='flex' key={i}>
@@ -89,24 +96,19 @@ export function ListNewItems({newItemsState, tipo}) {
         ))}
       </div>
       
-      {/* buscar item */}
-      <div className='flex'>
-        <div className='group flexSeparados'>
-          <div>
-            <label htmlFor="idProducto">ID:</label>
-            <input className='inputS' ref={inputIDRef} type="number" id="idProducto" defaultValue={0} step="1" onChange={handleChangeIdProducto}/>
-
-            <label htmlFor="nombreProducto">Nombre:</label>
-            <input ref={inputProdRef} type="text" id="nombreProducto" placeholder={"Nombre del Producto"} />
-            
-            <label htmlFor="cantidadProducto">Cantidad:</label>
-            <input className='inputXS' ref={inputCantRef} type="number" id="cantidadProducto" defaultValue="1" min="1"/>
-          </div>
-        </div>
-        <i className='btnSvg btnVerde' onClick={(e) => handleNewItemForm(e)} > <NewIcon /> </i>
-      </div>
-      
       {tipo === "Venta" && <span><b>Total</b>: $ {total}</span>}
     </fieldset>
+  )
+}
+
+// componente
+function NuevoItemForm ({producto, cantidad}) {
+  return (
+    <div className='group flexSeparados' style={{backgroundColor: "#222", width: "100%"}}>
+      <span><b>ID</b>: {producto.idPublica}</span>
+      <span className="w50"><b>Producto</b>: {producto.nombre}</span>
+      <span><b>Cant</b>: x{cantidad}</span>
+      <span><b>Total</b>: ${producto.precio * cantidad}</span>
+    </div>
   )
 }

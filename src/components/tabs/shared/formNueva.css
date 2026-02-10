@@ -40,7 +40,7 @@
   display: inline;
   margin-right: 5px;
 }
-.group input { 
+.group input, .group select { 
   margin-right: 25px;
   margin-bottom: 0;
 }
