@@ -1,21 +1,21 @@
-import { ventasAPI as itemsDB } from "../../../services/apiClient";
-import { useItems } from '../../../Hooks/useItems';
+import { useContext } from "react";
+import { DataContext } from "../../../context/DataContext";
 import { FormSearch } from "../shared/formSearch";
 import { FormNuevaVenta } from "./formNuevaVenta";
 import { TablaGenerica } from '../tablaGenerica';
 import { Contenido } from './ContenidoTabla';
 
 export default function Ventas() {
-  const itemsManage = useItems({itemsDB}); // ventasDB as itemsDB
-  const {items} = itemsManage;
+  const { ventas } = useContext(DataContext);
+  const { items } = ventas;
 
   const tableHeaders = ["Código", "Cliente", "Productos", "Fecha", "Total"];
 
   return (
     <div className="ventas">
-      <FormSearch tipo={"Venta"} itemsManage={itemsManage} itemsDB={itemsDB} />
+      <FormSearch tipo={"Venta"} itemsManage={ventas} />
       <TablaGenerica 
-        itemsManage={itemsManage} 
+        itemsManage={ventas} 
         headers={tableHeaders}
         Contenido={<Contenido lista={items} />}
       />

@@ -1,11 +1,11 @@
-import { useEffect, useRef, useState } from 'react';
-import { productosAPI as itemsDB } from '../../../services/apiClient';
-import { useItems } from '../../../Hooks/useItems';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { NewIcon, CancelIcon } from '../../icons';
+import { DataContext } from '../../../context/DataContext';
 
 export function ListNewItems({newItemsState, tipo}) {
   const { newItems, setNewItems } = newItemsState;
-  const { items, loading, error } = useItems({itemsDB}); // productosDB as itemsDB
+  const { productos } = useContext(DataContext);
+  const { items, loading, error } = productos;
   const [total, setTotal] = useState(0);
 
   const inputIDRef = useRef();
@@ -70,7 +70,7 @@ export function ListNewItems({newItemsState, tipo}) {
       {/* Buscar Producto */}
       <div className='flex'>
         <div className='group flexSeparados'>
-          <div>            
+          <div>
             <label htmlFor="ListaProductos">Producto:</label>
             {
               (loading) ? <input value={"Cargando Productos..."} disabled/>

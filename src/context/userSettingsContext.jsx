@@ -1,5 +1,5 @@
 import { createContext, useEffect, useState } from 'react'
-import { userSettings } from './userSettings';
+import { userSettings } from '../Hooks/userSettings';
 
 // Crear el Contexto (usar en cuarquier arhivo)
 export const UserSettingsContext = createContext() // singleton (solo se crea una vez)

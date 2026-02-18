@@ -1,5 +1,5 @@
 import { useContext } from 'react'
-import { UserSettingsContext } from '../userSettingsContext.jsx'
+import { UserSettingsContext } from '../context/userSettingsContext.jsx'
 import './header.css'
 import { MenuIcon } from './icons'
 

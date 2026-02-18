@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 import { HomeIcon, ClientesIcon, ProductosIcon, VentasIcon, ReportesIcon, NewIcon, ProveedoresIcon } from './icons';
 import './nav.css'
-import { UserSettingsContext } from '../userSettingsContext.jsx';
+import { UserSettingsContext } from '../context/userSettingsContext.jsx';
 
 export function Nav() {
   const {getTab, handleTab} = useContext(UserSettingsContext)

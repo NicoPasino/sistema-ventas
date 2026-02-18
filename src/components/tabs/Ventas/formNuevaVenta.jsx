@@ -1,12 +1,12 @@
 import '../shared/formNueva.css';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { NuevaVenta } from './nuevaVenta';
-import { useItems } from '../../../Hooks/useItems';
-import { ventasAPI as itemsDB } from "../../../services/apiClient";
 import ApiResponsePopup from '../../shared/ApiResponsePopup';
+import { DataContext } from '../../../context/DataContext';
 
 export function FormNuevaVenta() {
-  const { agregar } = useItems({itemsDB}); // ventasDB
+  const { ventas } = useContext(DataContext);
+  const { agregar } = ventas;
   const [newItems, setNewItems] = useState([]);  
   const [apiResponse, setApiResponse] = useState(null);
   
@@ -47,9 +47,4 @@ export function FormNuevaVenta() {
   )
 }
 
-
-// TODO:
-
-//* GuardarLocalmente Lista de productos + al sumar +1 que sea el ID primero de la lista (1001)
-//* Agregar solo un botón + para agregar el primer item?
-//* Avisar (si el item para agregar no fue agregado)
+// TODO: Agregar solo un botón "+" para agregar el primer item?

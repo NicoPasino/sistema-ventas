@@ -31,7 +31,7 @@ export function FormNuevoCliente({id, setIdProducto, reload}) {
         return;
       }
       else if(res.ok){
-        reload(itemsDB);
+        reload(); // TODO: 
         event.target.reset();
       }
     }

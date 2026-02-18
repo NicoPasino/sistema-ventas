@@ -1,6 +1,9 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { DataContext } from "../../../context/DataContext";
 
 export function NuevoProducto({obtenerItem, id}) {
+  const { productos } = useContext(DataContext);
+  const { categorias, loading } = productos;
   const [producto, setProducto] = useState(productoDefault);
   const {nombre, activo, cantidad, precio, idCategoria, descripcion} = producto /* || productoDefault */
   const [error, setError] = useState(null);
@@ -24,6 +27,16 @@ export function NuevoProducto({obtenerItem, id}) {
   },[id, obtenerItem])
 
   
+  function ListaCategorias({lista}) {
+    if (!lista) return <input value={"(Sin categorías)"} disabled/>
+    return (
+      <select id="ListaCategorias" name="IdCategoria" defaultValue={idCategoria ?? ""} disabled={loading} required>
+        <option value="">Seleccione una categoría</option>
+        {lista.map((e, i) => ( <option key={i} value={e.id}>{e.nombre}</option> ))}
+      </select>
+    )
+  }
+  
   const Contenido = () => {
     return (
       <>
@@ -46,8 +59,15 @@ export function NuevoProducto({obtenerItem, id}) {
           $<input className='inputS' type="number" name="Precio" defaultValue={precio} min="1" step={0.01} required />
           
         </div>
-        <label>ID Categoría:</label>
-        <input className='inputS' type="number" name="IdCategoria" defaultValue={idCategoria} min="1" required />
+        
+        <label htmlFor="ListaCategorias">Categoría:</label>
+        {
+          (loading) ? <input value={"Cargando Categorías..."} disabled/>
+            : (error) 
+              ? <input value={"Error al cargar Categorías."} disabled/>
+              : <ListaCategorias lista={categorias}/>
+        }
+
 
         <hr />
 

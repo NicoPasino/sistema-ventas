@@ -1,3 +1,4 @@
+import { GrayDisplay, MoneyDisplay } from '../../../utils/displayConvert';
 import { ListaVaciaT } from '../shared/textosComponent';
 
 export function Contenido({lista}) {
@@ -15,11 +16,11 @@ export function Contenido({lista}) {
       const totalCalculado = listaProductos.reduce((total, p) => total + (p.subTotal || 0), 0);
       return (
         <tr key={i}>
-          <td className='tablaColID'>        {numero} </td>
+          <td className='tablaColID'>        {GrayDisplay(numero)} </td>
           <td className='tablaColNombre'>    {cliente} </td>
           <td className='tablaColDetalles' title={detalle}>  {productosCantidad} </td>
           <td className='tablaColDetalles'>  {fechaV} </td>
-          <td className='tablaColPrecio'>  $ {totalCalculado.toFixed ? totalCalculado.toFixed(2) : totalCalculado} </td>
+          <td className='tablaColPrecio'>    {MoneyDisplay(totalCalculado)} </td>
         </tr>
       )
     })

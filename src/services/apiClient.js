@@ -1,45 +1,32 @@
 // Conección directa con API
-// Usa Vite env var `VITE_API_BASE_URL` o por defecto http://localhost:3000
 
-import ApiResponsePopup from '../components/shared/ApiResponsePopup.jsx';
+import ApiResponsePopup from '../components/shared/ApiResponsePopup.jsx'; // TODO: ?
+import { isDev } from '../config.js';
 
-const server = 'https://nicopasino.space/api/ventas';
-const local = 'https://localhost:7267/api/ventas';
-
-const BASE = import.meta.env.VITE_API_BASE_URL || local; // TODO:
+const url = isDev ? "localhost:7267" : "nicopasino.space";
+const BASE = `https://${url}/api/ventas`;
 
 async function request(path, options = {}) {
   return await fetch(`${BASE}${path}`, { headers: { 'Content-Type': 'application/json' }, ...options, })
-  .then( res => {    
-    if (res.error) { 
-      return {error: "Error al hacer la petición con el servidor."}
-    }
-    else if (res.status === 202 || res.status === 201) {
-      return {ok: true}
-    }
-    else if (res.status === 200) {
+  .then((res) => {
+    if (res.error) {
+      return { error: "Error al hacer la petición con el servidor." };
+    } else if (res.status === 202 || res.status === 201) {
+      return { ok: true };
+    } else if (res.status === 200) {
       let resJson = res.json();
-      // console.log(resJson);
       return resJson;
+    } else if (res.message || res.status === 400) {
+      return { message: res.message ?? "Error 400: Solicitud incorrecta." };
+    } else if (res.status === 404) {
+      return { error: "Error 404: Solicitud no encontrada." };
+    } else if (res.status === 500) {
+      return { error: "Error 500: Error desde el servidor." };
+    } else {
+      return { error: "Error: (Respuesta no controlada)." };
     }
-    else if (res.message || res.status === 400){
-      return {message: res.message ?? "Error 400: Solicitud incorrecta."};
-    }
-    else if (res.status === 404){
-      return {error: "Error 404: Solicitud no encontrada."};
-    }
-    else if (res.status === 500){
-      // console.log("entró en 500")
-      return {message: "Error 500: Error desde el servidor."};
-    }
-    else {
-      // console.log(res.error ?? res.message) // ELIMINAR
-      // console.log("Respuesta no controlada") // TODO
-      return {message: "Error: Al recibir la información (Respuesta no controlada)."}; // ELIMINAR
-    } 
   })
   .catch(() => {
-    // console.error("Error al conectar con la API del Servidor.");
     return {error: "Error al conectar con la API del Servidor."};
   })
 }
@@ -62,7 +49,6 @@ function buildCollection(name) {
 export const productosAPI = buildCollection('productos');
 export const ventasAPI = buildCollection('ventas');
 export const clientesAPI = buildCollection('clientes');
-export const reportesAPI = buildCollection('reportes'); // TODO:
-export const categoriasAPI = buildCollection('categorias'); // TODO: 
+export const categoriasAPI = buildCollection('categorias');
 
-export default { productosAPI, ventasAPI, reportesAPI };
+export default { productosAPI, ventasAPI, categoriasAPI };

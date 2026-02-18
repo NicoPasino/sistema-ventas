@@ -4,7 +4,7 @@ import Productos, { Producto } from "./Productos/Productos.jsx";
 import Ventas, { Venta } from "./Ventas/Ventas.jsx";
 import Reportes from "./Reportes";
 import { useContext } from "react";
-import { UserSettingsContext } from "../../userSettingsContext.jsx";
+import { UserSettingsContext } from "../../context/userSettingsContext.jsx";
 import Proveedores from "./Proveedores.jsx";
 
 const componentes = {

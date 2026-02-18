@@ -9,10 +9,9 @@ export function Contenido({lista}) {
 
       return (
         <tr key={i}>
-          <td className='tablaColID'>        {i} </td>
+          <td className='tablaColID'>    {documento} </td>
           <td className='tablaColNombre'>    {nombre} </td>
           <td className='tablaColDetalles'>  {correo} </td>
-          <td className='tablaColPrecio'>    {documento} </td>
         </tr>
       )
     })

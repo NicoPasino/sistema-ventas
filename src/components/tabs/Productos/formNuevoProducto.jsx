@@ -1,12 +1,12 @@
 import '../shared/formNueva.css';
-import { useItems } from '../../../Hooks/useItems';
-import { productosAPI } from "../../../services/apiClient";
+import { DataContext } from '../../../context/DataContext';
+import { useContext, useState } from 'react';
 import { NuevoProducto } from './nuevoProducto';
-import { useState } from 'react';
 import ApiResponsePopup from '../../shared/ApiResponsePopup';
 
-export function FormNuevoProducto({id, setIdProducto, reload}) {
-  const { agregar, actualizar, obtenerItem } = useItems({itemsDB: productosAPI});
+export function FormNuevoProducto({id, setIdProducto}) {
+  const { productos } = useContext(DataContext);
+  const { agregar, actualizar, obtenerItem, reloadItems } = productos;
   const [apiResponse, setApiResponse] = useState(null);
   
   async function submitHandler(event) {
@@ -15,6 +15,7 @@ export function FormNuevoProducto({id, setIdProducto, reload}) {
 
     convertirTipos(nuevoItem);
 
+    // TODO: 
     if (id) {
       // Update
       const nuevoDato = {...nuevoItem, IdPublica: id}
@@ -25,7 +26,7 @@ export function FormNuevoProducto({id, setIdProducto, reload}) {
       }
       else if(res.ok){
         setIdProducto();
-        reload(productosAPI);
+        reloadItems();
         event.target.reset();
       }
       
@@ -75,6 +76,7 @@ function convertirTipos(nuevoItem){
     nuevoItem.Precio =  nuevoItem.Precio || 0;
   }
   if (nuevoItem.IdCategoria !== undefined) {
-    nuevoItem.IdCategoria = Number(nuevoItem.IdCategoria) || 1;
+    const parsed = Number(nuevoItem.IdCategoria);
+    nuevoItem.IdCategoria = Number.isNaN(parsed) ? nuevoItem.IdCategoria : parsed;
   }
 }

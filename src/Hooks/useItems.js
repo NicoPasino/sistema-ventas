@@ -1,22 +1,41 @@
 import { useEffect, useState } from "react";
 
-// TODO: Manejo de error
-
-export function useItems({itemsDB}) {
+export function useItems({itemsDB, categoriasDB}) {
   const [ items, setItems ] = useState([]);
+  const [ categorias, setCategorias ] = useState([]);
   const [ loading, setLoading ] = useState(true);
   const [ error, setError ] = useState(false);
+  const [ mensaje, setMensaje ] = useState(false);
+  
+  function hayError(res) {
+    try {
+      if (res?.error) {
+        setError(res.error);
+        return true;
+      } else if (res?.message) {
+        setMensaje(res.message);
+        return true;
+      } else return false;
+    } catch {
+      setError("Error de código, al checkear la respuesta de la API.");
+      return true;
+    }
+  }
   
   const recargarItems = async (itemsDBArg) => {
     setLoading(true);
     try {
-      const res = await itemsDBArg.obtenerTodos();
+      // setTimeout(async () => {
+        const res = await itemsDBArg.obtenerTodos();
+        if (hayError(res)) return;
 
-      if (res?.error) setError(res.error);
-      else if (res?.message) setError(res.message);
+        setItems(Array.isArray(res) ? res : []);
 
-      setItems(Array.isArray(res) ? res : []);
-
+        if (!categoriasDB) return;
+        const categoriasRes = await categoriasDB.obtenerTodos();
+        if (hayError(categoriasRes)) return;
+        setCategorias(Array.isArray(categoriasRes) ? categoriasRes : []);
+      // }, 3000);
     } catch (err) {
       setError(err?.message || String(err));
       setItems([]);
@@ -52,11 +71,12 @@ export function useItems({itemsDB}) {
     recargarItems(itemsDB);
     return res;
   };
-
   
   const buscarItems = async (campo, valor) => {
     setItems(await itemsDB.buscarPorCampo(campo, valor));
   }
 
-  return { items, agregar, actualizar, obtenerItem, eliminar, recargarItems, buscarItems, loading, error }
+  const reloadItems = () => recargarItems(itemsDB);
+
+  return { items, agregar, actualizar, obtenerItem, eliminar, reloadItems, buscarItems, loading, error, mensaje, setMensaje, categorias }
 }

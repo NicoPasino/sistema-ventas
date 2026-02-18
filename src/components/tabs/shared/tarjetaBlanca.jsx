@@ -1,6 +1,6 @@
 import { useContext } from 'react'
 import './tarjetas.css'
-import { UserSettingsContext } from '../../../userSettingsContext'
+import { UserSettingsContext } from '../../../context/userSettingsContext'
 import { GoToIcon } from '../../icons';
 
 export function TarjetaBlanca ({title, text, children, footer}) {

@@ -1,11 +1,11 @@
 import './formSearch.css'
 import { useContext, useRef } from 'react';
 import { ReloadIcon, SearchIcon } from "../../icons";
-import { UserSettingsContext } from '../../../userSettingsContext';
+import { UserSettingsContext } from '../../../context/userSettingsContext';
 
-export function FormSearch({itemsManage, tipo, itemsDB}) {
+export function FormSearch({ itemsManage, tipo }) {
   const { handleTab } = useContext(UserSettingsContext);
-  const { recargarItems, buscarItems } = itemsManage;
+  const { reloadItems, buscarItems } = itemsManage;
 
   const numeroSearchRef = useRef();
   const nombreSearchRef = useRef();
@@ -19,7 +19,7 @@ export function FormSearch({itemsManage, tipo, itemsDB}) {
     numeroSearchRef.current.value = "";
     nombreSearchRef.current.value = "";
     // otroSearchRef.current.value = "";
-    recargarItems(itemsDB);
+    reloadItems();
   }
   function handleSearch(campo) {
     const valorNumero = numeroSearchRef.current.value ?? "";

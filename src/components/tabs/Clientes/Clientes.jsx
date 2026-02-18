@@ -1,30 +1,29 @@
-import { clientesAPI as itemsDB } from "../../../services/apiClient";
-import { useItems } from '../../../Hooks/useItems';
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { FormSearch } from '../shared/formSearch';
 import { FormNuevoCliente } from "./formNuevoCliente";
 import { TablaGenerica } from '../tablaGenerica';
 import { Contenido } from './ContenidoTabla';
+import { DataContext } from "../../../context/DataContext";
 
 
 export default function Clientes() {
-  const itemsManage = useItems({itemsDB}); // clientesAPI as itemsDB
-  const {items} = itemsManage;
+  const { clientes } = useContext(DataContext);
+  const { items } = clientes;
   const [idCliente, setIdCliente] = useState(); // editMode
   
-  const tableHeaders = ["", "Nombre", "Correo", "Documento"];
+  const tableHeaders = ["Documento", "Nombre", "Correo"];
 
   return (
     !idCliente ? 
       <div>
-        <FormSearch tipo={"Cliente"} itemsManage={itemsManage} itemsDB={itemsDB}/>
+        <FormSearch tipo={"Cliente"} itemsManage={clientes} />
         <TablaGenerica 
-          itemsManage={itemsManage} 
+          itemsManage={clientes} 
           headers={tableHeaders}
           Contenido={<Contenido lista={items} />}
         />
       </div>
-    : <FormNuevoCliente id={idCliente} setIdCliente={setIdCliente} reload={itemsManage.recargarItems}/>
+    : <FormNuevoCliente id={idCliente} setIdCliente={setIdCliente} reload={clientes.recargarItems}/> // sin uso
   )
 }
 
