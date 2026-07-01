@@ -4,16 +4,11 @@ import { useContext } from "react";
 import { getDate } from "../../utils/time/getDate";
 import { TarjetaBlanca } from "./shared/tarjetaBlanca";
 import { Cargando, ListaVacia, ErrorMensaje } from "./shared/textosComponent";
-// import { clientesAPI, ventasAPI, productosAPI } from "../../services/apiClient";
-// import { useItems } from "../../Hooks/useItems";
-
-const fecha = getDate();
 
 export default function Inicio() {
   const {getUser} = useContext(UserSettingsContext);
   const {productos, clientes} = useContext(DataContext);
-  // const productos = useItems({itemsDB: productosAPI});
-  // const clientes = useItems({itemsDB: clientesAPI});
+  const fecha = getDate();
 
   return (
     <>

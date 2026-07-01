@@ -13,7 +13,7 @@ export function MoneyDisplay(amount) {
     <span style={{ fontWeight: '600', fontSize: '1.1rem' }}>
       {parts[0]}
       <span style={{ fontSize: '0.6em', verticalAlign: 'super', marginLeft: '2px' }}>
-        ,{parts[1]}
+        {parts[1]}
       </span>
     </span>
   );

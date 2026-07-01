@@ -1,0 +1,128 @@
+.combobox {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+}
+
+.combobox-trigger {
+  width: 100%;
+  padding: 8px 12px;
+  background-color: #1a1a1a;
+  border: 1px solid #333;
+  border-radius: 6px;
+  color: #fff;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  text-align: left;
+  transition: border-color 0.2s, background-color 0.2s;
+}
+
+.combobox-trigger:hover:not(.disabled) {
+  border-color: #555;
+  background-color: #222;
+}
+
+.combobox-trigger.open {
+  border-color: #888;
+  border-radius: 6px 6px 0 0;
+}
+
+.combobox-trigger.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.combobox-value {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.combobox-arrow {
+  margin-left: 8px;
+  font-size: 10px;
+  color: #999;
+  transition: transform 0.2s;
+}
+
+.combobox-trigger.open .combobox-arrow {
+  transform: rotate(180deg);
+}
+
+.combobox-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background-color: #1a1a1a;
+  border: 1px solid #333;
+  border-top: none;
+  border-radius: 0 0 6px 6px;
+  z-index: 1000;
+  max-height: 250px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.combobox-filter {
+  width: 100%;
+  padding: 8px 12px;
+  background-color: #222;
+  border: none;
+  border-bottom: 1px solid #333;
+  color: #fff;
+  font-size: 13px;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.combobox-filter::placeholder {
+  color: #777;
+}
+
+.combobox-options {
+  overflow-y: auto;
+  max-height: 200px;
+}
+
+.combobox-option {
+  padding: 8px 12px;
+  cursor: pointer;
+  color: #ddd;
+  font-size: 14px;
+  transition: background-color 0.15s;
+}
+
+.combobox-option:hover,
+.combobox-option.highlighted {
+  background-color: #333;
+  color: #fff;
+}
+
+.combobox-empty {
+  padding: 12px;
+  color: #777;
+  text-align: center;
+  font-size: 13px;
+}
+
+.combobox-create-btn {
+  padding: 8px 12px;
+  background-color: #2d4a2d;
+  border: none;
+  border-top: 1px solid #333;
+  color: #7cfc7c;
+  font-size: 13px;
+  cursor: pointer;
+  text-align: left;
+  transition: background-color 0.15s;
+}
+
+.combobox-create-btn:hover {
+  background-color: #3a5c3a;
+}

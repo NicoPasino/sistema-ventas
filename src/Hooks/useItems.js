@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 
 export function useItems({itemsDB, categoriasDB}) {
   const [ items, setItems ] = useState([]);
+  const [ itemsOriginales, setItemsOriginales ] = useState([]);
   const [ categorias, setCategorias ] = useState([]);
   const [ loading, setLoading ] = useState(true);
   const [ error, setError ] = useState(false);
@@ -30,6 +31,7 @@ export function useItems({itemsDB, categoriasDB}) {
         if (hayError(res)) return;
 
         setItems(Array.isArray(res) ? res : []);
+        setItemsOriginales(Array.isArray(res) ? res : []);
 
         if (!categoriasDB) return;
         const categoriasRes = await categoriasDB.obtenerTodos();
@@ -76,7 +78,23 @@ export function useItems({itemsDB, categoriasDB}) {
     setItems(await itemsDB.buscarPorCampo(campo, valor));
   }
 
+  const filtrarItemsLocal = (valor) => {
+    if (!valor || valor.trim() === "") {
+      setItems(itemsOriginales);
+      return;
+    }
+    const valorLower = valor.toLowerCase().trim();
+    const filtrados = itemsOriginales.filter((item) => {
+      return Object.values(item).some((val) => {
+        if (val === null || val === undefined) return false;
+        if (Array.isArray(val)) return false;
+        return String(val).toLowerCase().includes(valorLower);
+      });
+    });
+    setItems(filtrados);
+  }
+
   const reloadItems = () => recargarItems(itemsDB);
 
-  return { items, agregar, actualizar, obtenerItem, eliminar, reloadItems, buscarItems, loading, error, mensaje, setMensaje, categorias }
+  return { items, agregar, actualizar, obtenerItem, eliminar, reloadItems, buscarItems, filtrarItemsLocal, loading, error, mensaje, setMensaje, categorias }
 }

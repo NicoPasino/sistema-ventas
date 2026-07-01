@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import './apiResponsePopup.css';
+import { Button } from './botones';
 
 // hecho con IA
 
@@ -39,7 +40,7 @@ export function ApiResponsePopup({ response, onClose }) {
         <header className="api-popup-header"><h3>{title}</h3></header>
         <div className="api-popup-body">{body}</div>
         <div className="api-popup-actions">
-          <button className="api-popup-close" onClick={onClose}>Cerrar</button>
+          <Button variant="primary" onClick={onClose}>Cerrar</Button>
         </div>
       </div>
     </div>

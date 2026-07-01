@@ -1,7 +1,7 @@
 import Inicio from "./Inicio";
 import Clientes from "./Clientes/Clientes.jsx";
-import Productos, { Producto } from "./Productos/Productos.jsx";
-import Ventas, { Venta } from "./Ventas/Ventas.jsx";
+import Productos from "./Productos/Productos.jsx";
+import Ventas, {Venta} from "./Ventas/Ventas.jsx";
 import Reportes from "./Reportes";
 import { useContext } from "react";
 import { UserSettingsContext } from "../../context/userSettingsContext.jsx";
@@ -11,9 +11,9 @@ const componentes = {
   Inicio: <Inicio />,
   Clientes: <Clientes />,
   Productos: <Productos />,
-  Producto: <Producto />,
-  Ventas: <Ventas />,
+  // Producto: <Producto />,
   Venta: <Venta />,
+  Ventas: <Ventas />,
   Proveedores: <Proveedores />,
   Reportes: <Reportes />,
   NotFound: <h1>Vista no encontrada</h1>

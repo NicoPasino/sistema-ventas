@@ -1,8 +1,10 @@
+@import "tailwindcss";
+
 /* TODO: responsivo */
 
 .formNueva{
-  background-color: #111;
-  padding: 25px;
+  /* background-color: #1115;
+  padding: 25px; */
   
   margin-bottom: 15px;
   border-radius: 10px;
@@ -23,7 +25,7 @@
 }
 .formNueva select {
   padding: 5px;
-  width: 150px;
+  /* width: 200px; */
 }
 
 .formNueva .group {
@@ -55,33 +57,6 @@ b {text-decoration: underline;}
   -o-border-radius: 15px;
 }
 
-.btnRojo { background-color: #311 !important; }
-.btnVerde { background-color: #131 !important; }
-.btnAzul { background-color: #115 !important; }
-.btnDisabled { background-color: #333 !important;}
-.btnDisabled:hover { cursor: no-drop !important; }
-
-.formNueva .btnSvg {
-  padding: 5px;
-  margin: 5px;
-  display: flex;
-  width: 30px;
-  height: 30px;
-  cursor: pointer;
-  background-color: #555;
-
-  border-radius: 5px;
-  -webkit-border-radius: 5px;
-  -moz-border-radius: 5px;
-  -ms-border-radius: 5px;
-  -o-border-radius: 5px;
-}
-.formNueva .btnSvg:hover {
-  filter: brightness(1.5);
-  -webkit-filter: brightness(1.5);
-}
-
-
 .inputXS, .wXS { width: 45px; }
 .inputS, .wS { width: 70px; }
 .inputM, .wM { width: 80px; }
@@ -102,24 +77,30 @@ input:read-only::-webkit-inner-spin-button { opacity: 0; }
   width: 100%;
   display: flex;
   justify-content: flex-end;
+  gap: 10px;
 }
-.submitBtns button {
-  border: solid 1px black;
-  padding: 10px;
-  margin-inline: 5px;
-  border-radius: 5px;
-  -webkit-border-radius: 5px;
-  -moz-border-radius: 5px;
-  -ms-border-radius: 5px;
-  -o-border-radius: 5px;
+.submitBtns .btn {
+  min-width: 100px;
 }
-.submitBtns button:hover {
-  border: solid 1px white;
-}
-.submitBtns button[type=reset] { background-color: var(--colorDanger); }
-.submitBtns button[type=submit] { background-color: var(--colorSuccess); }
 
-.asdasd{
-  background-color: red;
-  /* width: 50px; */
+.nuevoProducto {
+  background-color: #1115;
+  padding: 25px;
+  margin-bottom: 25px;
+  border-radius: 10px;
+}
+
+/* #ListaCategorias {
+  width: 200px;
+} */
+
+/* Flex layout for product selector */
+.flex-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.flex-row > .flex-1 {
+  flex: 1;
 }

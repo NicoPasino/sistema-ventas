@@ -1,32 +1,36 @@
 import { useContext, useState } from "react";
 import { FormSearch } from '../shared/formSearch';
-import { FormNuevoCliente } from "./formNuevoCliente";
+import { ModalEditarCliente } from "./modalEditarCliente";
 import { TablaGenerica } from '../tablaGenerica';
 import { Contenido } from './ContenidoTabla';
 import { DataContext } from "../../../context/DataContext";
-
 
 export default function Clientes() {
   const { clientes } = useContext(DataContext);
   const { items } = clientes;
   const [idCliente, setIdCliente] = useState(); // editMode
+  const [modalNew, setModalNew] = useState(false);
   
   const tableHeaders = ["Documento", "Nombre", "Correo"];
 
-  return (
-    !idCliente ? 
-      <div>
-        <FormSearch tipo={"Cliente"} itemsManage={clientes} />
-        <TablaGenerica 
-          itemsManage={clientes} 
-          headers={tableHeaders}
-          Contenido={<Contenido lista={items} />}
-        />
-      </div>
-    : <FormNuevoCliente id={idCliente} setIdCliente={setIdCliente} reload={clientes.recargarItems}/> // sin uso
-  )
-}
+  function handleCloseModal() {
+    setIdCliente();
+    setModalNew(false);
+  }
 
-export function Cliente() {
-  return <FormNuevoCliente />
+  return (
+    <div>
+      <FormSearch tipo={"Cliente"} itemsManage={clientes} newItemHandle={ () => setModalNew(true) } />
+      <TablaGenerica itemsManage={clientes} headers={tableHeaders} >
+        <Contenido lista={items} />
+      </TablaGenerica>
+      {(modalNew || idCliente) && (
+        <ModalEditarCliente 
+          id={idCliente} 
+          setIdCliente={handleCloseModal} 
+          reload={clientes.recargarItems}
+        />
+      )}
+    </div>
+  )
 }
