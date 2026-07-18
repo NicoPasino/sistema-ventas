@@ -1,26 +1,26 @@
 import '../shared/formNueva.css';
 import { useContext, useState } from 'react';
 import { DataContext } from '../../../context/DataContext';
+import { usePopup } from '../../../context/PopupContext';
 import { TablaGenerica } from '../tablaGenerica';
-import ApiResponsePopup from '../../shared/ApiResponsePopup';
-import { Modal } from '../../shared/Modal';
 import { Button } from '../../shared/botones';
-import { ModalNuevoClienteInline } from '../Clientes/modalEditarCliente';
-import { CancelIcon, DeleteIcon } from '../../icons';
+import { ModalEditarCliente } from '../Clientes/modalEditarCliente';
+import { DeleteIcon } from '../../icons';
 import { Combobox } from '../shared/Combobox';
 import { QuantitySelector } from '../shared/QuantitySelector';
+import { CheckRes } from '../../../utils/checkRes';
 
 export function FormNuevaVenta() {
   const { ventas } = useContext(DataContext);
   const { agregar } = ventas;
+  const { showPopup } = usePopup();
   const [newItems, setNewItems] = useState([]);
   const [clienteSeleccionado, setClienteSeleccionado] = useState(null);
-  const [apiResponse, setApiResponse] = useState(null);
-
+  
   async function submitHandler(event) {
     event.preventDefault();
     const query = Object.fromEntries(new window.FormData(event.target));
-    if (!newItems[0]) return setApiResponse({ message: "Se requiere al menos un producto." });
+    if (!newItems[0]) return showPopup({ type: 'warning', message: 'Se requiere al menos un producto.' });
 
     const ItemsId = newItems.map(i => i.producto.idPublica);
     const ItemsCant = newItems.map(i => parseInt(i.cantidad));
@@ -28,13 +28,13 @@ export function FormNuevaVenta() {
     const nuevoItem = { ...query, ItemsId, ItemsCant };
     const res = await agregar({ nuevoItem });
 
-    setApiResponse(res);
-    if (res.message || res.error) return;
-    if (res.ok) {
+    const handleDone = () => {
       event.target.reset();
       setNewItems([]);
       setClienteSeleccionado(null);
     }
+
+    CheckRes(res, { onSuccess: handleDone, showPopup })
   }
 
   return (
@@ -45,8 +45,6 @@ export function FormNuevaVenta() {
         clienteSeleccionado={clienteSeleccionado}
         setClienteSeleccionado={setClienteSeleccionado}
       />
-
-      <ApiResponsePopup response={apiResponse} onClose={() => setApiResponse(null)} />
 
       <div className='submitBtns'>
         <Button variant="danger" onClick={() => { setNewItems([]); setClienteSeleccionado(null); }}>Limpiar</Button>
@@ -98,15 +96,9 @@ function BuscadorCliente({ clienteSeleccionado, setClienteSeleccionado }) {
       <input type="hidden" name="nombre" value={clienteSeleccionado?.nombre ?? ""} />
 
       {showModalNew && (
-        <Modal title="Nuevo Cliente" onClose={() => setShowModalNew(false)}>
-          <ModalNuevoClienteInline
-            onClose={() => setShowModalNew(false)}
-            onClienteCreado={(cliente) => {
-              setClienteSeleccionado(cliente);
-              setShowModalNew(false);
-            }}
-          />
-        </Modal>
+        <ModalEditarCliente
+          onClose={() => setShowModalNew(false)}
+        />
       )}
     </div>
   )

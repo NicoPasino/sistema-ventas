@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import './popup.css';
-import { Button } from './botones';
 
 const DEFAULT_ICONS = {
   success: (
@@ -32,23 +32,13 @@ const DEFAULT_ICONS = {
   ),
 };
 
-const TITLES = {
-  success: 'Éxito',
-  error: 'Error',
-  warning: 'Aviso',
-  info: 'Información',
-};
 
 export function Popup({
   type = 'info',
-  title,
   message,
   onClose,
   autoClose = false,
   autoCloseDelay = 3000,
-  showCloseButton = true,
-  confirmText = 'Cerrar',
-  onConfirm,
   icon,
   children,
 }) {
@@ -58,24 +48,17 @@ export function Popup({
     return () => clearTimeout(t);
   }, [autoClose, autoCloseDelay, onClose, type]);
 
-  const handleClose = () => onConfirm?.() ?? onClose?.();
-
-  return (
-    <div className="popup-overlay" onClick={onClose}>
-      <div className={`popup ${type}`} onClick={(e) => e.stopPropagation()}>
+  return createPortal(
+    <div className="popup-overlay">
+      <div className={`popup ${type}`}>
         <div className="popup-icon">
           {icon ?? DEFAULT_ICONS[type]}
         </div>
-        <h3 className="popup-title">{title ?? TITLES[type]}</h3>
         {message && <p className="popup-message">{message}</p>}
         {children}
-        {showCloseButton && (
-          <div className="popup-actions">
-            <Button variant="primary" onClick={handleClose}>{confirmText}</Button>
-          </div>
-        )}
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }
 

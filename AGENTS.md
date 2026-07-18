@@ -1,8 +1,8 @@
 # AGENTS.md - Sistema de Ventas
 
 ## Quick Reference
-- **Stack**: React 19 + Vite + pnpm + ESLint (flat config)
-- **Package Manager**: pnpm (see `pnpm-workspace.yaml`)
+- **Stack**: React 19 + Vite + pnpm + Tailwind CSS v4 + ESLint (flat config)
+- **Package Manager**: pnpm (see `pnpm-workspace.yaml` — only disables SWC/esbuild builds, not a monorepo)
 - **API**: .NET backend at `https://nicopasino.space/api/ventas` (prod) / `localhost:7267` (dev)
 
 ## Commands
@@ -41,11 +41,15 @@ src/
 
 ## Key Conventions
 - **API calls**: All through `apiClient.js` using `buildCollection(name)` → returns `{obtenerTodos, buscarPorCampo, obtenerPorId, agregar, eliminar, actualizar}`
-- **Data fetching**: Use `useItems({itemsDB, categoriasDB?})` hook → returns `{items, agregar, actualizar, eliminar, obtenerItem, reloadItems, buscarItems, loading, error, mensaje, categorias}`
+- **Data fetching**: Use `useItems({itemsDB, categoriasDB?})` hook → returns `{items, agregar, actualizar, eliminar, obtenerItem, reloadItems, buscarItems, filtrarItemsLocal, loading, error, mensaje, categorias}`
 - **Context**: `DataProvider` exposes `{productos, clientes, ventas}` each with the `useItems` return value
 - **Environment**: `isDev` from `config.js` switches API base URL
 - **Lint rule**: `no-unused-vars` ignores `^[A-Z_]` (allows unused uppercase constants)
 - **Import style**: Relative paths with `.js`/`.jsx` extensions
+
+## Framework & Toolchain
+- **Tailwind CSS v4**: Integrated via `@tailwindcss/vite` plugin (see `vite.config.js`). Use `@import "tailwindcss"` in CSS files (see `src/index.css`). Do not use PostCSS-based Tailwind v3 setup.
+- **ESLint**: Flat config in `eslint.config.js`. Ignores `dist/`. Run with `pnpm lint`.
 
 ## Gotchas
 - Backend is separate (.NET/C#/MySQL) — this repo is **frontend only**
@@ -54,6 +58,7 @@ src/
 - No test suite configured
 - No TypeScript (uses JSDoc-style type hints via eslint globals)
 - `react-router-dom` is in devDependencies but not used in code (check if needed)
+- `bootstrap` and `idb` are in `dependencies` but not imported anywhere — likely leftover from earlier iterations
 
 ## CI / Pre-commit
 - No CI workflows or Husky hooks configured

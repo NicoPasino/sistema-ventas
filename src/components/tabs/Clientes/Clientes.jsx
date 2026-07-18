@@ -26,9 +26,8 @@ export default function Clientes() {
       </TablaGenerica>
       {(modalNew || idCliente) && (
         <ModalEditarCliente 
-          id={idCliente} 
-          setIdCliente={handleCloseModal} 
-          reload={clientes.recargarItems}
+          id={idCliente}
+          onClose={handleCloseModal}
         />
       )}
     </div>

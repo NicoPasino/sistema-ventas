@@ -1,54 +1,43 @@
 import './modalProducto.css';
 import { DataContext } from '../../../context/DataContext';
-import { useContext, useState } from 'react';
+import { useContext } from 'react';
 import { NuevoProducto } from './nuevoProducto';
-import ApiResponsePopup from '../../shared/ApiResponsePopup';
+import { usePopup } from '../../../context/PopupContext';
 import { Button } from '../../shared/botones';
 import { Modal } from '../../shared/Modal';
-
+import { ImageIcon } from '../../icons';
+import { CheckRes } from '../../../utils/checkRes';
 
 export function ModalEditarProducto({id, setIdProducto}) {
   const { productos } = useContext(DataContext);
   const { agregar, actualizar, obtenerItem, reloadItems } = productos;
-  const [apiResponse, setApiResponse] = useState(null);
-  
+  const { showPopup } = usePopup();
+
+  const handleClose = () => setIdProducto?.();
+
   async function submitHandler(event) {
     event.preventDefault();
-    const nuevoItem = Object.fromEntries(new window.FormData(event.target));
+    let nuevoItem = Object.fromEntries(new window.FormData(event.target));
 
     convertirTipos(nuevoItem);
 
+    const handleEnd = () => {
+      reloadItems();
+      event.target.reset();
+      setIdProducto?.();
+    }
+
+    // Modificar
     if (id) {
       const nuevoDato = {...nuevoItem, IdPublica: id}
-      let res = await actualizar({nuevoDato});
-
-      if(res.message || res.error) {
-        return;
-      }
-      else if(res.ok){
-        setIdProducto();
-        reloadItems();
-        event.target.reset();
-      }
-      
+      const res = await actualizar({nuevoDato});
+      CheckRes(res, { onSuccess: handleEnd, showPopup });
     }
+    // Agregar
     else {
-      let res = await agregar({nuevoItem});
-      setApiResponse(res);
-
-      if(res.message || res.error) {
-        return;
-      }
-      if (res.ok) {
-        setIdProducto();
-        reloadItems();
-        event.target.reset();
-      }
+      const res = await agregar({nuevoItem});
+      CheckRes(res, { onSuccess: handleEnd, showPopup });
     }
-  }
-
-  function handleClose() {
-    if (setIdProducto) setIdProducto();
   }
 
   return (
@@ -60,9 +49,7 @@ export function ModalEditarProducto({id, setIdProducto}) {
         <div className="modal-body-layout">
           <div className="modal-image-section">
             <div className="image-placeholder">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-              </svg>
+              <ImageIcon />
               <span>Agregar imagen del producto</span>
             </div>
           </div>
@@ -71,8 +58,6 @@ export function ModalEditarProducto({id, setIdProducto}) {
             <NuevoProducto id={id} obtenerItem={obtenerItem} />
           </div>
         </div>
-        
-        <ApiResponsePopup response={apiResponse} onClose={() => setApiResponse(null)} />
           
         <div className="modal-footer">
           <Button type="button" variant="danger" onClick={handleClose}>Cancelar</Button>

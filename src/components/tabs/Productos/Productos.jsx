@@ -4,12 +4,15 @@ import { FormSearch } from '../shared/formSearch';
 import { ModalEditarProducto } from "./modalEditarProducto.jsx";
 import { TablaGenerica } from '../tablaGenerica';
 import { Contenido } from './ContenidoTabla';
+import { usePopup } from '../../../context/PopupContext';
+import { CheckRes } from '../../../utils/checkRes';
 
 export default function Productos() {
   const { productos } = useContext(DataContext);
   const { items, eliminar, reloadItems } = productos;
   const [idProducto, setIdProducto] = useState();
   const [modalNew, setModalNew] = useState(false);
+  const { showPopup } = usePopup();
   
   const tableHeaders = ["Código", "Producto", "Descripción", "Categoría", "Stock", "Precio"];
   
@@ -17,12 +20,17 @@ export default function Productos() {
     setIdProducto();
     setModalNew(false);
   }
-  
+
+  function handleDelete(id) {
+    const res = eliminar(id);
+    CheckRes(res, { onSuccess: reloadItems, showPopup });
+  }
+
   return (
     <div>
       <FormSearch tipo={"Producto"} itemsManage={productos} newItemHandle={ () => setModalNew(true) } />
       <TablaGenerica itemsManage={productos} headers={tableHeaders} editable>
-        <Contenido lista={items} setIdProducto={setIdProducto} eliminar={eliminar} />
+        <Contenido lista={items} setIdProducto={setIdProducto} eliminar={handleDelete} />
       </TablaGenerica>
       {(modalNew || idProducto) && (
         <ModalEditarProducto 
