@@ -19,10 +19,6 @@
 .formNueva label {
   display: block;
 }
-.formNueva input, select {
-  padding: 5px;
-  margin-bottom: 20px;
-}
 .formNueva select {
   padding: 5px;
   /* width: 200px; */
@@ -103,4 +99,27 @@ input:read-only::-webkit-inner-spin-button { opacity: 0; }
 
 .flex-row > .flex-1 {
   flex: 1;
+}
+
+.total {
+  font-size: 1.4rem;
+  font-family: system-ui;
+  margin-block: 5px;
+  padding: 5px;
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  color: #fff;
+}
+.totalText {
+  font-weight: bold;
+}
+.totalValue {
+  color: #ccc;
+}
+
+.sinItems {
+  text-align: center;
+  color: #999;
 }

@@ -56,6 +56,7 @@ export function Combobox({
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  // Funciones para el uso del teclado en el combobox
   useEffect(() => {
     function handleKeyDown(event) {
       if (!isOpen) return;
@@ -189,7 +190,7 @@ export function Combobox({
                 onCreate?.();
               }}
             >
-              + Nuevo Cliente
+              + Crear
             </button>
           )}
         </div>

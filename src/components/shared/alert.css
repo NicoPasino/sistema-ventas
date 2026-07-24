@@ -1,0 +1,151 @@
+.alert {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px 16px;
+  margin-bottom: 15px;
+  border-radius: 8px;
+  border-left: 4px solid;
+  font-family: inherit;
+  animation: alertFadeIn 0.25s ease;
+}
+
+@keyframes alertFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.alert-icon {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  margin-top: 1px;
+}
+
+.alert-icon svg {
+  width: 20px;
+  height: 20px;
+}
+
+.alert-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.alert-title {
+  margin: 0 0 4px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.alert-message {
+  margin: 0;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  opacity: 0.9;
+}
+
+.alert-close {
+  flex-shrink: 0;
+  background: transparent;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 0;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+  opacity: 0.6;
+}
+
+.alert-close:hover {
+  opacity: 1;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* --- success --- */
+.alert.success {
+  background-color: rgba(25, 135, 84, 0.12);
+  border-color: var(--colorSuccess);
+  color: #d1e7dd;
+}
+
+.alert.success .alert-icon {
+  color: var(--colorSuccess);
+}
+
+.alert.success .alert-title {
+  color: #badbcc;
+}
+
+.alert.success .alert-close {
+  color: #badbcc;
+}
+
+/* --- error --- */
+.alert.error {
+  background-color: rgba(220, 53, 69, 0.12);
+  border-color: var(--colorDanger);
+  color: #f8d7da;
+}
+
+.alert.error .alert-icon {
+  color: var(--colorDanger);
+}
+
+.alert.error .alert-title {
+  color: #f5c2c7;
+}
+
+.alert.error .alert-close {
+  color: #f5c2c7;
+}
+
+/* --- warning --- */
+.alert.warning {
+  background-color: rgba(255, 193, 7, 0.12);
+  border-color: var(--colorWarning);
+  color: #fff3cd;
+}
+
+.alert.warning .alert-icon {
+  color: var(--colorWarning);
+}
+
+.alert.warning .alert-title {
+  color: #ffda6a;
+}
+
+.alert.warning .alert-close {
+  color: #ffda6a;
+}
+
+/* --- info --- */
+.alert.info {
+  background-color: rgba(13, 202, 240, 0.12);
+  border-color: var(--colorInfo);
+  color: #cff4fc;
+}
+
+.alert.info .alert-icon {
+  color: var(--colorInfo);
+}
+
+.alert.info .alert-title {
+  color: #9eeaf9;
+}
+
+.alert.info .alert-close {
+  color: #9eeaf9;
+}

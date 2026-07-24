@@ -22,7 +22,6 @@ export function PopupProvider({ children }) {
           type={popup.type}
           message={popup.message}
           onClose={() => { hidePopup(); popup.onClose?.(); }}
-          autoClose={popup.type === 'success'}
         />
       )}
     </PopupContext.Provider>

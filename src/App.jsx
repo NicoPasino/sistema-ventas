@@ -12,7 +12,6 @@ export default function App() {
       {statusMenu && <Nav />}
       <div className="body">
         <Header menu={{statusMenu, setStatusMenu}}/>
-        {/* <button onClick={userSettings.clearAllUsers}>borrar usuarios</button> */}
         <Main />
       </div>
     </div>

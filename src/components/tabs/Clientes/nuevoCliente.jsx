@@ -1,4 +1,5 @@
 import { forwardRef, useEffect, useImperativeHandle, useState } from "react";
+import { validarCliente } from "../../../utils/validarCliente.js";
 
 export const NuevoCliente = forwardRef(function NuevoCliente({ obtenerItem, id }, ref) {
   const [cliente, setCliente] = useState(clienteDefault);
@@ -23,6 +24,11 @@ export const NuevoCliente = forwardRef(function NuevoCliente({ obtenerItem, id }
   useImperativeHandle(ref, () => ({
     getData: () => cliente,
     getErrors: () => errors,
+    validate: () => {
+      const errs = validarCliente(cliente);
+      setErrors(errs);
+      return Object.keys(errs).length === 0;
+    },
   }));
 
   function handleChange(e) {
@@ -37,45 +43,18 @@ export const NuevoCliente = forwardRef(function NuevoCliente({ obtenerItem, id }
     }
   }
 
-  function handleBlur(e) {
-    const { name, value } = e.target;
-    const newErrors = { ...errors };
-
-    if (name === 'Documento') {
-      if (!value || value.trim() === '') {
-        newErrors.Documento = 'El documento es obligatorio.';
-      } else if (!/^\d+$/.test(value.trim())) {
-        newErrors.Documento = 'El documento solo debe contener números.';
-      } else {
-        delete newErrors.Documento;
-      }
-    } else if (name === 'Nombre') {
-      if (!value || value.trim() === '') {
-        newErrors.Nombre = 'El nombre es obligatorio.';
-      } else {
-        delete newErrors.Nombre;
-      }
-    } else if (name === 'Correo') {
-      if (!value || value.trim() === '') {
-        newErrors.Correo = 'El correo es obligatorio.';
-      } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.trim())) {
-        newErrors.Correo = 'Ingrese un correo válido.';
-      } else {
-        delete newErrors.Correo;
-      }
-    }
-
-    setErrors(newErrors);
+  function handleBlur() {
+    setErrors(validarCliente(cliente));
   }
 
   return (
-    <>
+    <div className="grid grid-cols-2 gap-5">
       {errors.fetch && <p className='colorRojoClaro'>{errors.fetch}</p>}
 
       <div className="form-group">
-        <label htmlFor="documento">DNI / CUIT / PAS</label>
+        <label htmlFor="documento">DNI / Documento</label>
         <input
-          type="text"
+          type="number"
           id="documento"
           name="Documento"
           value={cliente.Documento ?? ''}
@@ -126,7 +105,7 @@ export const NuevoCliente = forwardRef(function NuevoCliente({ obtenerItem, id }
           onChange={handleChange}
         />
       </div>
-    </>
+    </div>
   );
 });
 

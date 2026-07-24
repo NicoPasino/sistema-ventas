@@ -37,13 +37,13 @@ export function Popup({
   type = 'info',
   message,
   onClose,
-  autoClose = false,
+  autoClose = true,
   autoCloseDelay = 3000,
   icon,
   children,
 }) {
   useEffect(() => {
-    if (!autoClose || type !== 'success') return;
+    if (!autoClose) return;
     const t = setTimeout(() => onClose?.(), autoCloseDelay);
     return () => clearTimeout(t);
   }, [autoClose, autoCloseDelay, onClose, type]);
