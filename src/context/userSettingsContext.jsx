@@ -1,11 +1,13 @@
 import { createContext, useEffect, useState } from 'react'
 import { userSettings } from '../Hooks/userSettings';
+import { useAlert } from './AlertContext';
 
 // Crear el Contexto (usar en cuarquier arhivo)
 export const UserSettingsContext = createContext() // singleton (solo se crea una vez)
 
 // Crear Provider (envuelve la app de main.jsx)
 export function UserSettingsProvider ({ children }) {
+  const { hideAlert } = useAlert();
   const [getUser, setUser] = useState('Usuario')
   const [getTab, setTab] = useState('Inicio')
   // const [getUserSettings, setUserSettings] = useState({nombre: "Usuario", tab: 'Inicio'})
@@ -18,6 +20,7 @@ export function UserSettingsProvider ({ children }) {
 
   
   function handleTab(tab) {
+    hideAlert();
     setTab(tab);
     userSettings.editUser({newTab: tab});
   }

@@ -1,31 +1,44 @@
 import { useContext, useState } from "react";
 import { DataContext } from "../../../context/DataContext";
 import { FormSearch } from '../shared/formSearch';
-import { FormNuevoProducto } from "./formNuevoProducto";
+import { ModalEditarProducto } from "./modalEditarProducto.jsx";
 import { TablaGenerica } from '../tablaGenerica';
 import { Contenido } from './ContenidoTabla';
+import { usePopup } from '../../../context/PopupContext';
+import { CheckRes } from '../../../utils/checkRes';
 
 export default function Productos() {
   const { productos } = useContext(DataContext);
   const { items, eliminar, reloadItems } = productos;
-  const [idProducto, setIdProducto] = useState(); // editMode
+  const [idProducto, setIdProducto] = useState();
+  const [modalNew, setModalNew] = useState(false);
+  const { showPopup } = usePopup();
   
   const tableHeaders = ["Código", "Producto", "Descripción", "Categoría", "Stock", "Precio"];
   
-  return (
-    (!idProducto)
-      ? <div>
-          <FormSearch tipo={"Producto"} itemsManage={productos} />
-          <TablaGenerica 
-            itemsManage={productos} 
-            headers={tableHeaders} editable
-            Contenido={<Contenido lista={items} setIdProducto={setIdProducto} eliminar={eliminar} />}
-          />
-        </div>
-      : <FormNuevoProducto id={idProducto} setIdProducto={setIdProducto} reload={reloadItems}/>
-  )
-}
+  function handleCloseModal() {
+    setIdProducto();
+    setModalNew(false);
+  }
 
-export function Producto() {
-  return <FormNuevoProducto />
+  function handleDelete(id) {
+    const res = eliminar(id);
+    CheckRes(res, { onSuccess: reloadItems, showPopup });
+  }
+
+  return (
+    <div>
+      <FormSearch tipo={"Producto"} itemsManage={productos} newItemHandle={ () => setModalNew(true) } />
+      <TablaGenerica itemsManage={productos} headers={tableHeaders} editable>
+        <Contenido lista={items} setIdProducto={setIdProducto} eliminar={handleDelete} />
+      </TablaGenerica>
+      {(modalNew || idProducto) && (
+        <ModalEditarProducto 
+          id={idProducto} 
+          setIdProducto={handleCloseModal} 
+          reload={reloadItems}
+        />
+      )}
+    </div>
+  )
 }

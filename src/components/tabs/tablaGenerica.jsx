@@ -1,7 +1,7 @@
 import { CargandoT, ErrorMensajeT } from './shared/textosComponent';
 import './shared/tablas.css'
 
-export function TablaGenerica ({itemsManage, headers, Contenido, editable = false}) {
+export function TablaGenerica ({itemsManage, headers, children, editable = false}) {
   const {loading, error} = itemsManage;
 
   return (
@@ -15,7 +15,7 @@ export function TablaGenerica ({itemsManage, headers, Contenido, editable = fals
             ? <CargandoT />
             : ( error ) 
               ? <ErrorMensajeT msg={error} />
-              : Contenido // (componente desde props)
+              : children
         }
       </tbody>
     </table>

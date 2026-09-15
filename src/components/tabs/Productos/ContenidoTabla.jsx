@@ -17,10 +17,12 @@ export function Contenido({lista, setIdProducto, eliminar}) {
           <td className='tablaCol'>          {categoria} </td>
           <td className='tablaColCantidad'>  {StockDisplay(cantidad)} </td>
           <td className='tablaColPrecio'>    {MoneyDisplay(precio)} </td>
-          <td className='tablaColAcciones'>
-            <i className='iconEdit svgView svgDisabled' onClick={()=> {}}> <ViewIcon /> </i> {/* TODO: modal */}
-            <i className='iconEdit svgEdit' onClick={()=> setIdProducto(idPublica)}> <EditIcon /> </i>
-            <i className='iconEdit svgDelete' onClick={()=> eliminar(idPublica)}> <DeleteIcon /> </i>
+          <td>
+            <div className='tablaColAcciones'>
+              {/* <i className='iconEdit svgView svgDisabled' onClick={()=> {}}> <ViewIcon /> </i> */}
+              <i className='iconEdit svgEdit' onClick={()=> setIdProducto(idPublica)}> <EditIcon /> </i>
+              <i className='iconEdit svgDelete' onClick={()=> eliminar(idPublica)}> <DeleteIcon /> </i>
+            </div>
           </td>
         </tr>
       )

@@ -19,7 +19,7 @@ export function Contenido({lista}) {
           <td className='tablaColID'>        {GrayDisplay(numero)} </td>
           <td className='tablaColNombre'>    {cliente} </td>
           <td className='tablaColDetalles' title={detalle}>  {productosCantidad} </td>
-          <td className='tablaColDetalles'>  {fechaV} </td>
+          <td className='tablaColFecha'>     {fechaV} </td>
           <td className='tablaColPrecio'>    {MoneyDisplay(totalCalculado)} </td>
         </tr>
       )

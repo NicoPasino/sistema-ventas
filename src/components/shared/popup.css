@@ -1,0 +1,83 @@
+.popup-overlay {
+  position: fixed;
+  bottom: 5%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1200;
+  pointer-events: none;
+  animation: popupFloat 0.25s ease;
+}
+
+@keyframes popupFloat {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -50%) translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) translateY(0);
+  }
+}
+
+.popup {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: max-content;
+  max-width: 90vw;
+  background: #1a1a1a;
+  border-radius: 8px;
+  padding: 10px 16px;
+  font-family: inherit;
+  box-shadow: 0 6px 30px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.05);
+  pointer-events: auto;
+}
+
+.popup-icon {
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.popup-icon svg {
+  width: 16px;
+  height: 16px;
+}
+
+.popup-title {
+  display: none;
+}
+
+.popup-message {
+  margin: 0;
+  font-size: 0.85rem;
+  line-height: 1.4;
+}
+
+/* --- success --- */
+.popup.success .popup-icon {
+  background: rgba(34, 139, 70, 0.15);
+  color: #228b46;
+}
+
+/* --- error --- */
+.popup.error .popup-icon {
+  background: rgba(185, 44, 44, 0.15);
+  color: #b92c2c;
+}
+
+/* --- warning --- */
+.popup.warning .popup-icon {
+  background: rgba(200, 150, 20, 0.15);
+  color: #c89614;
+}
+
+/* --- info --- */
+.popup.info .popup-icon {
+  background: rgba(11, 116, 222, 0.15);
+  color: #0b74de;
+}
