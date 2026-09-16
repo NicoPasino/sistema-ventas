@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState, forwardRef, useImperativeHandle } from "react";
 import { DataContext } from "../../../context/DataContext";
-import { validarProducto } from "../../../utils/validarProducto.js";
+import { validarProducto } from "../../../validations/validarProducto";
 
 export const NuevoProducto = forwardRef(function NuevoProducto({ obtenerItem, id }, ref) {
   const { productos } = useContext(DataContext);

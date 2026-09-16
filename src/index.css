@@ -72,3 +72,20 @@ input, select, textarea {
   border: 1px solid var(--colorSecondary);
   border-radius: 5px;
 }
+
+.view {
+  height: 100%;
+  display: flex;
+}
+
+.body {
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+}
+
+main {
+  padding: 25px;
+  height: 85%;
+  overflow: auto;
+}

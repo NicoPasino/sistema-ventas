@@ -11,7 +11,6 @@ const componentes = {
   Inicio: <Inicio />,
   Clientes: <Clientes />,
   Productos: <Productos />,
-  // Producto: <Producto />,
   Venta: <Venta />,
   Ventas: <Ventas />,
   Proveedores: <Proveedores />,

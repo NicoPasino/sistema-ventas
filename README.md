@@ -21,7 +21,7 @@ Sistema de ventas web (frontend) que permite gestionar productos, clientes y ven
 
 ### Frontend
 - **React 19** + **Vite 6**
-- **Tailwind CSS** (`@tailwindcss/vite`)
+- **CSS, Tailwind CSS**
 - **JavaScript**
 - **pnpm**
 
@@ -47,53 +47,49 @@ pnpm install
 pnpm dev
 ```
 
-### Scripts disponibles
-
-- `pnpm dev`    → Inicia el servidor de desarrollo.
-- `pnpm build`  → Genera el build de producción.
-- `pnpm preview`→ Previsualiza el build de producción.
-- `pnpm lint`   → Ejecuta ESLint.
-
-> La API base se selecciona automáticamente según el entorno: `localhost:7267` en desarrollo y `nicopasino.space` en producción (`src/config.js`).
-
 ---
 -->
-## 📁 Estructura del proyecto
+## 📁 Estructura principal del proyecto
 
 ```bash
 sistema-ventas/
 └── src/
-    ├── main.jsx                    # Punto de entrada
-    ├── App.jsx                     # Componente principal (Header, Nav, Main)
-    ├── config.js                   # Flag isDev según MODO
+    ├── components/
+    │   ├── tabs/
+    │   │   ├── Productos/         # Gestión de productos
+    │   │   ├── Clientes/          # Gestión de clientes
+    │   │   ├── Ventas/            # Nueva venta + historial
+    │   │   ├── shared/            # Componentes reutilizables (tablas, modales)
+    │   │   │
+    │   │   ├── Inicio.jsx         # Dashboard
+    │   │   └── main.jsx           # Router de tabs
+    │   │
+    │   ├── header.jsx             # Header de la app
+    │   └── nav.jsx                # Nav de la app
+    │
     ├── context/
     │   ├── dataContext.jsx         # Estado global: productos, clientes, ventas
     │   └── userSettingsContext.jsx # Configuración de usuario y tab activa
-    ├── services/
-    │   └── apiClient.js            # Conexion con el servidor (API Layer)
+    │
     ├── Hooks/
     │   └── useItems.js             # Hook reusable de datos (CRUD + búsqueda)
-    ├── components/
-    │   ├── header.jsx, nav.jsx     # Layout
-    │   ├── tabs/main.jsx           # Router de tabs
-    │   ├── tabs/Inicio.jsx         # Dashboard
-    │   ├── tabs/Productos/         # Gestión de productos
-    │   ├── tabs/Clientes/          # Gestión de clientes
-    │   ├── tabs/Ventas/            # Nueva venta + historial
-    │   ├── tabs/Reportes.jsx       # (En desarrollo)
-    │   ├── tabs/Proveedores.jsx    # (En desarrollo)
-    │   └── tabs/shared/            # Componentes reutilizables (tablas, modales)
-    └── utils/
-        └── time/                   # Helpers de fechas
+    │
+    ├── services/
+    │   └── api.js                  # Conexion con el servidor (API Layer)
+    │
+    ├── App.jsx                     # Componente principal (Header, Nav, Main(router de tabs))
+    └── main.jsx                    # Punto de entrada
+
 ```
 
 ---
 
 ## 🧱 Arquitectura
 
-- **API:** todas las llamadas pasan por `src/services/apiClient.js`, que expone la función `buildCollection(name)` para las operaciones CRUD: `obtenerTodos`, `buscarPorCampo`, `obtenerPorId`, `agregar`, `eliminar`, `actualizar`.
+- **API:** todas las llamadas pasan por `src/services/api.js`, que expone la función `buildCollection(name)` para las operaciones CRUD: `obtenerTodos`, `buscarPorCampo`, `obtenerPorId`, `agregar`, `eliminar`, `actualizar`.
 - **Estado global:** `DataProvider` (en `dataContext.jsx`) expone `{ productos, clientes, ventas }`, cada uno con el resultado del hook `useItems`.
 - **UI:** componente `TablaGenerica` y elementos reutilizables en `components/tabs/shared/` para mantener las vistas consistentes.
+<!-- - **Estilos**: `tailwind` co-location (cada .css junto a su componente):. -->
 
 ---
 
@@ -111,23 +107,23 @@ sistema-ventas/
 
 ### Inicio
 
-![Inicio](/capturas/index.png)
+![Inicio](/public/capturas/index.png)
 
 ### Productos
 
-![Productos](/capturas/productos.png)
+![Productos](/public/capturas/productos.png)
 
 ### Crear Producto
 
-![Crear producto](/capturas/crear-producto.png)
+![Crear producto](/public/capturas/crear-producto.png)
 
 ### Ventas
 
-![Ventas](/capturas/ventas.png)
+![Ventas](/public/capturas/ventas.png)
 
 ### Crear venta
 
-![Crear venta](/capturas/crear-venta.png)
+![Crear venta](/public/capturas/crear-venta.png)
 
 ---
 
@@ -137,3 +133,4 @@ sistema-ventas/
 
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-nicolas--pasino-0A66C2?style=flat&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/nicolas-pasino/)
 [![Portfolio](https://img.shields.io/badge/Portfolio-nicopasino.space-4B32C3?style=flat&logo=internet-explorer&logoColor=white)](https://nicopasino.space)
+

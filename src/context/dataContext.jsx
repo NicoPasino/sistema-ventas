@@ -1,6 +1,6 @@
 import { createContext } from "react";
 import { useItems } from "../Hooks/useItems";
-import { productosAPI, categoriasAPI, clientesAPI, ventasAPI } from "../services/apiClient";
+import { productosAPI, categoriasAPI, clientesAPI, ventasAPI } from "../services/api";
 
 // 1. Crear contexto
 export const DataContext = createContext()

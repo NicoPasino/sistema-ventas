@@ -3,7 +3,7 @@ import { useContext, useRef } from 'react';
 import { usePopup } from '../../../context/PopupContext';
 import { Button } from '../../shared/botones';
 import { Modal } from '../../shared/Modal';
-import '../Productos/modalProducto.css';
+import '../shared/modalProducto.css';
 import { CheckRes } from '../../../utils/checkRes';
 import { NuevoCliente } from './nuevoCliente';
 import { useAlert } from '../../../context/AlertContext';

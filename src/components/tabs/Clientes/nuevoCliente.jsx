@@ -1,5 +1,5 @@
 import { forwardRef, useEffect, useImperativeHandle, useState } from "react";
-import { validarCliente } from "../../../utils/validarCliente.js";
+import { validarCliente } from "../../../validations/validarCliente";
 
 export const NuevoCliente = forwardRef(function NuevoCliente({ obtenerItem, id }, ref) {
   const [cliente, setCliente] = useState(clienteDefault);

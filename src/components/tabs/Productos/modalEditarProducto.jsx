@@ -1,4 +1,4 @@
-import './modalProducto.css';
+import '../shared/modalProducto.css';
 import { DataContext } from '../../../context/DataContext';
 import { useContext, useRef } from 'react';
 import { NuevoProducto } from './nuevoProducto';

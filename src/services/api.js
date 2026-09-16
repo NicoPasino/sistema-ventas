@@ -1,12 +1,7 @@
-// Conección directa con API
-
-import { isDev } from '../config.js';
-
-const url = isDev ? "localhost:7267" : "nicopasino.space";
-const BASE = `https://${url}/api/ventas`;
+const apiUrl = import.meta.env.VITE_API_URL;
 
 async function request(path, options = {}) {
-  return await fetch(`${BASE}${path}`, { headers: { 'Content-Type': 'application/json' }, ...options, })
+  return await fetch(`${apiUrl}${path}`, { headers: { 'Content-Type': 'application/json' }, ...options, })
     .then(async (res) => {
       if (res.error) {
         return { error: "Error al hacer la petición con el servidor." };
