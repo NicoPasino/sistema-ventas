@@ -2,9 +2,9 @@ import { useContext, useState } from "react";
 import { DataContext } from "../../../context/DataContext";
 import { FormSearch } from '../shared/formSearch';
 import { ModalEditarProducto } from "./modalEditarProducto.jsx";
-import { TablaGenerica } from '../tablaGenerica';
+import { TablaGenerica } from '../shared/tablaGenerica.jsx';
 import { Contenido } from './ContenidoTabla';
-import { usePopup } from '../../../context/PopupContext';
+import { usePopup } from '../../../context/notificationContext';
 import { CheckRes } from '../../../utils/checkRes';
 
 export default function Productos() {

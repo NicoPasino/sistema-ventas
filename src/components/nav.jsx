@@ -1,9 +1,9 @@
 import { useContext } from 'react';
-import { HomeIcon, ClientesIcon, ProductosIcon, VentasIcon, NewIcon } from './icons';
+import { HomeIcon, ClientesIcon, ProductosIcon, VentasIcon, NewIcon } from '../assets/icons.jsx';
 import './nav.css'
 import { UserSettingsContext } from '../context/userSettingsContext.jsx';
 
-export function Nav() {
+export function Nav({ isOpen }) {
   const {getTab, handleTab} = useContext(UserSettingsContext)
 
   function handleTabClick(name, disabled){
@@ -23,7 +23,7 @@ export function Nav() {
   }
 
   return (
-    <div className='nav'>
+    <div className={`${isOpen ? 'nav' : 'navDisabled'}`}>
       <div className='navHead'>
         <h3>Menú</h3>
       </div>
@@ -38,10 +38,6 @@ export function Nav() {
         <dt>
           <Tab name={"Productos"}> <ProductosIcon /> </Tab>
         </dt>
-        <dd>
-          {/* <Tab name={"Producto"}> <NewIcon /> </Tab> */}
-          {/* <Tab name={"Proveedores"} disabled> <ProveedoresIcon /> </Tab> */}
-        </dd>
 
         {/* Ventas */}
         <dt>
@@ -55,11 +51,6 @@ export function Nav() {
         <dt>
           <Tab name={"Clientes"}> <ClientesIcon /> </Tab>
         </dt>
-
-        {/* Reportes */}
-        {/* <dt>
-          <Tab name={"Reportes"} disabled> <ReportesIcon /> </Tab>
-        </dt> */}
       </dl>
     </div>
   )

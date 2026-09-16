@@ -1,8 +1,7 @@
 import { useEffect } from 'react';
-import { useAlert } from '../../context/AlertContext';
-import { DEFAULT_ICONS } from '../icons';
+import { useAlert } from '../../context/notificationContext';
+import { NOTIFICATION_ICONS } from '../../assets/icons';
 import './alert.css';
-
 
 const DEFAULT_TITLES = {
   success: 'Éxito',
@@ -11,7 +10,7 @@ const DEFAULT_TITLES = {
   info: 'Info',
 };
 
-export function Alert() {
+export default function Alert() {
   const { alert, hideAlert } = useAlert();
 
   useEffect(() => {
@@ -25,7 +24,7 @@ export function Alert() {
   return (
     <div className={`alert ${alert.type}`} role="alert">
       <div className="alert-icon">
-        {DEFAULT_ICONS[alert.type]}
+        {NOTIFICATION_ICONS[alert.type]}
       </div>
       <div className="alert-body">
         {alert.title && <p className="alert-title">{alert.title}</p>}
@@ -38,5 +37,3 @@ export function Alert() {
     </div>
   );
 }
-
-export default Alert;

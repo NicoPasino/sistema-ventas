@@ -205,7 +205,7 @@ export const WarningIcon = () => {
 
 
 
-export const DEFAULT_ICONS = {
+export const NOTIFICATION_ICONS = {
   success: (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
       <path d="M22 11.08V12a10 10 0 11-5.93-9.14" />
@@ -235,7 +235,23 @@ export const DEFAULT_ICONS = {
   ),
 };
 
-
+export const NotFoundIcon = ({props}) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      strokeWidth={1.2}
+      stroke="currentColor"
+      style={{ width: "120px", height: "120px", color: "#0dcaf0" }}
+    >
+      <circle cx="11" cy="11" r="7" strokeLinecap="round" strokeLinejoin="round" />
+      <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-4.35-4.35" />
+      <path strokeLinecap="round" strokeLinejoin="round" d="M11 8v3" />
+      <path strokeLinecap="round" strokeLinejoin="round" d="M11 14.5h.008" />
+    </svg>
+  );
+}
 /* 
 // Document $
 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">

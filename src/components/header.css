@@ -6,11 +6,6 @@
   color: var(--blueText);
   padding: 15px;
   margin: 0;
-
-  /* left: 250px; */
-  /* position: fixed; */
-  /* width: 100vw; */
-
   display: flex;
   justify-content: space-between;
   background-color: #111;

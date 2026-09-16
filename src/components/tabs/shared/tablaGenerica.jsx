@@ -1,5 +1,5 @@
-import { CargandoT, ErrorMensajeT } from './shared/textosComponent';
-import './shared/tablas.css'
+import { CargandoT, ErrorMensajeT } from './textosComponent';
+import './tablas.css'
 
 export function TablaGenerica ({itemsManage, headers, children, editable = false}) {
   const {loading, error} = itemsManage;

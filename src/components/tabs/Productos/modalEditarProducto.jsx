@@ -2,13 +2,13 @@ import '../shared/modalProducto.css';
 import { DataContext } from '../../../context/DataContext';
 import { useContext, useRef } from 'react';
 import { NuevoProducto } from './nuevoProducto';
-import { usePopup } from '../../../context/PopupContext';
+import { usePopup } from '../../../context/notificationContext';
 import { Button } from '../../shared/botones';
 import { Modal } from '../../shared/Modal';
-import { ImageIcon } from '../../icons';
+import { ImageIcon } from '../../../assets/icons';
 import { CheckRes } from '../../../utils/checkRes';
 import { Alert } from '../../shared/Alert';
-import { useAlert } from '../../../context/AlertContext';
+import { useAlert } from '../../../context/notificationContext';
 
 export function ModalEditarProducto({id, setIdProducto}) {
   const { productos } = useContext(DataContext);

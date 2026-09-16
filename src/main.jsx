@@ -4,17 +4,14 @@ import './index.css'
 import App from './App.jsx'
 import { DataProvider } from './context/dataContext.jsx'
 import { UserSettingsProvider } from './context/userSettingsContext.jsx'
-import { PopupProvider } from './context/PopupContext.jsx'
-import { AlertProvider } from './context/AlertContext.jsx'
+import { NotificationProvider } from './context/notificationContext.jsx'
 
 createRoot(document.getElementById('root')).render(
-  <AlertProvider>
+  <NotificationProvider>
     <UserSettingsProvider>
       <DataProvider>
-        <PopupProvider>
-          <App />
-        </PopupProvider>
+        <App />
       </DataProvider>
     </UserSettingsProvider>
-  </AlertProvider>,
+  </NotificationProvider>,
 )

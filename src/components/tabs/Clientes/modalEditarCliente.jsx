@@ -1,12 +1,12 @@
 import { DataContext } from '../../../context/DataContext';
 import { useContext, useRef } from 'react';
-import { usePopup } from '../../../context/PopupContext';
+import { usePopup } from '../../../context/notificationContext';
 import { Button } from '../../shared/botones';
 import { Modal } from '../../shared/Modal';
 import '../shared/modalProducto.css';
 import { CheckRes } from '../../../utils/checkRes';
 import { NuevoCliente } from './nuevoCliente';
-import { useAlert } from '../../../context/AlertContext';
+import { useAlert } from '../../../context/notificationContext';
 import { Alert } from '../../shared/Alert';
 
 export function ModalEditarCliente({ id, onClose }) {

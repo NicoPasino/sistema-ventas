@@ -3,7 +3,7 @@ import { DataContext } from "../../../context/DataContext";
 import { UserSettingsContext } from "../../../context/userSettingsContext.jsx";
 import { FormSearch } from "../shared/formSearch";
 import { FormNuevaVenta } from "./formNuevaVenta";
-import { TablaGenerica } from '../tablaGenerica';
+import { TablaGenerica } from '../shared/tablaGenerica.jsx';
 import { Contenido } from './ContenidoTabla';
 
 export default function Ventas() {

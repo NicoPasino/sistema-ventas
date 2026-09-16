@@ -1,5 +1,5 @@
 import { GrayDisplay, MoneyDisplay, StockDisplay } from '../../../utils/displayConvert';
-import { DeleteIcon, EditIcon, ViewIcon } from '../../icons';
+import { DeleteIcon, EditIcon, ViewIcon } from '../../../assets/icons';
 import { ListaVaciaT } from '../shared/textosComponent';
 
 export function Contenido({lista, setIdProducto, eliminar}) {

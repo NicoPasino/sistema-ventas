@@ -55,17 +55,15 @@ pnpm dev
 sistema-ventas/
 └── src/
     ├── components/
-    │   ├── tabs/
-    │   │   ├── Productos/         # Gestión de productos
-    │   │   ├── Clientes/          # Gestión de clientes
-    │   │   ├── Ventas/            # Nueva venta + historial
-    │   │   ├── shared/            # Componentes reutilizables (tablas, modales)
-    │   │   │
-    │   │   ├── Inicio.jsx         # Dashboard
-    │   │   └── main.jsx           # Router de tabs
+    │   ├── tabs/                   # Páginas principales de la app
+    │   │   ├── shared/             # Componentes reutilizables de las páginas
+    │   │   ├── Inicio/
+    │   │   ├── Productos/
+    │   │   ├── Clientes/
+    │   │   └── Ventas/
     │   │
-    │   ├── header.jsx             # Header de la app
-    │   └── nav.jsx                # Nav de la app
+    │   ├── header.jsx
+    │   └── nav.jsx
     │
     ├── context/
     │   ├── dataContext.jsx         # Estado global: productos, clientes, ventas
@@ -77,8 +75,8 @@ sistema-ventas/
     ├── services/
     │   └── api.js                  # Conexion con el servidor (API Layer)
     │
-    ├── App.jsx                     # Componente principal (Header, Nav, Main(router de tabs))
-    └── main.jsx                    # Punto de entrada
+    ├── App.jsx                     # Componente principal (Header, Nav, Tab)
+    └── main.jsx                    # Punto de entrada de la app
 
 ```
 
@@ -88,18 +86,15 @@ sistema-ventas/
 
 - **API:** todas las llamadas pasan por `src/services/api.js`, que expone la función `buildCollection(name)` para las operaciones CRUD: `obtenerTodos`, `buscarPorCampo`, `obtenerPorId`, `agregar`, `eliminar`, `actualizar`.
 - **Estado global:** `DataProvider` (en `dataContext.jsx`) expone `{ productos, clientes, ventas }`, cada uno con el resultado del hook `useItems`.
-- **UI:** componente `TablaGenerica` y elementos reutilizables en `components/tabs/shared/` para mantener las vistas consistentes.
-<!-- - **Estilos**: `tailwind` co-location (cada .css junto a su componente):. -->
+- **UI:** componentes reutilizables en `components/tabs/shared/` para mantener las vistas consistentes.
 
 ---
 
 ## 🗺️ Roadmap
 
-- Gestión de proveedores.
-- Reportes y exportación (PDF/Excel).
+- Gestión de cuentas y autenticación.
 - Dashboard con gráficos interactivos.
 - Base de datos local (offline).
-- Gestión de cuentas y autenticación.
 
 ---
 
@@ -134,3 +129,11 @@ sistema-ventas/
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-nicolas--pasino-0A66C2?style=flat&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/nicolas-pasino/)
 [![Portfolio](https://img.shields.io/badge/Portfolio-nicopasino.space-4B32C3?style=flat&logo=internet-explorer&logoColor=white)](https://nicopasino.space)
 
+<!-- 
+### Scripts
+
+- `pnpm dev`    → Inicia el servidor de desarrollo.
+- `pnpm build`  → Genera el build de producción.
+- `pnpm preview`→ Previsualiza el build de producción.
+- `pnpm lint`   → Ejecuta ESLint.
+-->

@@ -1,12 +1,12 @@
 import '../shared/formNueva.css';
 import { useContext, useState } from 'react';
 import { DataContext } from '../../../context/DataContext';
-import { usePopup } from '../../../context/PopupContext';
+import { usePopup } from '../../../context/notificationContext';
 import { Button } from '../../shared/botones';
 import { CheckRes } from '../../../utils/checkRes';
 import { BuscadorCliente, BuscadorProductos } from './campoBuscador';
 import { TablaNewItemsVenta } from './tablaNewItemsVenta';
-import { useAlert } from '../../../context/AlertContext';
+import { useAlert } from '../../../context/notificationContext';
 import { Alert } from '../../shared/Alert';
 
 export function FormNuevaVenta() {

@@ -1,7 +1,7 @@
 import { useContext, useState } from "react";
 import { FormSearch } from '../shared/formSearch';
 import { ModalEditarCliente } from "./modalEditarCliente";
-import { TablaGenerica } from '../tablaGenerica';
+import { TablaGenerica } from '../shared/tablaGenerica';
 import { Contenido } from './ContenidoTabla';
 import { DataContext } from "../../../context/DataContext";
 

@@ -1,7 +1,7 @@
 import { useContext } from 'react'
 import { UserSettingsContext } from '../context/userSettingsContext.jsx'
 import './header.css'
-import { MenuIcon } from './icons'
+import { MenuIcon } from '../assets/icons.jsx'
 
 export function Header({ menu }) {
   const {getUser, getTab} = useContext(UserSettingsContext)
