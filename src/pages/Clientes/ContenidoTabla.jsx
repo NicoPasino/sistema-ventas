@@ -1,4 +1,4 @@
-import { ListaVaciaT } from '../shared/textosComponent';
+import { ListaVaciaT } from '../../components/pages/textosComponent';
 
 export function Contenido({lista}) {
   if (!lista || lista.length == 0) return <ListaVaciaT />;

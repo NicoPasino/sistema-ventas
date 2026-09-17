@@ -1,5 +1,5 @@
-import { GrayDisplay, MoneyDisplay } from '../../../utils/displayConvert';
-import { ListaVaciaT } from '../shared/textosComponent';
+import { GrayDisplay, MoneyDisplay } from '../../utils/displayConvert';
+import { ListaVaciaT } from '../../components/pages/textosComponent';
 
 export function Contenido({lista}) {
   if (!lista || lista.length == 0) return <ListaVaciaT />;
@@ -9,7 +9,6 @@ export function Contenido({lista}) {
       const { numero, cliente, detalle, fechaVenta, productos } = item;
 
       const fechaV = String(fechaVenta).slice(0, 10);
-      // if (new Date().toISOString().slice(0, 10) == fechaV) fechaV = String(fechaVenta).slice(11, 19);
       
       const listaProductos = Array.isArray(productos) ? productos : [];
       const productosCantidad = listaProductos.map(p => `${p.producto} (x${p.cantidad})`).join(", ");

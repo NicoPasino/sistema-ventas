@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useCallback } from 'react';
-import { Popup } from '../components/shared/Popup';
+import { Popup } from '../components/notification/Popup';
 
 const NotificationContext = createContext();
 

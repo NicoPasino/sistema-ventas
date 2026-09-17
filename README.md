@@ -54,20 +54,19 @@ pnpm dev
 ```bash
 sistema-ventas/
 └── src/
-    ├── components/
-    │   ├── tabs/                   # Páginas principales de la app
-    │   │   ├── shared/             # Componentes reutilizables de las páginas
-    │   │   ├── Inicio/
-    │   │   ├── Productos/
-    │   │   ├── Clientes/
-    │   │   └── Ventas/
-    │   │
-    │   ├── header.jsx
-    │   └── nav.jsx
-    │
+    ├── components/                 # Componentes reutilizables
+    |
+    ├── pages/                      # Páginas principales
+    │   ├── Inicio/
+    │   ├── Productos/
+    │   ├── Clientes/
+    │   └── Ventas/
+    |
+    ├── layouts/
+    │   └── MainLayout.jsx          # Layout principal
+    |
     ├── context/
-    │   ├── dataContext.jsx         # Estado global: productos, clientes, ventas
-    │   └── userSettingsContext.jsx # Configuración de usuario y tab activa
+    │   └── dataContext.jsx         # Estado global: productos, clientes, ventas
     │
     ├── Hooks/
     │   └── useItems.js             # Hook reusable de datos (CRUD + búsqueda)
@@ -86,7 +85,7 @@ sistema-ventas/
 
 - **API:** todas las llamadas pasan por `src/services/api.js`, que expone la función `buildCollection(name)` para las operaciones CRUD: `obtenerTodos`, `buscarPorCampo`, `obtenerPorId`, `agregar`, `eliminar`, `actualizar`.
 - **Estado global:** `DataProvider` (en `dataContext.jsx`) expone `{ productos, clientes, ventas }`, cada uno con el resultado del hook `useItems`.
-- **UI:** componentes reutilizables en `components/tabs/shared/` para mantener las vistas consistentes.
+- **UI:** componentes reutilizables en `components/` separadas segun el area.
 
 ---
 

@@ -1,11 +1,11 @@
 import { useContext, useState } from "react";
-import { DataContext } from "../../../context/DataContext";
-import { FormSearch } from '../shared/formSearch';
+import { DataContext } from "../../context/DataContext.jsx";
+import { FormSearch } from '../../components/pages/formSearch';
 import { ModalEditarProducto } from "./modalEditarProducto.jsx";
-import { TablaGenerica } from '../shared/tablaGenerica.jsx';
-import { Contenido } from './ContenidoTabla';
-import { usePopup } from '../../../context/notificationContext';
-import { CheckRes } from '../../../utils/checkRes';
+import { TablaGenerica } from '../../components/pages/tablaGenerica';
+import { Contenido } from './ContenidoTabla.jsx';
+import { usePopup } from '../../context/notificationContext.jsx';
+import { CheckRes } from '../../utils/checkRes.js';
 
 export default function Productos() {
   const { productos } = useContext(DataContext);

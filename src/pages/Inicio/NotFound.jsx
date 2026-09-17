@@ -1,6 +1,6 @@
 import { useContext } from "react";
-import { UserSettingsContext } from "../../../context/userSettingsContext.jsx";
-import { NotFoundIcon } from "../../../assets/icons.jsx";
+import { UserSettingsContext } from "../../context/userSettingsContext.jsx";
+import { NotFoundIcon } from "../../assets/icons.jsx";
 
 export default function NotFound() {
   const { handleTab } = useContext(UserSettingsContext);

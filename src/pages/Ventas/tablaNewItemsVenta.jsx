@@ -1,6 +1,6 @@
-import { TablaGenerica } from "../shared/tablaGenerica";
-import { MoneyDisplay } from "../../../utils/displayConvert";
-import { DeleteIcon, MasCantidadIcon, MenosCantidadIcon, WarningIcon } from "../../../assets/icons";
+import { TablaGenerica } from "../../components/pages/tablaGenerica";
+import { MoneyDisplay } from "../../utils/displayConvert";
+import { DeleteIcon, MasCantidadIcon, MenosCantidadIcon, WarningIcon } from "../../assets/icons";
 
 export function TablaNewItemsVenta({ newItemsManag, productosList }) {
   const { newItems, setNewItems } = newItemsManag;

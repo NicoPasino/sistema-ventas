@@ -1,6 +1,6 @@
-import { GrayDisplay, MoneyDisplay, StockDisplay } from '../../../utils/displayConvert';
-import { DeleteIcon, EditIcon, ViewIcon } from '../../../assets/icons';
-import { ListaVaciaT } from '../shared/textosComponent';
+import { GrayDisplay, MoneyDisplay, StockDisplay } from '../../utils/displayConvert';
+import { DeleteIcon, EditIcon, ViewIcon } from '../../assets/icons';
+import { ListaVaciaT } from '../../components/pages/textosComponent';
 
 export function Contenido({lista, setIdProducto, eliminar}) {
   if (!lista || lista.length == 0) return <ListaVaciaT />;

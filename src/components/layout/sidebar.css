@@ -1,0 +1,104 @@
+/* @import url(header.css); */
+:root{
+  --navLiColor: rgb(0, 204, 204);
+}
+
+.sidebar {
+  background-color: #111;
+  height: 100vh;
+  width: 180px;
+  box-shadow: 10px 0 15px #0004;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  overflow: hidden;
+  transition: width .25s ease;
+}
+
+.sidebar.closed {
+  width: 50px;
+}
+.sidebar.closed .sidebarHead {
+  display: none;
+}
+.sidebar.closed li {
+  justify-content: center;
+  padding-inline: 0;
+}
+.sidebar.closed li span {
+  display: none;
+}
+.sidebar.closed li svg {
+  margin-right: 0;
+}
+.sidebar.closed dd {
+  margin-left: 0;
+}
+
+.sidebarToggle {
+  background: #000;
+  border: none;
+  color: var(--colorSecondary);
+  cursor: pointer;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+.sidebarToggle:hover {
+  background-color: #222;
+  color: var(--colorLight);
+}
+.sidebarToggle svg {
+  height: 24px;
+  width: 24px;
+}
+
+.sidebar .sidebarHead {
+  color: var(--blueText);
+  text-transform: uppercase;
+}
+
+.sidebar dl {
+  margin: 0;
+  padding: 0;
+}
+.sidebar li {
+  list-style-type: none; 
+  padding-inline: 15px;
+  margin-block: 5px;
+  height: 35px;
+
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  cursor: pointer;
+  color: white;
+  white-space: nowrap;
+}
+.sidebar li:hover {
+  background-color: #222;
+}
+.sidebar li:hover, .currentTab {
+  color: cyan !important;
+}
+.sidebar li svg {
+  margin-right: 10px;
+  height: 20px;
+}
+
+.sidebar dt {
+  background-color: #0003;
+  margin-top: 15px;
+}
+.sidebar dd {
+  margin-left: 15px; 
+}
+.sidebar dd li{
+  height: 25px;
+}
+
+.disabled, .sidebar li.disabled:hover {
+  color: gray !important;
+  cursor: default !important;
+}

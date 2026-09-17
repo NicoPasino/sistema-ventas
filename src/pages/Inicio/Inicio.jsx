@@ -1,9 +1,9 @@
-import { UserSettingsContext } from "../../../context/userSettingsContext";
-import { DataContext } from "../../../context/DataContext";
+import { UserSettingsContext } from "../../context/userSettingsContext";
+import { DataContext } from "../../context/DataContext";
 import { useContext } from "react";
-import { getDate } from "../../../utils/time/getDate";
-import { TarjetaBlanca } from "../shared/tarjetaBlanca";
-import { Cargando, ListaVacia, ErrorMensaje } from "../shared/textosComponent";
+import { getDate } from "../../utils/time/getDate";
+import { TarjetaBlanca } from "../../components/pages/tarjetaBlanca";
+import { Cargando, ListaVacia, ErrorMensaje } from "../../components/pages/textosComponent";
 
 export default function Inicio() {
   const {getUser} = useContext(UserSettingsContext);

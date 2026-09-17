@@ -1,10 +1,10 @@
 import { useContext } from "react";
-import { DataContext } from "../../../context/DataContext";
-import { UserSettingsContext } from "../../../context/userSettingsContext.jsx";
-import { FormSearch } from "../shared/formSearch";
-import { FormNuevaVenta } from "./formNuevaVenta";
-import { TablaGenerica } from '../shared/tablaGenerica.jsx';
-import { Contenido } from './ContenidoTabla';
+import { DataContext } from "../../context/DataContext.jsx";
+import { UserSettingsContext } from "../../context/userSettingsContext.jsx";
+import { FormSearch } from "../../components/pages/formSearch";
+import { FormNuevaVenta } from "./formNuevaVenta.jsx";
+import { TablaGenerica } from '../../components/pages/tablaGenerica';
+import { Contenido } from './ContenidoTabla.jsx';
 
 export default function Ventas() {
   const { ventas } = useContext(DataContext);

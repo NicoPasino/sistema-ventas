@@ -1,13 +1,13 @@
-import { DataContext } from '../../../context/DataContext';
 import { useContext, useRef } from 'react';
-import { usePopup } from '../../../context/notificationContext';
-import { Button } from '../../shared/botones';
-import { Modal } from '../../shared/Modal';
-import '../shared/modalProducto.css';
-import { CheckRes } from '../../../utils/checkRes';
+import { DataContext } from '../../context/DataContext';
+import { usePopup } from '../../context/notificationContext';
+import { Button } from '../../components/shared/botones';
+import { Modal } from '../../components/shared/Modal';
+import '../../components/pages/modalProducto.css';
+import { CheckRes } from '../../utils/checkRes';
 import { NuevoCliente } from './nuevoCliente';
-import { useAlert } from '../../../context/notificationContext';
-import { Alert } from '../../shared/Alert';
+import { useAlert } from '../../context/notificationContext';
+import { Alert } from '../../components/notification/Alert';
 
 export function ModalEditarCliente({ id, onClose }) {
   const { clientes } = useContext(DataContext);

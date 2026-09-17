@@ -1,7 +1,7 @@
 import './formSearch.css'
 import { useRef, useState, useCallback } from 'react';
-import { ReloadIcon, SearchIcon } from "../../../assets/icons";
-import { IconButton, Button } from '../../shared/botones';
+import { ReloadIcon, SearchIcon } from "../../assets/icons";
+import { IconButton, Button } from '../shared/botones';
 
 export function FormSearch({ itemsManage, tipo, newItemHandle }) {
   const { reloadItems, filtrarItemsLocal, error } = itemsManage;

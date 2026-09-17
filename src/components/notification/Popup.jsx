@@ -3,7 +3,7 @@ import { createPortal } from 'react-dom';
 import { NOTIFICATION_ICONS } from '../../assets/icons';
 import './popup.css';
 
-export default function Popup({
+export function Popup({
   type = 'info',
   message,
   onClose,
@@ -31,3 +31,5 @@ export default function Popup({
     document.body
   );
 }
+
+export default Popup;

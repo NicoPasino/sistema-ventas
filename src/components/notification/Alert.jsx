@@ -10,7 +10,7 @@ const DEFAULT_TITLES = {
   info: 'Info',
 };
 
-export default function Alert() {
+export function Alert() {
   const { alert, hideAlert } = useAlert();
 
   useEffect(() => {
@@ -37,3 +37,5 @@ export default function Alert() {
     </div>
   );
 }
+
+export default Alert;

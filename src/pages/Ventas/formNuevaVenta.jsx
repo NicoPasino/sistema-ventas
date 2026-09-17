@@ -1,13 +1,13 @@
-import '../shared/formNueva.css';
+import '../../components/pages/formNueva.css';
 import { useContext, useState } from 'react';
-import { DataContext } from '../../../context/DataContext';
-import { usePopup } from '../../../context/notificationContext';
-import { Button } from '../../shared/botones';
-import { CheckRes } from '../../../utils/checkRes';
+import { DataContext } from '../../context/DataContext';
+import { usePopup } from '../../context/notificationContext';
+import { Button } from '../../components/shared/botones';
+import { CheckRes } from '../../utils/checkRes';
 import { BuscadorCliente, BuscadorProductos } from './campoBuscador';
 import { TablaNewItemsVenta } from './tablaNewItemsVenta';
-import { useAlert } from '../../../context/notificationContext';
-import { Alert } from '../../shared/Alert';
+import { useAlert } from '../../context/notificationContext';
+import { Alert } from '../../components/notification/Alert';
 
 export function FormNuevaVenta() {
   const { ventas, productos } = useContext(DataContext);

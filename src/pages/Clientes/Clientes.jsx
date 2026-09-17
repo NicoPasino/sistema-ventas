@@ -1,9 +1,9 @@
 import { useContext, useState } from "react";
-import { FormSearch } from '../shared/formSearch';
+import { FormSearch } from '../../components/pages/formSearch';
 import { ModalEditarCliente } from "./modalEditarCliente";
-import { TablaGenerica } from '../shared/tablaGenerica';
+import { TablaGenerica } from '../../components/pages/tablaGenerica';
 import { Contenido } from './ContenidoTabla';
-import { DataContext } from "../../../context/DataContext";
+import { DataContext } from "../../context/DataContext";
 
 export default function Clientes() {
   const { clientes } = useContext(DataContext);

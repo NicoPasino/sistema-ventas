@@ -1,8 +1,8 @@
 import { ModalEditarCliente } from '../Clientes/modalEditarCliente';
 import { useContext, useState } from 'react';
-import { DataContext } from '../../../context/DataContext';
-import { Combobox } from '../shared/Combobox';
-import { QuantitySelector } from '../shared/QuantitySelector';
+import { DataContext } from '../../context/DataContext';
+import { Combobox } from '../../components/pages/Combobox';
+import { QuantitySelector } from '../../components/pages/QuantitySelector';
 
 export function BuscadorCliente({ clienteSelecManag }) {
   const { clienteSeleccionado, setClienteSeleccionado } = clienteSelecManag;

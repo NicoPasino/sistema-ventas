@@ -1,10 +1,11 @@
-import { useContext } from 'react';
-import { HomeIcon, ClientesIcon, ProductosIcon, VentasIcon, NewIcon } from '../assets/icons.jsx';
-import './nav.css'
-import { UserSettingsContext } from '../context/userSettingsContext.jsx';
+import { useContext, useState } from 'react';
+import { HomeIcon, ClientesIcon, ProductosIcon, VentasIcon, NewIcon, MenuIcon } from '../../assets/icons.jsx';
+import './sidebar.css'
+import { UserSettingsContext } from '../../context/userSettingsContext.jsx';
 
-export function Nav({ isOpen }) {
+export function Sidebar() {
   const {getTab, handleTab} = useContext(UserSettingsContext)
+  const [isOpen, setIsOpen] = useState(true)
 
   function handleTabClick(name, disabled){
     if (!disabled) handleTab(name);
@@ -17,17 +18,17 @@ export function Nav({ isOpen }) {
     return (
       <li className={`${styleCurrentTab} ${styleDisabled}`} onClick={() => handleTabClick(name, disabled)}>
         {children}
-        {customName || name}
+        <span>{customName || name}</span>
       </li>
     )
   }
 
   return (
-    <div className={`${isOpen ? 'nav' : 'navDisabled'}`}>
-      <div className='navHead'>
-        <h3>Menú</h3>
-      </div>
-
+    <div className={`sidebar ${isOpen ? 'open' : 'closed'}`}>
+      <button type="button" className="sidebarToggle" onClick={() => setIsOpen(!isOpen)} title={isOpen ? 'Colapsar sidebar' : 'Expandir sidebar'}>
+        {isOpen && <h3 className="sidebarHead">Menu</h3>}
+        <MenuIcon isOpen={isOpen} />
+      </button>
       <dl>
         {/* Inicio */}
         <dt>
