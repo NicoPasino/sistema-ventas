@@ -1,84 +1,96 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { converToLocal } from "../utils/getDate";
 
-export function useItems({itemsDB, categoriasDB}) {
-  const [ items, setItems ] = useState([]);
-  const [ itemsOriginales, setItemsOriginales ] = useState([]);
-  const [ categorias, setCategorias ] = useState([]);
-  const [ loading, setLoading ] = useState(true);
-  const [ error, setError ] = useState(false);
-  const [ mensaje, setMensaje ] = useState(false);
-  
-  function hayError(res) {
-    try {
-      if (res?.error) {
-        setError(res.error);
-        return true;
-      } else if (res?.message) {
-        setMensaje(res.message);
-        return true;
-      } else return false;
-    } catch {
-      setError("Error de código, al checkear la respuesta de la API.");
-      return true;
-    }
-  }
-  
-  const recargarItems = async (itemsDBArg) => {
+export function useItems({ itemsDB, categoriasDB }) {
+  const [items, setItems] = useState([]);
+  const [itemsOriginales, setItemsOriginales] = useState([]);
+  const [categorias, setCategorias] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
+
+  const mostrarError = useCallback((res) => {
+    const errorMsj = res?.error || res?.message;
+    setError(errorMsj || false);
+    return Boolean(errorMsj);
+  }, []);
+
+  const recargarItems = useCallback(async () => {
     setLoading(true);
     try {
-      // setTimeout(async () => {
-        const res = await itemsDBArg.obtenerTodos();
-        if (hayError(res)) return;
+      let res = await itemsDB.obtenerTodos();
 
-        setItems(Array.isArray(res) ? res : []);
-        setItemsOriginales(Array.isArray(res) ? res : []);
+      // Convertir fechas de UTC a local
+      if (Array.isArray(res)) {
+        res = res.map((item) => {
+          const copia = { ...item };
+          if (copia.fechaCreacion) copia.fechaCreacion = converToLocal(copia.fechaCreacion);
+          if (copia.fechaModificacion) copia.fechaModificacion = converToLocal(copia.fechaModificacion);
+          if (copia.fechaVenta) copia.fechaVenta = converToLocal(copia.fechaVenta);
+          return copia;
+        });
+      }
 
-        if (!categoriasDB) return;
-        const categoriasRes = await categoriasDB.obtenerTodos();
-        if (hayError(categoriasRes)) return;
-        setCategorias(Array.isArray(categoriasRes) ? categoriasRes : []);
-      // }, 3000);
+      if (mostrarError(res)) return;
+
+      setItems(Array.isArray(res) ? res : []);
+      setItemsOriginales(Array.isArray(res) ? res : []);
+
+      if (!categoriasDB) return;
+      const categoriasRes = await categoriasDB.obtenerTodos();
+      if (mostrarError(categoriasRes)) return;
+      setCategorias(Array.isArray(categoriasRes) ? categoriasRes : []);
     } catch (err) {
-      setError(err?.message || String(err));
+      setError("Error al cargar los datos.");
+      console.error(err);
       setItems([]);
     } finally {
       setLoading(false);
     }
-  }
+  }, [itemsDB, categoriasDB, mostrarError]);
 
   useEffect(() => {
-    recargarItems(itemsDB);
+    recargarItems();
+  }, [recargarItems]);
+
+  const agregar = useCallback(async ({ nuevoItem }) => {
+    try {
+      return await itemsDB.agregar(nuevoItem);
+    } catch (err) {
+      console.error(err);
+      return { error: "Error al agregar el elemento." };
+    }
   }, [itemsDB]);
 
-  const agregar = async ({nuevoItem}) => {
-    let res = await itemsDB.agregar(nuevoItem);
-    // if (res?.ok) 
-      recargarItems(itemsDB);
-    return res;
-  };
-  const actualizar = async ({nuevoDato}) => {
-    let res = await itemsDB.actualizar(nuevoDato);
-    // if (res?.ok) 
-      recargarItems(itemsDB);
-    return res;
-  };
-  const obtenerItem = async (id) => {
-    let res = await itemsDB.obtenerPorId(id);
-    return res;
-  };
-  const eliminar = async (id) => {
-    const respuestaConfirm = confirm("Realmente quieres eliminar este elemento?"); // TODO: modal
-    if (!respuestaConfirm) return;
-    let res = await itemsDB.eliminar(Number(id));
-    recargarItems(itemsDB);
-    return res;
-  };
-  
-  const buscarItems = async (campo, valor) => {
-    setItems(await itemsDB.buscarPorCampo(campo, valor));
-  }
+  const actualizar = useCallback(async ({ nuevoDato }) => {
+    try {
+      return await itemsDB.actualizar(nuevoDato);
+    } catch (err) {
+      console.error(err);
+      return { error: "Error al actualizar el elemento." };
+    }
+  }, [itemsDB]);
 
-  const filtrarItemsLocal = (valor) => {
+  const obtenerItem = useCallback(async (id) => {
+    try {
+      return await itemsDB.obtenerPorId(id);
+    } catch (err) {
+      console.error(err);
+      return { error: "Error al obtener el elemento." };
+    }
+  }, [itemsDB]);
+
+  const eliminar = useCallback(async (id) => {
+    const respuestaConfirm = confirm("Realmente quieres eliminar este elemento?"); // TODO: modal
+    if (!respuestaConfirm) return undefined;
+    try {
+      return await itemsDB.eliminar(id);
+    } catch (err) {
+      console.error(err);
+      return { error: "Error al eliminar el elemento." };
+    }
+  }, [itemsDB]);
+
+  const filtrarItemsLocal = useCallback((valor) => {
     if (!valor || valor.trim() === "") {
       setItems(itemsOriginales);
       return;
@@ -92,9 +104,20 @@ export function useItems({itemsDB, categoriasDB}) {
       });
     });
     setItems(filtrados);
-  }
+  }, [itemsOriginales]);
 
-  const reloadItems = () => recargarItems(itemsDB);
+  const reloadItems = recargarItems;
 
-  return { items, agregar, actualizar, obtenerItem, eliminar, reloadItems, buscarItems, filtrarItemsLocal, loading, error, mensaje, setMensaje, categorias }
+  return useMemo(() => ({
+    items,
+    agregar,
+    actualizar,
+    obtenerItem,
+    eliminar,
+    reloadItems,
+    filtrarItemsLocal,
+    loading,
+    error,
+    categorias
+  }), [items, agregar, actualizar, obtenerItem, eliminar, reloadItems, filtrarItemsLocal, loading, error, categorias]);
 }

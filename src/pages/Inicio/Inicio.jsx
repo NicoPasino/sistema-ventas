@@ -1,7 +1,7 @@
 import { UserSettingsContext } from "../../context/userSettingsContext";
 import { DataContext } from "../../context/DataContext";
 import { useContext } from "react";
-import { getDate } from "../../utils/time/getDate";
+import { getDate } from "../../utils/getDate";
 import { TarjetaBlanca } from "../../components/pages/tarjetaBlanca";
 import { Cargando, ListaVacia, ErrorMensaje } from "../../components/pages/textosComponent";
 
@@ -13,7 +13,7 @@ export default function Inicio() {
   return (
     <>
       <div className="simpleCard">
-        <span className="fecha">{fecha.m} {fecha.d}, {fecha.y}</span>
+        <span className="fecha">{fecha.fechaLarga}</span>
         <p> Bienvenido al Sistema <b>{getUser}</b></p>
       </div>
       

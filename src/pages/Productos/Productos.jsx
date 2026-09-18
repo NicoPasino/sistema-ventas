@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import { DataContext } from "../../context/DataContext.jsx";
+import { DataContext } from "../../context/dataContext";
 import { FormSearch } from '../../components/pages/formSearch';
 import { ModalEditarProducto } from "./modalEditarProducto.jsx";
 import { TablaGenerica } from '../../components/pages/tablaGenerica';
@@ -21,8 +21,9 @@ export default function Productos() {
     setModalNew(false);
   }
 
-  function handleDelete(id) {
-    const res = eliminar(id);
+  async function handleDelete(id) {
+    const res = await eliminar(id);
+    if (!res) return;
     CheckRes(res, { onSuccess: reloadItems, showPopup });
   }
 

@@ -1,8 +1,7 @@
 import { ModalEditarCliente } from '../Clientes/modalEditarCliente';
 import { useContext, useState } from 'react';
-import { DataContext } from '../../context/DataContext';
+import { DataContext } from '../../context/dataContext';
 import { Combobox } from '../../components/pages/Combobox';
-import { QuantitySelector } from '../../components/pages/QuantitySelector';
 
 export function BuscadorCliente({ clienteSelecManag }) {
   const { clienteSeleccionado, setClienteSeleccionado } = clienteSelecManag;
@@ -63,16 +62,6 @@ export function BuscadorProductos({ newItemsManag }) {
 
   return (
     <div className='flex-row mb-6'>
-      {/* <div>
-        <label>Cantidad:</label>
-        <QuantitySelector
-          value={cantidad}
-          onChange={setCantidad}
-          min={1}
-          // max={productoSeleccionado?.stock ?? 999}
-        />
-      </div> */}
-
       <div className='flex-1'>
         <label>Buscar Productos:</label>
         <Combobox

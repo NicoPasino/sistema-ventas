@@ -1,6 +1,6 @@
 import '../../components/pages/formNueva.css';
 import { useContext, useState } from 'react';
-import { DataContext } from '../../context/DataContext';
+import { DataContext } from '../../context/dataContext';
 import { usePopup } from '../../context/notificationContext';
 import { Button } from '../../components/shared/botones';
 import { CheckRes } from '../../utils/checkRes';
@@ -11,8 +11,8 @@ import { Alert } from '../../components/notification/Alert';
 
 export function FormNuevaVenta() {
   const { ventas, productos } = useContext(DataContext);
-  const { agregar } = ventas;
-  const { items: productosList, reloadItems } = productos;
+  const { agregar, reloadItems: reloadVentas } = ventas;
+  const { items: productosList, reloadItems: reloadProductos } = productos;
   const { showPopup } = usePopup();
   const [newItems, setNewItems] = useState([]);
   const [clienteSeleccionado, setClienteSeleccionado] = useState(null);
@@ -35,7 +35,7 @@ export function FormNuevaVenta() {
     const nuevoItem = { ...query, ItemsId, ItemsCant };
     const res = await agregar({ nuevoItem });
 
-    const onSuccess = () => { event.target.reset(); handleClear(); reloadItems(); hideAlert() };
+    const onSuccess = () => { event.target.reset(); handleClear(); reloadProductos(); reloadVentas(); hideAlert() };
     const onShowAlert = (type, message) => showAlert({ type, message });
     CheckRes(res, { onSuccess, showPopup, onMessage: onShowAlert });
   }

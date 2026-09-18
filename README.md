@@ -84,8 +84,11 @@ sistema-ventas/
 ## 🧱 Arquitectura
 
 - **API:** todas las llamadas pasan por `src/services/api.js`, que expone la función `buildCollection(name)` para las operaciones CRUD: `obtenerTodos`, `buscarPorCampo`, `obtenerPorId`, `agregar`, `eliminar`, `actualizar`.
-- **Estado global:** `DataProvider` (en `dataContext.jsx`) expone `{ productos, clientes, ventas }`, cada uno con el resultado del hook `useItems`.
+- **Estado global:** `DataProvider` (en `dataContext.jsx`) expone `{ productos, clientes, ventas }` con useMemo, cada uno con el resultado del hook `useItems`.
+
 - **UI:** componentes reutilizables en `components/` separadas segun el area.
+- **Filtros y busquedas** en "Productos" y "Clientes" se realizan mediante un input que filtra los items de forma local.
+- **Fechas** se guardan en formato UTC y se muestran en formato local, esto se realiza en el hook `useItems`.
 
 ---
 
