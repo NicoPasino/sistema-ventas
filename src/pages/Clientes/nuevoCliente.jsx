@@ -22,7 +22,7 @@ export const NuevoCliente = forwardRef(function NuevoCliente({ obtenerItem, id }
   }, [id, obtenerItem]);
 
   useImperativeHandle(ref, () => ({
-    getData: () => cliente,
+    getData: () => ({ ...cliente }),
     getErrors: () => errors,
     validate: () => {
       const errs = validarCliente(cliente);

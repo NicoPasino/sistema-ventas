@@ -1,13 +1,13 @@
-export function DesglosarFecha(_fecha) {
+function DesglosarFecha(_fecha) {
   const date = new Date(_fecha);
 
-  const D = date.toLocaleDateString('es-ES', { weekday: 'long' }); // "jueves"
-  const d = date.getDate(); // "7"
-  const dd = d.toString().padStart(2, "0"); // "07"
-  const m = date.getMonth() + 1; // "8"
-  const mm = m.toString().padStart(2, "0"); // "08"
+  const D = date.toLocaleDateString('es-ES', { weekday: 'long' });  // "jueves"
+  const d = date.getDate();                                         // "7"
+  const dd = d.toString().padStart(2, "0");                         // "07"
+  const m = date.getMonth() + 1;                                    // "8"
+  const mm = m.toString().padStart(2, "0");                         // "08"
   const MMMM = date.toLocaleDateString('es-ES', { month: 'long' }); // "agosto"
-  const yyyy = date.getFullYear(); // "2026"
+  const yyyy = date.getFullYear();                                  // "2026"
 
   const hour = date.getHours().toString().padStart(2, "0");
   const min = date.getMinutes().toString().padStart(2, "0");
@@ -15,16 +15,30 @@ export function DesglosarFecha(_fecha) {
   const hora = `${hour}:${min}`;
   const horaLarga = `${hour}:${min}:${sec}`;
 
-  const fechaCorta = date.toLocaleDateString(); // "7/8/2026" - "d/m/yyyy"
-  const fecha = `${dd}/${mm}/${yyyy}`; // "07/08/2026"
-  const fechaStr = `${dd}-${MMMM}-${yyyy}`; // "07-agosto-2026"
-  const fechaConHora = `${fecha} ${hora}`; // "07/08/2026 00:40"
-  const fechaConHoraStr = `${fechaStr} ${hora}`; // "07-agosto-2026 00:40"
-  const fechaLarga = `${D}, ${d} de ${MMMM} del ${yyyy}`; // "jueves, 7 de agosto del 2026"
-  const fechaDate = `${yyyy}-${mm}-${dd} ${horaLarga}`; // "2026-01-22 00:00:00"
+  const fechaCorta = date.toLocaleDateString();             // "7/12/2026" - "d/m/yyyy"
+  const fecha = `${dd}/${mm}/${yyyy}`;                      // "07/12/2026"
+  const fechaStr = `${dd}-${MMMM}-${yyyy}`;                 // "07-agosto-2026"
+  const fechaConHora = `${fecha} ${hora}`;                  // "07/12/2026 00:40"
+  const fechaConHoraStr = `${fechaStr} ${hora}`;            // "07-agosto-2026 00:40"
+  const fechaLarga = `${D}, ${d} de ${MMMM} del ${yyyy}`;   // "jueves, 7 de agosto del 2026"
+  const fechaDate = `${yyyy}-${mm}-${dd} ${horaLarga}`;     // "2026-12-07 00:00:00"
   // const ISO = `${yyyy}-${mm}-${dd}T${horaLarga}`;
 
   const tiempoTranscurrido = TiempoTranscurrido(date);
+
+
+  const now = new Date();
+  const isToday = d === now.getDate() && m === now.getMonth() + 1 && yyyy === now.getFullYear();
+  const isThisYear = yyyy === now.getFullYear();
+
+  let fechaDinamica = "";
+  if (isToday) {
+    fechaDinamica = `Hoy ${hora}`;
+  } else if (isThisYear) {
+    fechaDinamica = `${fecha}`;
+  } else {
+    fechaDinamica = fecha;
+  }
 
   return {
     date,
@@ -37,12 +51,13 @@ export function DesglosarFecha(_fecha) {
     fechaConHora, // "27/08/2026 00:40"
     fechaConHoraStr, // "27-agosto-2026 00:40"
     fechaDate,    // "2026-01-22 00:00:00"
-    tiempoTranscurrido
+    tiempoTranscurrido,
+    fechaDinamica
   }
 }
 
-export function getDate() {
-  return DesglosarFecha(new Date());
+export function getDate(fecha = new Date()) {
+  return DesglosarFecha(fecha);
 }
 
 export function getNowUTC() {
@@ -59,10 +74,10 @@ export function converToLocal(fechaUtc) {
   return DesglosarFecha(dateStr).fechaDate; // "2026-01-22 00:00:00"
 }
 
-export function TiempoTranscurrido(fecha) {
+export function TiempoTranscurrido(fecha, fecha2 = new Date()) {
   const fechaDada = new Date(fecha);
-  const ahora = new Date();
-  const diferenciaMs = ahora - fechaDada;
+  const fechaComparar = new Date(fecha2);
+  const diferenciaMs = fechaComparar - fechaDada;
 
   if (isNaN(diferenciaMs)) return "";
 

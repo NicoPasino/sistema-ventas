@@ -1,84 +1,27 @@
 import { UserSettingsContext } from "../../context/userSettingsContext";
-import { DataContext } from "../../context/DataContext";
+import { DataContext } from "../../context/dataContext";
 import { useContext } from "react";
 import { getDate } from "../../utils/getDate";
-import { TarjetaBlanca } from "../../components/pages/tarjetaBlanca";
-import { Cargando, ListaVacia, ErrorMensaje } from "../../components/pages/textosComponent";
+import { HeaderCard } from "../../components/pages/tarjetas";
+import { BajoStock, TopClientes, TopProductos, TarjetasResumen } from "./tarjetasInicio";
 
 export default function Inicio() {
   const {getUser} = useContext(UserSettingsContext);
-  const {productos, clientes} = useContext(DataContext);
-  const fecha = getDate();
+  const {productos, clientes, ventas} = useContext(DataContext);
 
   return (
     <>
-      <div className="simpleCard">
-        <span className="fecha">{fecha.fechaLarga}</span>
-        <p> Bienvenido al Sistema <b>{getUser}</b></p>
-      </div>
-      
-      <br />
+      <HeaderCard title={getDate().fechaLarga} subtitle={`Bienvenido ${getUser}.`} />
+
+      <TarjetasResumen productos={productos} clientes={clientes} ventas={ventas} />
+
       <div className="divTarjetas">
-        <TarjetaBlanca title="📉 Productos con bajo stock" footer={"Productos"}>
-          { 
-            (productos.loading) ? <Cargando />
-            : (productos.error)
-              ? <ErrorMensaje msg={productos.error}/>
-              : <BajoStock lista={productos.items}/>
-          }
-        </TarjetaBlanca>
+        <BajoStock productos={productos} title="📉 Productos con bajo stock" footer="Productos"/>
 
-        <TarjetaBlanca title="🏆 Top 5 Clientes" footer={"Ventas"}>
-          { 
-            (clientes.loading)
-            ? <Cargando />
-            : (productos.error)
-              ? <ErrorMensaje msg={productos.error}/>
-              : <TopClientes lista={clientes.items}/>
-          }
-        </TarjetaBlanca>
+        <TopClientes clientes={clientes} top={5} title="🏆 Top 5 Clientes" footer="Ventas"/>
 
-        <TarjetaBlanca title="🏆 Top Productos Vendidos" /* footer={"Ventas"} */>
-          <span className="colorGris">Muy pronto...</span> 
-        </TarjetaBlanca>
+        <TopProductos ventas={ventas} top={5} title="🏆 Top Productos Vendidos" footer="Ventas"/>
       </div>
     </>
   )
-}
-
-function BajoStock({ lista }){
-  if (!lista) return <ListaVacia />
-  else return (
-    <ul>
-      {lista.map((prod, i) => {
-        if(prod.cantidad<= 15){
-          return ( <li key={i}>
-              <strong>{prod.nombre}</strong> — <span className="colorGrisClaro">{prod.cantidad} en stock.</span>
-            </li> )
-        }
-      })}
-    </ul>
-  )
-}
-
-function TopClientes({ lista }) {
-  if (!lista) return <ListaVacia />
-
-  const topClientes = [...lista]
-    .sort((a, b) => b.nroCompras - a.nroCompras)
-    .slice(0, 7);
-
-  return (
-    <ul>
-      {topClientes.map((cliente, index) => {
-        if(cliente.nroCompras > 0){
-          return(
-            <li key={index}>
-              <strong>{cliente.nombre}</strong> — <span className="colorGrisClaro">{cliente.nroCompras} compras.</span>
-            </li>
-          )
-        }
-      })}
-    </ul>
-  );
 }

@@ -23,6 +23,18 @@ export function StockDisplay(cant) {
   return <span className={(cant>15) ? "" : "colorRojoClaro"}>{cant}</span>
 }
 
-export function GrayDisplay(txt) {
+export function GrayDisplay(txt = "-") {
   return <span className="colorGrisClaro">{txt}</span>
+}
+
+export function CorreoDisplay(correo) {
+  if (!correo) return GrayDisplay("-");
+  const [nombre, dominio] = correo.split("@");
+  if (!nombre || !dominio) return <span className="colorGrisClaro">{correo}</span>;
+
+  return <a href={`mailto:${correo}`}>
+    <span className="colorGrisClaro">{nombre}</span>
+    <span className="colorGris">@</span>
+    <span className="colorGrisClaro">{dominio}</span>
+  </a>
 }

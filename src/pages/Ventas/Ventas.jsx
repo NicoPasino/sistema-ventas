@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { DataContext } from "../../context/DataContext.jsx";
+import { DataContext } from "../../context/dataContext";
 import { UserSettingsContext } from "../../context/userSettingsContext.jsx";
 import { FormSearch } from "../../components/pages/formSearch";
 import { FormNuevaVenta } from "./formNuevaVenta.jsx";
@@ -11,7 +11,7 @@ export default function Ventas() {
   const { items } = ventas;
   const { handleTab } = useContext(UserSettingsContext);
 
-  const tableHeaders = ["Código", "Cliente", "Productos", "Fecha", "Total"];
+  const tableHeaders = ["Número", "Cliente", "Productos", "Fecha", "Total"];
 
   return (
     <div className="ventas">
