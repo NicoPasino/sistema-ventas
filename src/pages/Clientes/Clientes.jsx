@@ -12,6 +12,12 @@ export default function Clientes() {
   const [modalNew, setModalNew] = useState(false);
 
   const tableHeaders = ["Nombre", "Correo", "Documento", "Registrado"];
+  const ordenCampos = [
+    { label: "Nombre", valor: (c) => c.nombre },
+    { label: "Correo", valor: (c) => c.correo },
+    { label: "Documento", valor: (c) => c.documento },
+    { label: "Registrado", valor: (c) => c.fechaCreacion },
+  ];
 
   function handleCloseModal() {
     setIdCliente();
@@ -20,7 +26,7 @@ export default function Clientes() {
 
   return (
     <div>
-      <FormSearch tipo={"Cliente"} itemsManage={clientes} newItemHandle={ () => setModalNew(true) } />
+      <FormSearch tipo={"Cliente"} itemsManage={clientes} newItemHandle={ () => setModalNew(true) } ordenCampos={ordenCampos} />
       <TablaGenerica itemsManage={clientes} headers={tableHeaders} >
         <Contenido lista={items} />
       </TablaGenerica>

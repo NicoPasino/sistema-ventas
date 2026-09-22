@@ -125,3 +125,39 @@
     flex-direction: column;
   }
 }
+
+/* modal venta info */
+.modalVentaDatos {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.modalVentaDato {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+}
+
+.modalVentaLabel {
+  min-width: 70px;
+  font-size: 0.85em;
+  color: var(--colorSecondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.modalVentaValor {
+  color: var(--colorLight);
+  font-weight: 500;
+  word-break: break-word;
+}
+
+.modalVentaTotal {
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: 1.1rem;
+  font-weight: 600;
+}

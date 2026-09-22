@@ -1,8 +1,9 @@
 import { GrayDisplay, MoneyDisplay } from '../../utils/displayConvert';
 import { ListaVaciaT } from '../../components/pages/textosComponent';
 import { getDate } from '../../utils/getDate';
+import { ViewIcon } from '../../assets/icons';
 
-export function Contenido({lista}) {
+export function Contenido({lista, setVenta}) {
   if (!lista || lista.length == 0) return <ListaVaciaT />;
 
   return (
@@ -17,10 +18,17 @@ export function Contenido({lista}) {
       return (
         <tr key={i}>
           <td className='tablaColID'>        {GrayDisplay(numero)} </td>
-          <td className='tablaColNombre'>    {cliente} </td>
+          <td className='tablaColNombre'>    {cliente.nombre} </td>
           <td className='tablaColDetalles'   title={detalle}> {productosCantidad} </td>
           <td className='tablaColFecha'      title={tiempoTranscurrido}> {fechaDinamica} </td>
           <td className='tablaColPrecio'>    {MoneyDisplay(totalCalculado)} </td>
+          <td>
+            <div className='tablaColAcciones'>
+              <i className='iconEdit svgView' onClick={()=> {setVenta(item)}}> <ViewIcon /> </i>
+              {/* <i className='iconEdit svgEdit' onClick={()=> setIdProducto(idPublica)}> <EditIcon /> </i> */}
+              {/* <i className='iconEdit svgDelete' onClick={()=> eliminar(idPublica)}> <DeleteIcon /> </i> */}
+            </div>
+          </td>
         </tr>
       )
     })

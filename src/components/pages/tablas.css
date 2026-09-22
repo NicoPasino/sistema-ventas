@@ -1,5 +1,6 @@
 .tablaList {
   width: 100%;
+  height: 100%;
   border-collapse: collapse;
   /* margin-block: 15px; */
 }
@@ -23,7 +24,10 @@ tr:nth-child(even) {background-color: #303030;}
 tr td{
   text-align: center;
   vertical-align: middle;
-  height: 100%;
+  /* height: 100%; */
+}
+.tablaCol{
+  width: auto;
 }
 .tablaColID{ 
   width: 30px; 
@@ -31,14 +35,13 @@ tr td{
 .tablaColNombre {
   text-align: start;
   font-weight: 500;
+  width: auto;
 }
 .tablaColDetalles{
   text-align: start;
-  width: 300px;
-  max-width: 300px;
   color: #bbb;
-  /* font-weight: 100; */
   font-size: 0.9em;
+  width: auto;
 }
 .tablaColCantidad {
   width: 50px;
@@ -54,6 +57,7 @@ tr td{
   align-items: center;
   vertical-align: middle;
   height: 100%;
+  width: auto;
   /* padding-block: 20%; */
 }
 

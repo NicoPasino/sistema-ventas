@@ -1,12 +1,25 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { converToLocal } from "../utils/getDate";
 
+function aplicarOrden(lista, orden) {
+  if (!orden) return lista;
+  const { accesor, direccion } = orden;
+  const factor = direccion === "desc" ? -1 : 1;
+  return [...lista].sort((a, b) => {
+    const va = accesor(a);
+    const vb = accesor(b);
+    if (typeof va === "number" && typeof vb === "number") return (va - vb) * factor;
+    return String(va ?? "").localeCompare(String(vb ?? ""), "es", { numeric: true, sensitivity: "base" }) * factor;
+  });
+}
+
 export function useItems({ itemsDB, categoriasDB }) {
   const [items, setItems] = useState([]);
   const [itemsOriginales, setItemsOriginales] = useState([]);
   const [categorias, setCategorias] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
+  const [orden, setOrden] = useState(null);
 
   const mostrarError = useCallback((res) => {
     const errorMsj = res?.error || res?.message;
@@ -16,6 +29,7 @@ export function useItems({ itemsDB, categoriasDB }) {
 
   const recargarItems = useCallback(async () => {
     setLoading(true);
+    setOrden(null);
     try {
       let res = await itemsDB.obtenerTodos();
 
@@ -92,7 +106,7 @@ export function useItems({ itemsDB, categoriasDB }) {
 
   const filtrarItemsLocal = useCallback((valor) => {
     if (!valor || valor.trim() === "") {
-      setItems(itemsOriginales);
+      setItems(orden ? aplicarOrden(itemsOriginales, orden) : itemsOriginales);
       return;
     }
     const valorLower = valor.toLowerCase().trim();
@@ -103,8 +117,14 @@ export function useItems({ itemsDB, categoriasDB }) {
         return String(val).toLowerCase().includes(valorLower);
       });
     });
-    setItems(filtrados);
-  }, [itemsOriginales]);
+    setItems(orden ? aplicarOrden(filtrados, orden) : filtrados);
+  }, [itemsOriginales, orden]);
+
+  const ordenarItems = useCallback((accesor, direccion) => {
+    const nuevoOrden = { accesor, direccion };
+    setOrden(nuevoOrden);
+    setItems(aplicarOrden(items, nuevoOrden));
+  }, [items]);
 
   const reloadItems = recargarItems;
 
@@ -116,8 +136,9 @@ export function useItems({ itemsDB, categoriasDB }) {
     eliminar,
     reloadItems,
     filtrarItemsLocal,
+    ordenarItems,
     loading,
     error,
     categorias
-  }), [items, agregar, actualizar, obtenerItem, eliminar, reloadItems, filtrarItemsLocal, loading, error, categorias]);
+  }), [items, agregar, actualizar, obtenerItem, eliminar, reloadItems, filtrarItemsLocal, ordenarItems, loading, error, categorias]);
 }
