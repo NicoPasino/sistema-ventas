@@ -1,5 +1,5 @@
-import '../../components/pages/modalProducto.css';
-import { DataContext } from '../../context/DataContext';
+import '../../components/pages/modals.css';
+import { DataContext } from '../../context/dataContext';
 import { useContext, useRef } from 'react';
 import { NuevoProducto } from './nuevoProducto';
 import { usePopup } from '../../context/notificationContext';
@@ -12,7 +12,7 @@ import { useAlert } from '../../context/notificationContext';
 
 export function ModalEditarProducto({id, setIdProducto}) {
   const { productos } = useContext(DataContext);
-  const { agregar, actualizar, obtenerItem, reloadItems } = productos;
+  const { agregar, actualizar, reloadItems } = productos;
   const { showPopup } = usePopup();
   const nuevoProductoRef = useRef(null);
   const { showAlert, hideAlert } = useAlert();
@@ -26,9 +26,17 @@ export function ModalEditarProducto({id, setIdProducto}) {
       return showPopup?.({ type: 'warning', message: 'Verificar los datos antes de continuar.' });
     }
 
+    if (id) {
+      const cambios = nuevoProductoRef.current?.getCambios();
+      if (!cambios || Object.keys(cambios).length === 0) {
+        return showPopup?.({ type: 'info', message: 'No se detectaron cambios.' });
+      }
+      const res = await actualizar({ nuevoDato: { ...cambios, IdPublica: id } });
+      return CheckRes(res, { onSuccess, showPopup, onMessage: onShowAlert });
+    }
+
     const nuevoItem = nuevoProductoRef.current?.getData();
-    const nuevoDato = { ...nuevoItem, IdPublica: id };
-    const res = id ? await actualizar({ nuevoDato }) : await agregar({ nuevoItem });
+    const res = await agregar({ nuevoItem });
 
     CheckRes(res, { onSuccess, showPopup, onMessage: onShowAlert });
   }
@@ -48,7 +56,7 @@ export function ModalEditarProducto({id, setIdProducto}) {
         </div> */}
         
         <div className="modal-form-section">
-          <NuevoProducto id={id} obtenerItem={obtenerItem} ref={nuevoProductoRef}/>
+          <NuevoProducto id={id} ref={nuevoProductoRef}/>
         </div>
       </div>
         

@@ -3,16 +3,12 @@ const apiUrl = import.meta.env.VITE_API_URL;
 async function request(path, options = {}) {
   return await fetch(`${apiUrl}${path}`, { headers: { 'Content-Type': 'application/json' }, ...options, })
     .then(async (res) => {
-      if (res.error) {
-        return { error: "Error al hacer la petición con el servidor." };
-      } else if (res.status === 202 || res.status === 201) {
+      if (res.status === 204 || res.status === 201 || res.status === 202) {
         return { ok: true };
       } else if (res.status === 200) {
-        let resJson = await res.json();
-        return resJson;
+        return res.json().catch(() => ({}));
       } else if (res.status === 400) {
-        let resJson = await res.json();
-        console.log("resJson: ", resJson);
+        let resJson = await res.json().catch(() => ({}));
         return { message: resJson.message || "Error 400: Solicitud incorrecta (sin mensaje del servidor)." };
       } else if (res.status === 404) {
         return { error: "Error 404: Solicitud no encontrada (sin mensaje del servidor)." };
@@ -35,9 +31,9 @@ function buildCollection(name) {
     agregar: async (item) => request(`/${name}`, { method: 'POST', body: JSON.stringify(item) }),
     eliminar: async (id) => request(`/${name}/${Number(id)}`, { method: 'DELETE' }),
     actualizar: async (item) => {
-      const id = item.ID ?? item.id ?? item.Id ?? item.IdPublica;
+      const id = item.IdPublica ?? item.idPublica;
       if (!id) throw new Error('No se encontró ID en el item para actualizar');
-      return request(`/${name}`, { method: 'PUT', body: JSON.stringify(item) });
+      return request(`/${name}/${id}`, { method: 'PATCH', body: JSON.stringify(item) });
     },
   };
 }

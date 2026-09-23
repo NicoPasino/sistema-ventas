@@ -22,19 +22,19 @@ export function ModalVerVenta({ venta, onClose }) {
       <div className="modalVentaDatos">
         <div className="modalVentaDato">
           <span className="modalVentaLabel">Cliente</span>
-          <span className="modalVentaValor">{cliente.nombre || "-"}</span>
+          <span className="modalVentaValor">{cliente.nombre}</span>
         </div>
         <div className="modalVentaDato">
-          <span className="modalVentaLabel">DNI</span>
-          <span className="modalVentaValor">{cliente.documento ? GrayDisplay(cliente.documento) : "-"}</span>
+          <span className="modalVentaLabel">Email</span>
+          <span className="modalVentaValor">{GrayDisplay(cliente.correo || "(Sin correo)")}</span>
         </div>
         <div className="modalVentaDato">
           <span className="modalVentaLabel">Fecha</span>
-          <span className="modalVentaValor">{fechaLarga} - {hora} <span className="textObscuro"> ({"hace " +tiempoTranscurrido})</span></span>
+          <span className="modalVentaValor">{fechaLarga} - {hora} {GrayDisplay(`(hace ${tiempoTranscurrido})`)}</span>
         </div>
         <div className="modalVentaDato">
           <span className="modalVentaLabel">Detalle</span>
-          <span className="modalVentaValor">{detalle || "-"}</span>
+          <span className="modalVentaValor">{detalle || GrayDisplay("(Sin detalle)")}</span>
         </div>
       </div>
 

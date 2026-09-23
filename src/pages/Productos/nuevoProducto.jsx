@@ -1,36 +1,53 @@
 import { useContext, useEffect, useState, forwardRef, useImperativeHandle } from "react";
-import { DataContext } from "../../context/DataContext";
+import { DataContext } from "../../context/dataContext";
 import { validarProducto } from "../../validations/validarProducto";
 
-export const NuevoProducto = forwardRef(function NuevoProducto({ obtenerItem, id }, ref) {
+const CAMPOS_EDITABLES = ['nombre', 'activo', 'cantidad', 'precio', 'idCategoria', 'descripcion'];
+
+function sonIguales(a, b) {
+  if (a === b) return true;
+  if (a == null || a === '') return b == null || b === '';
+  if (b == null) return false;
+  return String(a) === String(b);
+}
+
+export const NuevoProducto = forwardRef(function NuevoProducto({ id }, ref) {
   const { productos } = useContext(DataContext);
-  const { categorias, loading } = productos;
+  const { categorias, loading, items } = productos;
   const [producto, setProducto] = useState(productoDefault);
+  const [productoOriginal, setProductoOriginal] = useState(null);
   const {nombre, activo, cantidad, precio, idCategoria, descripcion} = producto;
   const [errors, setErrors] = useState({});
   
   useEffect(() => {
-    const obtenerProducto = async () => {
-      if (id) {
-        let res = await obtenerItem(id)
-                
-        if(res.error) {
-          setProducto(productoDefault); 
-          setErrors({ fetch: res.error });
-          return 
-        }
-        else {
-          setProducto(res); 
-        }
-      } 
+    if (!id) {
+      setProducto(productoDefault);
+      setProductoOriginal(null);
+      return;
     }
-    obtenerProducto();
-  },[id, obtenerItem])
+
+    const encontrado = items.find(p => String(p.idPublica) === String(id));
+
+    if (encontrado) {
+      setProducto(encontrado);
+      setProductoOriginal(encontrado);
+    } else {
+      setProducto(productoDefault);
+      setProductoOriginal(null);
+      setErrors({ fetch: "No se encontró el producto en los datos locales." });
+    }
+  }, [id, items])
 
   useImperativeHandle(ref, () => ({
-    getData: () => {
-      convertirTipos(producto);
-      return producto;
+    getData: () => convertirTipos(producto),
+    getCambios: () => {
+      if (!productoOriginal) return convertirTipos(producto);
+      const actual = convertirTipos(producto);
+      const cambios = {};
+      for (const campo of CAMPOS_EDITABLES) {
+        if (!sonIguales(actual[campo], productoOriginal[campo])) cambios[campo] = actual[campo];
+      }
+      return cambios;
     },
     getErrors: () => errors,
     validate: () => {
@@ -124,18 +141,20 @@ const productoDefault = {
   descripcion: ''
 }
 
-function convertirTipos(nuevoItem){  
-  if (nuevoItem.activo !== undefined) {
-    nuevoItem.activo = nuevoItem.activo === 'true';
+function convertirTipos(nuevoItem){
+  const convertido = { ...nuevoItem };
+  if (convertido.activo !== undefined) {
+    convertido.activo = convertido.activo === true || String(convertido.activo).toLowerCase() === 'true';
   }
-  if (nuevoItem.cantidad !== undefined) {
-    nuevoItem.cantidad = Number(nuevoItem.cantidad) || 0;
+  if (convertido.cantidad !== undefined) {
+    convertido.cantidad = Number(convertido.cantidad) || 0;
   }
-  if (nuevoItem.precio !== undefined) {
-    nuevoItem.precio =  nuevoItem.precio || 0;
+  if (convertido.precio !== undefined) {
+    convertido.precio = Number(convertido.precio) || 0;
   }
-  if (nuevoItem.idCategoria !== undefined) {
-    const parsed = Number(nuevoItem.idCategoria);
-    nuevoItem.idCategoria = Number.isNaN(parsed) ? nuevoItem.idCategoria : parsed;
+  if (convertido.idCategoria !== undefined) {
+    const parsed = Number(convertido.idCategoria);
+    convertido.idCategoria = Number.isNaN(parsed) ? convertido.idCategoria : parsed;
   }
+  return convertido;
 }

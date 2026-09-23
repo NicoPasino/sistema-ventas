@@ -1,8 +1,10 @@
-export function Cargando(){ return <span className='colorGris'>Cargando datos...</span> };
-export function CargandoT(){ return <tr><td colSpan={20}><Cargando/></td></tr> };
+import { GrayDisplay } from "../../utils/displayConvert"
 
-export function ListaVacia(){ return <span className='colorGris'>La lista está vacía!.</span> };
-export function ListaVaciaT(){ return <tr><td colSpan={20}><ListaVacia /></td></tr> };
+export function Cargando({text}){ return GrayDisplay(text ? `Cargando ${text}...` : "Cargando datos...") };
+export function CargandoT({text}){ return <tr><td colSpan={20}><Cargando text={text} /></td></tr> };
+
+export function ListaVacia({text}){ return GrayDisplay(text ? text : "La lista está vacía!") };
+export function ListaVaciaT({text}){ return <tr><td colSpan={20}><ListaVacia text={text} /></td></tr> };
 
 
 export function ErrorMensaje({msg = "Error."}){ return <p className='colorRojoClaro'>{msg}</p> };

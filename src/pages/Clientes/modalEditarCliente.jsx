@@ -1,9 +1,9 @@
 import { useContext, useRef } from 'react';
-import { DataContext } from '../../context/DataContext';
+import { DataContext } from '../../context/dataContext';
 import { usePopup } from '../../context/notificationContext';
 import { Button } from '../../components/shared/botones';
 import { Modal } from '../../components/shared/Modal';
-import '../../components/pages/modalProducto.css';
+import '../../components/pages/modals.css';
 import { CheckRes } from '../../utils/checkRes';
 import { NuevoCliente } from './nuevoCliente';
 import { useAlert } from '../../context/notificationContext';
@@ -11,7 +11,7 @@ import { Alert } from '../../components/notification/Alert';
 
 export function ModalEditarCliente({ id, onClose }) {
   const { clientes } = useContext(DataContext);
-  const { agregar, actualizar, obtenerItem, reloadItems } = clientes;
+  const { agregar, actualizar, reloadItems } = clientes;
   const { showPopup } = usePopup();
   const nuevoClienteRef = useRef(null);
   const { showAlert, hideAlert } = useAlert();
@@ -38,7 +38,7 @@ export function ModalEditarCliente({ id, onClose }) {
       onClose={handleClose}
     >
       <Alert />
-      <NuevoCliente id={id} obtenerItem={obtenerItem} ref={nuevoClienteRef}/>
+      <NuevoCliente id={id} ref={nuevoClienteRef}/>
 
       <div className="modal-footer">
         <Button type="button" variant="danger" onClick={handleClose}>Cancelar</Button>

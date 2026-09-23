@@ -29,6 +29,7 @@ body {
 .colorRojoClaro { color: #ff7676 !important;}
 .colorGris { color: gray}
 .colorGrisClaro { color: rgb(184, 184, 184)}
+.colorBlancoClaro { color: rgb(232, 232, 232)}
 
 .flex{display: flex;}
 .flexEnd{

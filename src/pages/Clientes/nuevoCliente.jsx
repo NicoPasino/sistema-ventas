@@ -1,25 +1,34 @@
-import { forwardRef, useEffect, useImperativeHandle, useState } from "react";
+import { useContext, forwardRef, useEffect, useImperativeHandle, useState } from "react";
+import { DataContext } from "../../context/dataContext";
 import { validarCliente } from "../../validations/validarCliente";
 
-export const NuevoCliente = forwardRef(function NuevoCliente({ obtenerItem, id }, ref) {
+export const NuevoCliente = forwardRef(function NuevoCliente({ id }, ref) {
+  const { clientes } = useContext(DataContext);
+  const { items } = clientes;
   const [cliente, setCliente] = useState(clienteDefault);
   const [errors, setErrors] = useState({});
 
   useEffect(() => {
-    const obtenerCliente = async () => {
-      if (id) {
-        let res = await obtenerItem(id);
+    if (!id) {
+      setCliente(clienteDefault);
+      setErrors({});
+      return;
+    }
 
-        if (res.error) {
-          setCliente(clienteDefault);
-          setErrors({ fetch: res.error });
-          return;
-        }
-        setCliente(res);
-      }
-    };
-    obtenerCliente();
-  }, [id, obtenerItem]);
+    const encontrado = items.find(c => String(c.documento) === String(id));
+
+    if (encontrado) {
+      setCliente({
+        Documento: encontrado.documento,
+        Nombre: encontrado.nombre,
+        Correo: encontrado.correo,
+        Telefono: encontrado.telefono ?? '',
+      });
+    } else {
+      setCliente(clienteDefault);
+      setErrors({ fetch: "No se encontró el cliente en los datos locales." });
+    }
+  }, [id, items]);
 
   useImperativeHandle(ref, () => ({
     getData: () => ({ ...cliente }),

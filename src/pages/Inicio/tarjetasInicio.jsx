@@ -4,38 +4,47 @@ import { TarjetaBlanca, TarjetaInfo } from "../../components/pages/tarjetas";
 import { CategoriasIcon, ClientesIcon, ProductosIcon, VentasIcon } from "../../assets/icons";
 import { UserSettingsContext } from "../../context/userSettingsContext";
 
-export function BajoStock({ productos, title, footer }) {
+export function BajoStock({ productos, title, footer, top = 5, stock = 15 }) {
   let contenido;
-  if (productos.loading) contenido = <Cargando />
+  
+  if (productos.loading) contenido = <Cargando text={"productos"} />
   else if (productos.error) contenido = <ErrorMensaje msg={productos.error}/>
-  else if (!productos.items) contenido = <ListaVacia />
-  else contenido = (
+  else {
+    const productosBajoStock = [...productos.items]
+      .filter((producto) => producto.cantidad <= stock)
+      .sort((a, b) => a.cantidad - b.cantidad);
+
+    const bajoStock = productosBajoStock
+      .slice(0, top);
+
+    contenido = bajoStock.length === 0 ? <ListaVacia text={"No hay productos con bajo stock." }/> : (
     <ul>
-      {productos.items.map((prod, i) => {
-        if(prod.cantidad<= 15){
-          return ( <li key={i}>
+      {bajoStock.map((prod, i) => {
+        return ( <li key={i}>
               <strong>{prod.nombre}</strong> — <span className="colorGrisClaro">{prod.cantidad} en stock.</span>
             </li> )
-        }
       })}
+      {productosBajoStock.length > top && (
+        <p className="colorGrisClaro">+{productosBajoStock.length - top} productos...</p>
+      )}
     </ul>
-  );
+    );
+  }
 
   return <TarjetaBlanca title={title} footer={footer}>{contenido}</TarjetaBlanca>
 }
 
 export function TopClientes({ clientes, title, footer, top = 5 }) {
   let contenido;
-  if (clientes.loading) contenido = <Cargando />
+  if (clientes.loading) contenido = <Cargando text={"clientes"} />
   else if (clientes.error) contenido = <ErrorMensaje msg={clientes.error}/>
-  else if (!clientes.items) contenido = <ListaVacia />
   else {
     const topClientes = [...clientes.items]
       .sort((a, b) => b.nroCompras - a.nroCompras)
       .filter((cliente) => cliente.nroCompras > 0)
       .slice(0, top);
 
-    contenido = topClientes.length === 0 ? <ListaVacia /> : (
+    contenido = topClientes.length === 0 ? <ListaVacia text={"No hay clientes." }/> : (
       <ul>
         {topClientes.map((cliente, index) => (
           <li key={index}>
@@ -51,15 +60,14 @@ export function TopClientes({ clientes, title, footer, top = 5 }) {
 
 export function TopProductos({ ventas, title, footer, top = 5 }) {
   let contenido;
-  if (ventas.loading) contenido = <Cargando />
+  if (ventas.loading) contenido = <Cargando text={"productos más vendidos"}/>
   else if (ventas.error) contenido = <ErrorMensaje msg={ventas.error}/>
-  else if (!ventas.items) contenido = <ListaVacia />
   else {
     const contador = {};
     ventas.items.forEach((venta) => {
       const productos = Array.isArray(venta.productos) ? venta.productos : [];
       productos.forEach(({ producto, cantidad }) => {
-        contador[producto] = (contador[producto] || 0) + cantidad;
+        if (producto) contador[producto] = (contador[producto] || 0) + (Number(cantidad) || 0);
       });
     });
 
@@ -68,7 +76,7 @@ export function TopProductos({ ventas, title, footer, top = 5 }) {
       .sort((a, b) => b.cantidad - a.cantidad)
       .slice(0, top);
 
-    contenido = topProductos.length === 0 ? <ListaVacia /> : (
+    contenido = topProductos.length === 0 ? <ListaVacia text={"No hay ventas."}/> : (
       <ul>
         {topProductos.map((producto, index) => (
           <li key={index}>

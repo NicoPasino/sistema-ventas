@@ -20,21 +20,25 @@ export function MoneyDisplay(amount) {
 };
 
 export function StockDisplay(cant) {
-  return <span className={(cant>15) ? "" : "colorRojoClaro"}>{cant}</span>
+  return <span className={(cant > 15) ? "" : "colorRojoClaro"}>{cant}</span>
 }
 
-export function GrayDisplay(txt = "-") {
-  return <span className="colorGrisClaro">{txt}</span>
+export function GrayDisplay(children = "-", claro = true) {
+  return <span className={claro ? "colorGrisClaro" : "colorGris"}>{children}</span>
+}
+
+export function WhiteDisplay(children = "-") {
+  return <span className="colorBlancoClaro">{children}</span>
 }
 
 export function CorreoDisplay(correo) {
   if (!correo) return GrayDisplay("-");
   const [nombre, dominio] = correo.split("@");
-  if (!nombre || !dominio) return <span className="colorGrisClaro">{correo}</span>;
+  if (!nombre || !dominio) return GrayDisplay(correo);
 
   return <a href={`mailto:${correo}`}>
-    <span className="colorGrisClaro">{nombre}</span>
-    <span className="colorGris">@</span>
-    <span className="colorGrisClaro">{dominio}</span>
+    {GrayDisplay(nombre)}
+    {GrayDisplay("@", false)}
+    {GrayDisplay(dominio)}
   </a>
 }

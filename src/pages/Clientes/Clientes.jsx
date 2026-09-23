@@ -11,10 +11,11 @@ export default function Clientes() {
   const [idCliente, setIdCliente] = useState(); // editMode
   const [modalNew, setModalNew] = useState(false);
 
-  const tableHeaders = ["Nombre", "Correo", "Documento", "Registrado"];
+  const tableHeaders = ["Nombre", "Correo", "Telefono", "Documento", "Registrado"];
   const ordenCampos = [
     { label: "Nombre", valor: (c) => c.nombre },
     { label: "Correo", valor: (c) => c.correo },
+    { label: "Telefono", valor: (c) => c.telefono },
     { label: "Documento", valor: (c) => c.documento },
     { label: "Registrado", valor: (c) => c.fechaCreacion },
   ];
@@ -27,8 +28,8 @@ export default function Clientes() {
   return (
     <div>
       <FormSearch tipo={"Cliente"} itemsManage={clientes} newItemHandle={ () => setModalNew(true) } ordenCampos={ordenCampos} />
-      <TablaGenerica itemsManage={clientes} headers={tableHeaders} >
-        <Contenido lista={items} />
+      <TablaGenerica itemsManage={clientes} headers={tableHeaders} editable >
+        <Contenido lista={items} setIdCliente={setIdCliente} />
       </TablaGenerica>
       {(modalNew || idCliente) && (
         <ModalEditarCliente 
