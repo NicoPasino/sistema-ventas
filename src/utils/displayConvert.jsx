@@ -23,6 +23,19 @@ export function StockDisplay(cant) {
   return <span className={(cant > 15) ? "" : "colorRojoClaro"}>{cant}</span>
 }
 
+export function esActivo(activo) {
+  return activo === true || String(activo).trim().toLowerCase() === "true";
+}
+
+export function EstadoDisplay(activo) {
+  const activoBool = esActivo(activo);
+  return (
+    <span className={`estadoBadge ${activoBool ? "estadoBadgeActivo" : "estadoBadgeInactivo"}`}>
+      {activoBool ? "Activo" : "Inactivo"}
+    </span>
+  );
+}
+
 export function GrayDisplay(children = "-", claro = true) {
   return <span className={claro ? "colorGrisClaro" : "colorGris"}>{children}</span>
 }

@@ -6,6 +6,7 @@ export function Button({
   size = 'md',
   disabled = false,
   loading = false,
+  loadingText,
   type = 'button',
   onClick,
   className = '',
@@ -30,7 +31,7 @@ export function Button({
       {...props}
     >
       {loading && <span className="btn-spinner" aria-hidden="true"></span>}
-      <span className={loading ? 'btn-text-hidden' : ''}>{children}</span>
+      {loading && loadingText ? <span>{loadingText}</span> : <span className={loading ? 'btn-text-hidden' : ''}>{children}</span>}
     </button>
   );
 }
@@ -79,6 +80,7 @@ export function SubmitButtons({
   cancelVariant = 'danger',
   disabled = false,
   loading = false,
+  loadingText,
   className = '',
 }) {
   return (
@@ -96,6 +98,7 @@ export function SubmitButtons({
         variant={submitVariant}
         disabled={disabled || loading}
         loading={loading}
+        loadingText={loadingText}
         onClick={onSubmit}
       >
         {submitText}

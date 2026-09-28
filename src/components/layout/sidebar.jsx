@@ -1,11 +1,22 @@
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { HomeIcon, ClientesIcon, ProductosIcon, VentasIcon, NewIcon, MenuIcon } from '../../assets/icons.jsx';
 import './sidebar.css'
 import { UserSettingsContext } from '../../context/userSettingsContext.jsx';
 
+const SIDEBAR_KEY = 'sidebar';
+
+function getSidebarState() {
+  try { return localStorage.getItem(SIDEBAR_KEY) === 'closed' ? false : true; 
+  } catch { return true }
+}
+
 export function Sidebar() {
   const {getTab, handleTab} = useContext(UserSettingsContext)
-  const [isOpen, setIsOpen] = useState(true)
+  const [isOpen, setIsOpen] = useState(getSidebarState)
+
+  useEffect(() => {
+    localStorage.setItem(SIDEBAR_KEY, isOpen ? 'open' : 'closed');
+  }, [isOpen])
 
   function handleTabClick(name, disabled){
     if (!disabled) handleTab(name);

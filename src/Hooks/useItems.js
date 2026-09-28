@@ -1,5 +1,8 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { converToLocal } from "../utils/getDate";
+import { esActivo } from "../utils/displayConvert";
+
+const FILTROS_INICIALES = { busqueda: "", estado: "todos" };
 
 function aplicarOrden(lista, orden) {
   if (!orden) return lista;
@@ -13,6 +16,24 @@ function aplicarOrden(lista, orden) {
   });
 }
 
+function filtrarLista(lista, { busqueda, estado }) {
+  let filtrados = lista;
+
+  if (estado === "activos") filtrados = filtrados.filter((item) => esActivo(item.activo));
+  else if (estado === "inactivos") filtrados = filtrados.filter((item) => !esActivo(item.activo));
+
+  const valor = (busqueda ?? "").trim().toLowerCase();
+  if (valor === "") return filtrados;
+
+  return filtrados.filter((item) => {
+    return Object.values(item).some((val) => {
+      if (val === null || val === undefined) return false;
+      if (Array.isArray(val)) return false;
+      return String(val).toLowerCase().includes(valor);
+    });
+  });
+}
+
 export function useItems({ itemsDB, categoriasDB }) {
   const [items, setItems] = useState([]);
   const [itemsOriginales, setItemsOriginales] = useState([]);
@@ -20,6 +41,13 @@ export function useItems({ itemsDB, categoriasDB }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [orden, setOrden] = useState(null);
+  const [filtros, setFiltros] = useState(FILTROS_INICIALES);
+  const filtrosRef = useRef({ ...FILTROS_INICIALES });
+
+  const mostrarFiltrados = useCallback((lista, filtrosAplicados, ordenAplicado) => {
+    const filtrados = filtrarLista(lista, filtrosAplicados);
+    setItems(ordenAplicado ? aplicarOrden(filtrados, ordenAplicado) : filtrados);
+  }, []);
 
   const mostrarError = useCallback((res) => {
     const errorMsj = res?.error || res?.message;
@@ -46,8 +74,9 @@ export function useItems({ itemsDB, categoriasDB }) {
 
       if (mostrarError(res)) return;
 
-      setItems(Array.isArray(res) ? res : []);
-      setItemsOriginales(Array.isArray(res) ? res : []);
+      const lista = Array.isArray(res) ? res : [];
+      setItemsOriginales(lista);
+      mostrarFiltrados(lista, filtrosRef.current, null);
 
       if (!categoriasDB) return;
       const categoriasRes = await categoriasDB.obtenerTodos();
@@ -60,7 +89,7 @@ export function useItems({ itemsDB, categoriasDB }) {
     } finally {
       setLoading(false);
     }
-  }, [itemsDB, categoriasDB, mostrarError]);
+  }, [itemsDB, categoriasDB, mostrarError, mostrarFiltrados]);
 
   useEffect(() => {
     recargarItems();
@@ -104,21 +133,26 @@ export function useItems({ itemsDB, categoriasDB }) {
     }
   }, [itemsDB]);
 
+  const cambiarFiltros = useCallback((cambios) => {
+    const nuevosFiltros = { ...filtrosRef.current, ...cambios };
+    filtrosRef.current = nuevosFiltros;
+    setFiltros(nuevosFiltros);
+    mostrarFiltrados(itemsOriginales, nuevosFiltros, orden);
+  }, [itemsOriginales, orden, mostrarFiltrados]);
+
   const filtrarItemsLocal = useCallback((valor) => {
-    if (!valor || valor.trim() === "") {
-      setItems(orden ? aplicarOrden(itemsOriginales, orden) : itemsOriginales);
-      return;
-    }
-    const valorLower = valor.toLowerCase().trim();
-    const filtrados = itemsOriginales.filter((item) => {
-      return Object.values(item).some((val) => {
-        if (val === null || val === undefined) return false;
-        if (Array.isArray(val)) return false;
-        return String(val).toLowerCase().includes(valorLower);
-      });
-    });
-    setItems(orden ? aplicarOrden(filtrados, orden) : filtrados);
-  }, [itemsOriginales, orden]);
+    cambiarFiltros({ busqueda: valor });
+  }, [cambiarFiltros]);
+
+  const filtrarPorEstado = useCallback((estado) => {
+    cambiarFiltros({ estado });
+  }, [cambiarFiltros]);
+
+  const limpiarFiltros = useCallback(() => {
+    const nuevosFiltros = { ...FILTROS_INICIALES };
+    filtrosRef.current = nuevosFiltros;
+    setFiltros(nuevosFiltros);
+  }, []);
 
   const ordenarItems = useCallback((accesor, direccion) => {
     const nuevoOrden = { accesor, direccion };
@@ -136,9 +170,12 @@ export function useItems({ itemsDB, categoriasDB }) {
     eliminar,
     reloadItems,
     filtrarItemsLocal,
+    filtrarPorEstado,
+    limpiarFiltros,
+    filtroEstado: filtros.estado,
     ordenarItems,
     loading,
     error,
     categorias
-  }), [items, agregar, actualizar, obtenerItem, eliminar, reloadItems, filtrarItemsLocal, ordenarItems, loading, error, categorias]);
+  }), [items, agregar, actualizar, obtenerItem, eliminar, reloadItems, filtrarItemsLocal, filtrarPorEstado, limpiarFiltros, filtros.estado, ordenarItems, loading, error, categorias]);
 }

@@ -52,6 +52,25 @@ tr td{
   width: 100px;
   text-align: end;
 }
+.tablaColEstado{
+  width: 90px;
+}
+.estadoBadge {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 10px;
+  font-size: 0.85em;
+  font-weight: 500;
+  white-space: nowrap;
+}
+.estadoBadgeActivo {
+  background-color: rgba(25, 135, 84, 0.25);
+  color: #5fd39a;
+}
+.estadoBadgeInactivo {
+  background-color: rgba(220, 53, 69, 0.2);
+  color: #ff7676;
+}
 .tablaColAcciones {
   display: flex;
   justify-content: space-around;

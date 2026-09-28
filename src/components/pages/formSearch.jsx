@@ -3,8 +3,14 @@ import { useRef, useState, useCallback } from 'react';
 import { ReloadIcon, SearchIcon, ArrowUpIcon, ArrowDownIcon } from "../../assets/icons";
 import { IconButton, Button } from '../shared/botones';
 
-export function FormSearch({ itemsManage, tipo, newItemHandle, ordenCampos = [] }) {
-  const { reloadItems, filtrarItemsLocal, ordenarItems, error } = itemsManage;
+const OPCIONES_ESTADO = [
+  { valor: "todos", label: "Todos" },
+  { valor: "activos", label: "Activos" },
+  { valor: "inactivos", label: "Inactivos" },
+];
+
+export function FormSearch({ itemsManage, tipo, newItemHandle, ordenCampos = [], mostrarEstado = false }) {
+  const { reloadItems, filtrarItemsLocal, ordenarItems, error, filtroEstado, filtrarPorEstado, limpiarFiltros } = itemsManage;
   const searchRef = useRef();
   const [ busqueda, setBusqueda ] = useState("");
   const [ campoOrden, setCampoOrden ] = useState(null);
@@ -18,14 +24,20 @@ export function FormSearch({ itemsManage, tipo, newItemHandle, ordenCampos = [] 
     setBusqueda("");
     setCampoOrden(null);
     setDireccion("asc");
+    limpiarFiltros();
     reloadItems();
-  }, [reloadItems]);
+  }, [reloadItems, limpiarFiltros]);
 
   const handleSearch = useCallback((valor) => {
     if (error) return;
     setBusqueda(valor);
     filtrarItemsLocal(valor);
   }, [filtrarItemsLocal]);
+
+  const handleEstado = useCallback((valor) => {
+    if (error) return;
+    filtrarPorEstado(valor);
+  }, [filtrarPorEstado, error]);
 
   const handleOrdenar = useCallback((index) => {
     const campo = ordenCampos[index];
@@ -80,6 +92,21 @@ export function FormSearch({ itemsManage, tipo, newItemHandle, ordenCampos = [] 
             >
               {direccion === "asc" ? <ArrowUpIcon /> : <ArrowDownIcon />}
             </IconButton>
+          </div>
+        )}
+        {mostrarEstado && (
+          <div className="estado-filter" role="group" aria-label="Filtrar por estado">
+            {OPCIONES_ESTADO.map((op) => (
+              <button
+                key={op.valor}
+                type="button"
+                title={`Mostrar ${op.label.toLowerCase()}`}
+                className={`estado-filter-btn ${filtroEstado === op.valor ? "estado-filter-btnActivo" : ""}`}
+                onClick={() => handleEstado(op.valor)}
+              >
+                {op.label}
+              </button>
+            ))}
           </div>
         )}
       </div>

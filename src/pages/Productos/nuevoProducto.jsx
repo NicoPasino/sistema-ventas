@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState, forwardRef, useImperativeHandle } from "react";
 import { DataContext } from "../../context/dataContext";
 import { validarProducto } from "../../validations/validarProducto";
+import { esActivo } from "../../utils/displayConvert";
 
 const CAMPOS_EDITABLES = ['nombre', 'activo', 'cantidad', 'precio', 'idCategoria', 'descripcion'];
 
@@ -144,7 +145,7 @@ const productoDefault = {
 function convertirTipos(nuevoItem){
   const convertido = { ...nuevoItem };
   if (convertido.activo !== undefined) {
-    convertido.activo = convertido.activo === true || String(convertido.activo).toLowerCase() === 'true';
+    convertido.activo = esActivo(convertido.activo);
   }
   if (convertido.cantidad !== undefined) {
     convertido.cantidad = Number(convertido.cantidad) || 0;

@@ -19,10 +19,10 @@ export const NuevoCliente = forwardRef(function NuevoCliente({ id }, ref) {
 
     if (encontrado) {
       setCliente({
-        Documento: encontrado.documento,
-        Nombre: encontrado.nombre,
-        Correo: encontrado.correo,
-        Telefono: encontrado.telefono ?? '',
+        documento: encontrado.documento,
+        nombre: encontrado.nombre,
+        correo: encontrado.correo,
+        telefono: encontrado.telefono ?? '',
       });
     } else {
       setCliente(clienteDefault);
@@ -31,7 +31,7 @@ export const NuevoCliente = forwardRef(function NuevoCliente({ id }, ref) {
   }, [id, items]);
 
   useImperativeHandle(ref, () => ({
-    getData: () => ({ ...cliente }),
+    getData: () => ({ ...cliente, documento: Number(cliente.documento) }),
     getErrors: () => errors,
     validate: () => {
       const errs = validarCliente(cliente);
@@ -63,15 +63,17 @@ export const NuevoCliente = forwardRef(function NuevoCliente({ id }, ref) {
       <div className="form-group">
         <label htmlFor="documento">DNI / Documento</label>
         <input
-          type="number"
+          type="text"
           id="documento"
-          name="Documento"
-          value={cliente.Documento ?? ''}
+          name="documento"
+          inputMode="numeric"
+          maxLength={8}
+          value={cliente.documento ?? ''}
           onChange={handleChange}
           onBlur={handleBlur}
           required
         />
-        {errors.Documento && <span className="field-error">{errors.Documento}</span>}
+        {errors.documento && <span className="field-error">{errors.documento}</span>}
       </div>
 
       <div className="form-group">
@@ -79,13 +81,13 @@ export const NuevoCliente = forwardRef(function NuevoCliente({ id }, ref) {
         <input
           type="text"
           id="nombre"
-          name="Nombre"
-          value={cliente.Nombre ?? ''}
+          name="nombre"
+          value={cliente.nombre ?? ''}
           onChange={handleChange}
           onBlur={handleBlur}
           required
         />
-        {errors.Nombre && <span className="field-error">{errors.Nombre}</span>}
+        {errors.nombre && <span className="field-error">{errors.nombre}</span>}
       </div>
 
       <div className="form-group">
@@ -93,13 +95,13 @@ export const NuevoCliente = forwardRef(function NuevoCliente({ id }, ref) {
         <input
           type="email"
           id="correo"
-          name="Correo"
-          value={cliente.Correo ?? ''}
+          name="correo"
+          value={cliente.correo ?? ''}
           onChange={handleChange}
           onBlur={handleBlur}
           required
         />
-        {errors.Correo && <span className="field-error">{errors.Correo}</span>}
+        {errors.correo && <span className="field-error">{errors.correo}</span>}
       </div>
 
       <div className="form-group">
@@ -109,18 +111,19 @@ export const NuevoCliente = forwardRef(function NuevoCliente({ id }, ref) {
         <input
           type="tel"
           id="telefono"
-          name="Telefono"
-          value={cliente.Telefono ?? ''}
+          name="telefono"
+          value={cliente.telefono ?? null}
           onChange={handleChange}
         />
+        {errors.telefono && <span className="field-error">{errors.telefono}</span>}
       </div>
     </div>
   );
 });
 
 const clienteDefault = {
-  Documento: '',
-  Nombre: '',
-  Correo: '',
-  Telefono: '',
+  documento: '',
+  nombre: '',
+  correo: '',
+  telefono: '',
 };

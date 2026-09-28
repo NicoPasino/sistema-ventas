@@ -15,7 +15,7 @@ export function Contenido({lista, setIdCliente}) {
         <tr key={i}>
           <td className='tablaColNombre'>    {nombre} </td>
           <td className='tablaColNombre'>    {CorreoDisplay(correo)} </td>
-          <td className='tablaColNombre'>    {telefono ?? "-"} </td>
+          <td className='tablaColNombre'>    {telefono || GrayDisplay("-")} </td>
           <td className='tablaColID'>    {documento} </td>
           <td className='tablaColID' title={tiempoTranscurrido}> {GrayDisplay(fecha)} </td>
           <td>

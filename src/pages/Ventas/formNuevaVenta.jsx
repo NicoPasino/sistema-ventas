@@ -17,6 +17,7 @@ export function FormNuevaVenta() {
   const [newItems, setNewItems] = useState([]);
   const [clienteSeleccionado, setClienteSeleccionado] = useState(null);
   const { showAlert, hideAlert } = useAlert();
+  const [enviando, setEnviando] = useState(false);
 
   const handleClear = () => {
     setNewItems([]);
@@ -25,19 +26,25 @@ export function FormNuevaVenta() {
 
   async function submitHandler(event) {
     event.preventDefault();
+    if (enviando) return;
     const query = Object.fromEntries(new window.FormData(event.target));
     if (!clienteSeleccionado) return showPopup({ type: 'warning', message: 'Cliente no seleccionado.' });
     if (!newItems[0]) return showPopup({ type: 'warning', message: 'Producto/s no seleccionado/s.' });
 
-    const ItemsId = newItems.map(i => i.producto.idPublica);
-    const ItemsCant = newItems.map(i => parseInt(i.cantidad));
+    setEnviando(true);
+    try {
+      const ItemsId = newItems.map(i => i.producto.idPublica);
+      const ItemsCant = newItems.map(i => parseInt(i.cantidad));
 
-    const nuevoItem = { ...query, ItemsId, ItemsCant };
-    const res = await agregar({ nuevoItem });
+      const nuevoItem = { ...query, ItemsId, ItemsCant };
+      const res = await agregar({ nuevoItem });
 
-    const onSuccess = () => { event.target.reset(); handleClear(); reloadProductos(); reloadVentas(); hideAlert() };
-    const onShowAlert = (type, message) => showAlert({ type, message });
-    CheckRes(res, { onSuccess, showPopup, onMessage: onShowAlert });
+      const onSuccess = () => { event.target.reset(); handleClear(); reloadProductos(); reloadVentas(); hideAlert() };
+      const onShowAlert = (type, message) => showAlert({ type, message });
+      CheckRes(res, { onSuccess, showPopup, onMessage: onShowAlert });
+    } finally {
+      setEnviando(false);
+    }
   }
 
   return (
@@ -49,8 +56,8 @@ export function FormNuevaVenta() {
         <TablaNewItemsVenta newItemsManag={{newItems, setNewItems}} productosList={productosList}/>
       </div>
       <div className='submitBtns'>
-        <Button variant="danger" onClick={handleClear}>Limpiar</Button>
-        <Button variant="success" type="submit">Confirmar</Button>
+        <Button variant="danger" disabled={enviando} onClick={handleClear}>Limpiar</Button>
+        <Button variant="success" type="submit" loading={enviando} loadingText="Enviando...">Confirmar</Button>
       </div>
     </form>
   )

@@ -1,20 +1,27 @@
 export function validarCliente(cliente) {
   const errors = {};
 
-  if (!cliente.Documento || cliente.Documento.trim() === '') {
-    errors.Documento = 'El documento es obligatorio.';
-  } else if (cliente.Documento.trim().length !== 8) {
-    errors.Documento = 'El documento debe tener 8 números.';
+  const documento = String(cliente.documento ?? '').trim();
+  if (!documento) {
+    errors.documento = 'El documento es obligatorio.';
+  } else if (!/^\d{8}$/.test(documento)) {
+    errors.documento = 'El documento debe tener 8 números.';
   }
 
-  if (!cliente.Nombre || cliente.Nombre.trim() === '') {
-    errors.Nombre = 'El nombre es obligatorio.';
+  if (!cliente.nombre || String(cliente.nombre).trim() === '') {
+    errors.nombre = 'El nombre es obligatorio.';
   }
 
-  if (!cliente.Correo || cliente.Correo.trim() === '') {
-    errors.Correo = 'El correo es obligatorio.';
-  } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(cliente.Correo.trim())) {
-    errors.Correo = 'Ingrese un correo válido.';
+  const correo = String(cliente.correo ?? '').trim();
+  if (!correo) {
+    errors.correo = 'El correo es obligatorio.';
+  } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(correo)) {
+    errors.correo = 'Ingrese un correo válido.';
+  }
+
+  const telefono = String(cliente.telefono ?? '').trim();
+  if (telefono && !/^[+\d][\d\s-]{5,}$/.test(telefono)) {
+    errors.telefono = 'Ingrese un teléfono válido.';
   }
 
   return errors;

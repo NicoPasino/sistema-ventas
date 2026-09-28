@@ -1,4 +1,4 @@
-import { GrayDisplay, MoneyDisplay, StockDisplay } from '../../utils/displayConvert';
+import { EstadoDisplay, GrayDisplay, MoneyDisplay, StockDisplay } from '../../utils/displayConvert';
 import { DeleteIcon, EditIcon, ViewIcon } from '../../assets/icons';
 import { ListaVaciaT } from '../../components/pages/textosComponent';
 
@@ -7,7 +7,7 @@ export function Contenido({lista, setIdProducto, eliminar}) {
 
   return (
     lista.map((item, i) => {
-      const { idPublica, nombre, descripcion, categoria, cantidad, precio } = item;
+      const { idPublica, nombre, descripcion, categoria, cantidad, precio, activo } = item;
 
       return (
         <tr key={i}>
@@ -17,6 +17,7 @@ export function Contenido({lista, setIdProducto, eliminar}) {
           <td className='tablaCol'>          {categoria} </td>
           <td className='tablaColCantidad'>  {StockDisplay(cantidad)} </td>
           <td className='tablaColPrecio'>    {MoneyDisplay(precio)} </td>
+          <td className='tablaColEstado'>    {EstadoDisplay(activo)} </td>
           <td>
             <div className='tablaColAcciones'>
               {/* <i className='iconEdit svgView svgDisabled' onClick={()=> {}}> <ViewIcon /> </i> */}

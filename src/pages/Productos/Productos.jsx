@@ -6,6 +6,7 @@ import { TablaGenerica } from '../../components/pages/tablaGenerica';
 import { Contenido } from './ContenidoTabla.jsx';
 import { usePopup } from '../../context/notificationContext.jsx';
 import { CheckRes } from '../../utils/checkRes.js';
+import { esActivo } from '../../utils/displayConvert.jsx';
 
 export default function Productos() {
   const { productos } = useContext(DataContext);
@@ -14,7 +15,7 @@ export default function Productos() {
   const [modalNew, setModalNew] = useState(false);
   const { showPopup } = usePopup();
   
-  const tableHeaders = ["Código", "Producto", "Descripción", "Categoría", "Stock", "Precio"];
+  const tableHeaders = ["Código", "Producto", "Descripción", "Categoría", "Stock", "Precio", "Estado"];
   const ordenCampos = [
     { label: "Código", valor: (p) => p.idPublica },
     { label: "Producto", valor: (p) => p.nombre },
@@ -22,6 +23,7 @@ export default function Productos() {
     { label: "Categoría", valor: (p) => p.categoria },
     { label: "Stock", valor: (p) => p.cantidad },
     { label: "Precio", valor: (p) => p.precio },
+    { label: "Estado", valor: (p) => (esActivo(p.activo) ? 1 : 0) },
   ];
   
   function handleCloseModal() {
@@ -37,7 +39,7 @@ export default function Productos() {
 
   return (
     <div>
-      <FormSearch tipo={"Producto"} itemsManage={productos} newItemHandle={ () => setModalNew(true) } ordenCampos={ordenCampos} />
+      <FormSearch tipo={"Producto"} itemsManage={productos} newItemHandle={ () => setModalNew(true) } ordenCampos={ordenCampos} mostrarEstado />
       <TablaGenerica itemsManage={productos} headers={tableHeaders} editable>
         <Contenido lista={items} setIdProducto={setIdProducto} eliminar={handleDelete} />
       </TablaGenerica>

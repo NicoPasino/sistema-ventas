@@ -1,6 +1,6 @@
 import '../../components/pages/modals.css';
 import { DataContext } from '../../context/dataContext';
-import { useContext, useRef } from 'react';
+import { useContext, useRef, useState } from 'react';
 import { NuevoProducto } from './nuevoProducto';
 import { usePopup } from '../../context/notificationContext';
 import { Button } from '../../components/shared/botones';
@@ -16,12 +16,15 @@ export function ModalEditarProducto({id, setIdProducto}) {
   const { showPopup } = usePopup();
   const nuevoProductoRef = useRef(null);
   const { showAlert, hideAlert } = useAlert();
+  const [enviando, setEnviando] = useState(false);
 
   const handleClose = () => { setIdProducto?.(); hideAlert();}
+  const handleModalClose = () => { if (!enviando) handleClose(); };
   const onShowAlert = (type, message) => showAlert({ type, message });
   const onSuccess = () => { reloadItems(); handleClose(); }
 
   async function handleSubmit() {
+    if (enviando) return;
     if (!nuevoProductoRef.current?.validate()) {
       return showPopup?.({ type: 'warning', message: 'Verificar los datos antes de continuar.' });
     }
@@ -31,20 +34,29 @@ export function ModalEditarProducto({id, setIdProducto}) {
       if (!cambios || Object.keys(cambios).length === 0) {
         return showPopup?.({ type: 'info', message: 'No se detectaron cambios.' });
       }
-      const res = await actualizar({ nuevoDato: { ...cambios, IdPublica: id } });
-      return CheckRes(res, { onSuccess, showPopup, onMessage: onShowAlert });
     }
 
-    const nuevoItem = nuevoProductoRef.current?.getData();
-    const res = await agregar({ nuevoItem });
+    setEnviando(true);
+    try {
+      if (id) {
+        const cambios = nuevoProductoRef.current?.getCambios();
+        const res = await actualizar({ nuevoDato: { ...cambios, IdPublica: id } });
+        return CheckRes(res, { onSuccess, showPopup, onMessage: onShowAlert });
+      }
 
-    CheckRes(res, { onSuccess, showPopup, onMessage: onShowAlert });
+      const nuevoItem = nuevoProductoRef.current?.getData();
+      const res = await agregar({ nuevoItem });
+
+      CheckRes(res, { onSuccess, showPopup, onMessage: onShowAlert });
+    } finally {
+      setEnviando(false);
+    }
   }
 
   return (
     <Modal 
       title={id ? "Editar Producto" : "Nuevo Producto"} 
-      onClose={handleClose}
+      onClose={handleModalClose}
     >
       <Alert />
       <div className="modal-body-layout">
@@ -61,8 +73,8 @@ export function ModalEditarProducto({id, setIdProducto}) {
       </div>
         
       <div className="modal-footer">
-        <Button type="button" variant="danger" onClick={handleClose}>Cancelar</Button>
-        <Button type="button" variant="success" onClick={handleSubmit}>Confirmar</Button>
+        <Button type="button" variant="danger" disabled={enviando} onClick={handleClose}>Cancelar</Button>
+        <Button type="button" variant="success" loading={enviando} loadingText="Enviando..." onClick={handleSubmit}>Confirmar</Button>
       </div>
     </Modal>
   )
