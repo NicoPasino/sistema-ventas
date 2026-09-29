@@ -7,6 +7,7 @@ import { Contenido } from './ContenidoTabla.jsx';
 import { usePopup } from '../../context/notificationContext.jsx';
 import { CheckRes } from '../../utils/checkRes.js';
 import { esActivo } from '../../utils/displayConvert.jsx';
+import { aTimestamp } from '../../utils/getDate.js';
 
 export default function Productos() {
   const { productos } = useContext(DataContext);
@@ -15,15 +16,18 @@ export default function Productos() {
   const [modalNew, setModalNew] = useState(false);
   const { showPopup } = usePopup();
   
-  const tableHeaders = ["Código", "Producto", "Descripción", "Categoría", "Stock", "Precio", "Estado"];
+  const tableHeaders = ["Código", "Producto", "Descripción", "Categoría", "Proveedor", "Stock", "Precio", "Estado"];
   const ordenCampos = [
     { label: "Código", valor: (p) => p.idPublica },
     { label: "Producto", valor: (p) => p.nombre },
     { label: "Descripción", valor: (p) => p.descripcion },
     { label: "Categoría", valor: (p) => p.categoria },
+    { label: "Proveedor", valor: (p) => p.proveedor ?? "" },
     { label: "Stock", valor: (p) => p.cantidad },
     { label: "Precio", valor: (p) => p.precio },
     { label: "Estado", valor: (p) => (esActivo(p.activo) ? 1 : 0) },
+    { label: "Fecha Creación", valor: (p) => aTimestamp(p.fechaCreacion) },
+    { label: "Fecha Modificación", valor: (p) => aTimestamp(p.fechaModificacion) },
   ];
   
   function handleCloseModal() {

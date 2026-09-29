@@ -100,6 +100,11 @@
   font-weight: normal;
 }
 
+.stockRangoNota {
+  margin: -8px 0 0;
+  font-size: 0.8em;
+}
+
 .field-error {
   color: #e74c3c;
   font-size: 0.8em;

@@ -3,7 +3,11 @@ import { DataContext } from "../../context/dataContext";
 import { validarProducto } from "../../validations/validarProducto";
 import { esActivo } from "../../utils/displayConvert";
 
-const CAMPOS_EDITABLES = ['nombre', 'activo', 'cantidad', 'precio', 'idCategoria', 'descripcion'];
+const CAMPOS_EDITABLES = ['nombre', 'activo', 'cantidad', 'precio', 'idCategoria', 'descripcion', 'stockMinimo', 'stockMaximo', 'proveedor'];
+
+// El PATCH del backend solo escribe min/max si vienen con valor, asi que un null se ignora
+// en silencio. Al borrar el campo se omite del parche y el valor anterior se conserva.
+const CAMPOS_SIN_ANULAR = ['stockMinimo', 'stockMaximo'];
 
 function sonIguales(a, b) {
   if (a === b) return true;
@@ -17,7 +21,7 @@ export const NuevoProducto = forwardRef(function NuevoProducto({ id }, ref) {
   const { categorias, loading, items } = productos;
   const [producto, setProducto] = useState(productoDefault);
   const [productoOriginal, setProductoOriginal] = useState(null);
-  const {nombre, activo, cantidad, precio, idCategoria, descripcion} = producto;
+  const {nombre, activo, cantidad, precio, idCategoria, descripcion, stockMinimo, stockMaximo, proveedor} = producto;
   const [errors, setErrors] = useState({});
   
   useEffect(() => {
@@ -46,6 +50,7 @@ export const NuevoProducto = forwardRef(function NuevoProducto({ id }, ref) {
       const actual = convertirTipos(producto);
       const cambios = {};
       for (const campo of CAMPOS_EDITABLES) {
+        if (CAMPOS_SIN_ANULAR.includes(campo) && actual[campo] === null) continue;
         if (!sonIguales(actual[campo], productoOriginal[campo])) cambios[campo] = actual[campo];
       }
       return cambios;
@@ -92,8 +97,8 @@ export const NuevoProducto = forwardRef(function NuevoProducto({ id }, ref) {
         <div className="form-group">
           <label htmlFor="estadoP">Estado</label>
           <select id="estadoP" name="activo" value={activo ?? "true"} onChange={handleChange}>
-            <option value="true">Activo</option>
-            <option value="false">No Activo</option>
+            <option value="true">Activado</option>
+            <option value="false">Desactivado</option>
           </select>
         </div>
       </div>
@@ -112,6 +117,29 @@ export const NuevoProducto = forwardRef(function NuevoProducto({ id }, ref) {
         </div>
       </div>
       
+      <div className="form-row">
+        <div className="form-group">
+          <label htmlFor="stockMinimo">Stock Mínimo</label>
+          <input type="number" id="stockMinimo" name="stockMinimo" value={stockMinimo ?? ""} onChange={handleChange} onBlur={handleBlur} min="0" step="1" />
+          {errors.stockMinimo && <span className="field-error">{errors.stockMinimo}</span>}
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="stockMaximo">Stock Máximo</label>
+          <input type="number" id="stockMaximo" name="stockMaximo" value={stockMaximo ?? ""} onChange={handleChange} onBlur={handleBlur} min="0" step="1" />
+          {errors.stockMaximo && <span className="field-error">{errors.stockMaximo}</span>}
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="proveedor">Proveedor</label>
+          <input type="text" id="proveedor" name="proveedor" value={proveedor ?? ""} onChange={handleChange} onBlur={handleBlur} maxLength="150" />
+          {errors.proveedor && <span className="field-error">{errors.proveedor}</span>}
+        </div>
+      </div>
+      <p className="colorGrisClaro stockRangoNota">
+        El stock se muestra según el porcentaje entre el mínimo y el máximo. <span className="optional-label">(Si se dejan vacíos se usan 20 y 150)</span>
+      </p>
+
       <div className="form-group">
         <label htmlFor="ListaCategorias">Categoría</label>
         {
@@ -139,7 +167,10 @@ const productoDefault = {
   cantidad: '',
   precio: '',
   idCategoria: '',
-  descripcion: ''
+  descripcion: '',
+  stockMinimo: '',
+  stockMaximo: '',
+  proveedor: ''
 }
 
 function convertirTipos(nuevoItem){
@@ -157,5 +188,20 @@ function convertirTipos(nuevoItem){
     const parsed = Number(convertido.idCategoria);
     convertido.idCategoria = Number.isNaN(parsed) ? convertido.idCategoria : parsed;
   }
+  if (convertido.stockMinimo !== undefined) {
+    convertido.stockMinimo = aEnteroONull(convertido.stockMinimo);
+  }
+  if (convertido.stockMaximo !== undefined) {
+    convertido.stockMaximo = aEnteroONull(convertido.stockMaximo);
+  }
+  if (convertido.proveedor !== undefined) {
+    convertido.proveedor = String(convertido.proveedor ?? '').trim();
+  }
   return convertido;
+}
+
+function aEnteroONull(valor) {
+  if (valor === null || valor === undefined || String(valor).trim() === '') return null;
+  const n = Number(valor);
+  return Number.isFinite(n) ? Math.trunc(n) : null;
 }

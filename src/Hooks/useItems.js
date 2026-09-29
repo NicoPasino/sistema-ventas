@@ -34,15 +34,16 @@ function filtrarLista(lista, { busqueda, estado }) {
   });
 }
 
-export function useItems({ itemsDB, categoriasDB }) {
+export function useItems({ itemsDB, categoriasDB, estadoInicial = "todos" }) {
   const [items, setItems] = useState([]);
   const [itemsOriginales, setItemsOriginales] = useState([]);
   const [categorias, setCategorias] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [orden, setOrden] = useState(null);
-  const [filtros, setFiltros] = useState(FILTROS_INICIALES);
-  const filtrosRef = useRef({ ...FILTROS_INICIALES });
+  const filtrosPorDefecto = useMemo(() => ({ ...FILTROS_INICIALES, estado: estadoInicial }), [estadoInicial]);
+  const [filtros, setFiltros] = useState(() => ({ ...filtrosPorDefecto }));
+  const filtrosRef = useRef({ ...filtrosPorDefecto });
 
   const mostrarFiltrados = useCallback((lista, filtrosAplicados, ordenAplicado) => {
     const filtrados = filtrarLista(lista, filtrosAplicados);
@@ -123,7 +124,7 @@ export function useItems({ itemsDB, categoriasDB }) {
   }, [itemsDB]);
 
   const eliminar = useCallback(async (id) => {
-    const respuestaConfirm = confirm("Realmente quieres eliminar este elemento?"); // TODO: modal
+    const respuestaConfirm = confirm("¿Realmente quieres realizar esta acción?");
     if (!respuestaConfirm) return undefined;
     try {
       return await itemsDB.eliminar(id);
@@ -149,10 +150,10 @@ export function useItems({ itemsDB, categoriasDB }) {
   }, [cambiarFiltros]);
 
   const limpiarFiltros = useCallback(() => {
-    const nuevosFiltros = { ...FILTROS_INICIALES };
+    const nuevosFiltros = { ...filtrosPorDefecto };
     filtrosRef.current = nuevosFiltros;
     setFiltros(nuevosFiltros);
-  }, []);
+  }, [filtrosPorDefecto]);
 
   const ordenarItems = useCallback((accesor, direccion) => {
     const nuevoOrden = { accesor, direccion };

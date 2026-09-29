@@ -7,7 +7,7 @@ export const DataContext = createContext()
 
 // 2. Crear proveedor
 export function DataProvider ({children}) {
-  const productos = useItems({itemsDB: productosAPI, categoriasDB: categoriasAPI});
+  const productos = useItems({itemsDB: productosAPI, categoriasDB: categoriasAPI, estadoInicial: "activos"});
   const clientes = useItems({itemsDB: clientesAPI});
   const ventas = useItems({itemsDB: ventasAPI});
   const value = useMemo(() => ({productos, clientes, ventas}), [productos, clientes, ventas]);

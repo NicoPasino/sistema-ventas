@@ -74,6 +74,12 @@ export function converToLocal(fechaUtc) {
   return DesglosarFecha(dateStr).fechaDate; // "2026-01-22 00:00:00"
 }
 
+export function aTimestamp(fecha) {
+  // Convierte a milisegundos para poder ordenar cronológicamente (0 si la fecha no es válida).
+  const date = new Date(fecha);
+  return isNaN(date.getTime()) ? 0 : date.getTime();
+}
+
 export function TiempoTranscurrido(fecha, fecha2 = new Date()) {
   const fechaDada = new Date(fecha);
   const fechaComparar = new Date(fecha2);

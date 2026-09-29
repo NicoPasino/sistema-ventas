@@ -1,3 +1,5 @@
+import { getRangoStock, estadoStock, nivelStockCSS } from "./stock";
+
 export function MoneyDisplay(amount) {
   // 1. Formatear el número a moneda local
   const formatted = new Intl.NumberFormat('es-AR', {
@@ -19,8 +21,22 @@ export function MoneyDisplay(amount) {
   );
 };
 
-export function StockDisplay(cant) {
-  return <span className={(cant > 15) ? "" : "colorRojoClaro"}>{cant}</span>
+export function StockDisplay(cant, stockMinimo, stockMaximo) {
+  const { min, max } = getRangoStock(stockMinimo, stockMaximo);
+  const { pct, nivel } = estadoStock(cant, min, max);
+  const color = nivelStockCSS(nivel);
+
+  return (
+    <div className="stockCelda" title={`Stock: ${cant} (mín. ${min} · máx. ${max})`}>
+      <div className="stockNumero">
+        <span className={color}>{cant}</span>
+        <span className="stockMaximo">/{max}</span>
+      </div>
+      <div className="stockBarra">
+        <div className={`stockBarraFill ${color}`} style={{ width: `${Math.round(pct * 100)}%` }} />
+      </div>
+    </div>
+  );
 }
 
 export function esActivo(activo) {

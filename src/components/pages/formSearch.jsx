@@ -60,6 +60,7 @@ export function FormSearch({ itemsManage, tipo, newItemHandle, ordenCampos = [],
         <IconButton title="Recargar Todo" onClick={handleReload}><ReloadIcon /></IconButton>
       </div>
       <div className="prodHeadMid">
+        {/* Input Buscar */}
         <div className="search-input-wrapper">
           <SearchIcon />
           <input
@@ -72,6 +73,8 @@ export function FormSearch({ itemsManage, tipo, newItemHandle, ordenCampos = [],
             onChange={(e) => handleSearch(e.target.value)}
           />
         </div>
+
+        {/* Ordenar por columna */}
         {ordenCampos.length > 0 && (
           <div className="sort-wrapper">
             <select
@@ -94,6 +97,8 @@ export function FormSearch({ itemsManage, tipo, newItemHandle, ordenCampos = [],
             </IconButton>
           </div>
         )}
+
+        {/* Filtro de estado */}
         {mostrarEstado && (
           <div className="estado-filter" role="group" aria-label="Filtrar por estado">
             {OPCIONES_ESTADO.map((op) => (

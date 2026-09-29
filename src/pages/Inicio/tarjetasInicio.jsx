@@ -3,15 +3,17 @@ import { Cargando, ListaVacia, ErrorMensaje } from "../../components/pages/texto
 import { TarjetaBlanca, TarjetaInfo } from "../../components/pages/tarjetas";
 import { CategoriasIcon, ClientesIcon, ProductosIcon, VentasIcon } from "../../assets/icons";
 import { UserSettingsContext } from "../../context/userSettingsContext";
+import { nivelStockCSS, stockEstado } from "../../utils/stock";
 
-export function BajoStock({ productos, title, footer, top = 5, stock = 15 }) {
+export function BajoStock({ productos, title, footer, top = 5 }) {
   let contenido;
   
   if (productos.loading) contenido = <Cargando text={"productos"} />
   else if (productos.error) contenido = <ErrorMensaje msg={productos.error}/>
   else {
     const productosBajoStock = [...productos.items]
-      .filter((producto) => producto.cantidad <= stock)
+      .map((producto) => ({ ...producto, ...stockEstado(producto) }))
+      .filter((producto) => producto.cantidad <= producto.min)
       .sort((a, b) => a.cantidad - b.cantidad);
 
     const bajoStock = productosBajoStock
@@ -21,7 +23,9 @@ export function BajoStock({ productos, title, footer, top = 5, stock = 15 }) {
     <ul>
       {bajoStock.map((prod, i) => {
         return ( <li key={i}>
-              <strong>{prod.nombre}</strong> — <span className="colorGrisClaro">{prod.cantidad} en stock.</span>
+              <strong>{prod.nombre}</strong> — <span className="colorGrisClaro">
+                <span className={nivelStockCSS(prod.nivel)}>{prod.cantidad}</span> en stock (mín. {prod.min}).
+              </span>
             </li> )
       })}
       {productosBajoStock.length > top && (
