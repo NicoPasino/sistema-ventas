@@ -31,7 +31,7 @@ export function Button({
       {...props}
     >
       {loading && <span className="btn-spinner" aria-hidden="true"></span>}
-      {loading && loadingText ? <span>{loadingText}</span> : <span className={loading ? 'btn-text-hidden' : ''}>{children}</span>}
+      {loading && loadingText ? <span>{loadingText}</span> : <span className={['btn-content', loading && 'btn-text-hidden'].filter(Boolean).join(' ')}>{children}</span>}
     </button>
   );
 }

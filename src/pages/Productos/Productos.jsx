@@ -2,7 +2,7 @@ import { useContext, useState } from "react";
 import { DataContext } from "../../context/dataContext";
 import { FormSearch } from '../../components/pages/formSearch';
 import { ModalEditarProducto } from "./modalEditarProducto.jsx";
-import { TablaGenerica } from '../../components/pages/tablaGenerica';
+import { TablaPaginada } from '../../components/pages/tablaPaginada';
 import { Contenido } from './ContenidoTabla.jsx';
 import { usePopup } from '../../context/notificationContext.jsx';
 import { CheckRes } from '../../utils/checkRes.js';
@@ -44,9 +44,14 @@ export default function Productos() {
   return (
     <div>
       <FormSearch tipo={"Producto"} itemsManage={productos} newItemHandle={ () => setModalNew(true) } ordenCampos={ordenCampos} mostrarEstado />
-      <TablaGenerica itemsManage={productos} headers={tableHeaders} editable>
-        <Contenido lista={items} setIdProducto={setIdProducto} eliminar={handleDelete} />
-      </TablaGenerica>
+      <TablaPaginada
+        items={items}
+        itemsManage={productos}
+        headers={tableHeaders}
+        editable
+        clavePaginacion="productos"
+        renderFilas={(lista) => <Contenido lista={lista} setIdProducto={setIdProducto} eliminar={handleDelete} />}
+      />
       {(modalNew || idProducto) && (
         <ModalEditarProducto 
           id={idProducto} 

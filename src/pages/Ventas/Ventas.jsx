@@ -3,7 +3,7 @@ import { DataContext } from "../../context/dataContext";
 import { UserSettingsContext } from "../../context/userSettingsContext.jsx";
 import { FormSearch } from "../../components/pages/formSearch";
 import { FormNuevaVenta } from "./formNuevaVenta.jsx";
-import { TablaGenerica } from '../../components/pages/tablaGenerica';
+import { TablaPaginada } from '../../components/pages/tablaPaginada';
 import { Contenido } from './ContenidoTabla.jsx';
 import { ModalVerVenta } from './ModalVerVenta.jsx';
 
@@ -26,13 +26,14 @@ export default function Ventas() {
   return (
     <div>
       <FormSearch tipo={"Venta"} itemsManage={ventas} newItemHandle={() => handleTab("Venta")} ordenCampos={ordenCampos} />
-      <TablaGenerica
+      <TablaPaginada
+        items={items}
         itemsManage={ventas}
         headers={tableHeaders}
         editable
-      >
-        <Contenido lista={items} setVenta={setVentaSeleccionada} />
-      </TablaGenerica>
+        clavePaginacion="ventas"
+        renderFilas={(lista) => <Contenido lista={lista} setVenta={setVentaSeleccionada} />}
+      />
       {ventaSeleccionada && (
         <ModalVerVenta venta={ventaSeleccionada} onClose={() => setVentaSeleccionada(null)} />
       )}

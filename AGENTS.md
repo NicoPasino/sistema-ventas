@@ -17,6 +17,7 @@ React 19 + Vite 6, plain JavaScript (no TypeScript), Tailwind CSS v4 via the `@t
 - Navigation is **not** react-router. `App.jsx` looks up `UserSettingsContext.getTab` in a `componentes` map to render pages. Active tab + username persist to localStorage key `usuario` via `src/Hooks/userSettings.js`. Extend the tab map for new pages; do not introduce routing (react-router-dom is installed but unused).
 - All API calls go through `buildCollection(name)` in `src/services/api.js`, returning `{obtenerTodos, buscarPorCampo, obtenerPorId, agregar, eliminar, actualizar}`.
 - Global state: `DataProvider` (`src/context/dataContext.jsx`) exposes `{productos, clientes, ventas}`, each from `useItems({itemsDB, categoriasDB?})` in `src/Hooks/useItems.js` (items + CRUD + `filtrarItemsLocal` for client-side filter, `buscarItems` for server search, plus loading/error/mensaje/categorias).
+- Tables: `TablaGenerica` (`src/components/pages/tablaGenerica.jsx`) is the bare `<table>` shell. List pages use `TablaPaginada` instead — it wraps `TablaGenerica` + `Paginacion` and owns `usePaginacion` (`src/Hooks/usePaginacion.js`). Pagination is **100% client-side**: no API params, `useItems` is untouched. Pass the full filtered list as `items` and a render prop `renderFilas={(lista) => <Contenido lista={lista} ... />}`; the page size (10/25/50/100, default 25) persists in localStorage under `paginaSize_<clavePaginacion>`.
 - Feedback pattern: `NotificationProvider` (`src/context/notificationContext.jsx`) exposes `showAlert`/`showPopup`, reachable via `useAlert()` / `usePopup()` / `useNotifications()` (all aliases of the same context). Standard flow is `CheckRes(res, { onSuccess, onMessage, showPopup })` from `src/utils/checkRes.js`.
 
 ## Conventions
@@ -29,4 +30,5 @@ React 19 + Vite 6, plain JavaScript (no TypeScript), Tailwind CSS v4 via the `@t
 - `bootstrap` and `idb` are dependencies but unimported — use Tailwind + custom CSS, not bootstrap.
 - `privado/` and `.env*` are gitignored; never commit anything from `privado/` (private notes that may reference stale import paths).
 - Delete confirmation uses the native `confirm()` in `useItems.js` (TODO'd for a modal).
+- Never paginate inside `useItems`: `Inicio` (`tarjetasInicio.jsx`) reads `items` and `items.length` for its cards and totals. Slice at render time instead.
 - No CI or pre-commit hooks; `pnpm lint` is the only gate.

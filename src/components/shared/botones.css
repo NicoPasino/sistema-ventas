@@ -18,6 +18,12 @@
   -o-border-radius: 5px;
 }
 
+.btn-content {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
 .btn:hover {
   filter: brightness(1.3);
   -webkit-filter: brightness(1.3);

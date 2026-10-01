@@ -16,7 +16,7 @@ export function Contenido({lista, setIdProducto, eliminar}) {
           <td className='tablaColNombre'>    {nombre} </td>
           <td className='tablaColDetalles'>  {descripcion} </td>
           <td className='tablaCol'>          {categoria} </td>
-          <td className='tablaColProveedor'>{proveedor ? WhiteDisplay(proveedor) : GrayDisplay("-")} </td>
+          <td className='tablaColProveedor'> {GrayDisplay(proveedor)} </td>
           <td className='tablaColCantidad'>  {StockDisplay(cantidad, stockMinimo, stockMaximo)} </td>
           <td className='tablaColPrecio'>    {MoneyDisplay(precio)} </td>
           <td className='tablaColEstado'>    {EstadoDisplay(activo)} </td>

@@ -153,7 +153,8 @@ export function useItems({ itemsDB, categoriasDB, estadoInicial = "todos" }) {
     const nuevosFiltros = { ...filtrosPorDefecto };
     filtrosRef.current = nuevosFiltros;
     setFiltros(nuevosFiltros);
-  }, [filtrosPorDefecto]);
+    mostrarFiltrados(itemsOriginales, nuevosFiltros, orden);
+  }, [filtrosPorDefecto, itemsOriginales, orden, mostrarFiltrados]);
 
   const ordenarItems = useCallback((accesor, direccion) => {
     const nuevoOrden = { accesor, direccion };
@@ -162,6 +163,8 @@ export function useItems({ itemsDB, categoriasDB, estadoInicial = "todos" }) {
   }, [items]);
 
   const reloadItems = recargarItems;
+
+  const hayFiltros = (filtros.busqueda ?? "") !== "" || filtros.estado !== filtrosPorDefecto.estado;
 
   return useMemo(() => ({
     items,
@@ -174,9 +177,10 @@ export function useItems({ itemsDB, categoriasDB, estadoInicial = "todos" }) {
     filtrarPorEstado,
     limpiarFiltros,
     filtroEstado: filtros.estado,
+    hayFiltros,
     ordenarItems,
     loading,
     error,
     categorias
-  }), [items, agregar, actualizar, obtenerItem, eliminar, reloadItems, filtrarItemsLocal, filtrarPorEstado, limpiarFiltros, filtros.estado, ordenarItems, loading, error, categorias]);
+  }), [items, agregar, actualizar, obtenerItem, eliminar, reloadItems, filtrarItemsLocal, filtrarPorEstado, limpiarFiltros, filtros.estado, hayFiltros, ordenarItems, loading, error, categorias]);
 }

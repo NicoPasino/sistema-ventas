@@ -1,6 +1,6 @@
 import './formSearch.css'
 import { useRef, useState, useCallback } from 'react';
-import { ReloadIcon, SearchIcon, ArrowUpIcon, ArrowDownIcon } from "../../assets/icons";
+import { ReloadIcon, SearchIcon, ArrowUpIcon, ArrowDownIcon, NewIcon, CancelIcon } from "../../assets/icons";
 import { IconButton, Button } from '../shared/botones';
 
 const OPCIONES_ESTADO = [
@@ -10,34 +10,40 @@ const OPCIONES_ESTADO = [
 ];
 
 export function FormSearch({ itemsManage, tipo, newItemHandle, ordenCampos = [], mostrarEstado = false }) {
-  const { reloadItems, filtrarItemsLocal, ordenarItems, error, filtroEstado, filtrarPorEstado, limpiarFiltros } = itemsManage;
+  const { hayFiltros, reloadItems, filtrarItemsLocal, ordenarItems, loading, error, filtroEstado, filtrarPorEstado, limpiarFiltros } = itemsManage;
   const searchRef = useRef();
   const [ busqueda, setBusqueda ] = useState("");
   const [ campoOrden, setCampoOrden ] = useState(null);
   const [ direccion, setDireccion ] = useState("asc");
 
-  const placeholder = tipo === "Cliente" ? "Buscar por Documento o Nombre"
-    : tipo === "Producto" ? "Buscar por Código o Nombre"
-    : "Buscar por Código o Nombre";
+  const placeholder = tipo === "Cliente" ? "Buscar en Clientes..."
+    : tipo === "Producto" ? "Buscar en Productos..."
+    : "Buscar...";
 
+  // solo recarga: mantiene la búsqueda y el filtro de estado que estén aplicados
   const handleReload = useCallback(() => {
-    setBusqueda("");
     setCampoOrden(null);
     setDireccion("asc");
-    limpiarFiltros();
     reloadItems();
-  }, [reloadItems, limpiarFiltros]);
+  }, [reloadItems]);
 
   const handleSearch = useCallback((valor) => {
     if (error) return;
     setBusqueda(valor);
     filtrarItemsLocal(valor);
-  }, [filtrarItemsLocal]);
+  }, [filtrarItemsLocal, error]);
 
   const handleEstado = useCallback((valor) => {
     if (error) return;
     filtrarPorEstado(valor);
   }, [filtrarPorEstado, error]);
+
+  // limpia búsqueda y estado sin volver a pedir los datos, el orden se mantiene
+  const handleLimpiar = useCallback(() => {
+    if (error) return;
+    setBusqueda("");
+    limpiarFiltros();
+  }, [limpiarFiltros, error]);
 
   const handleOrdenar = useCallback((index) => {
     const campo = ordenCampos[index];
@@ -55,12 +61,9 @@ export function FormSearch({ itemsManage, tipo, newItemHandle, ordenCampos = [],
   }, [campoOrden, direccion, ordenCampos, ordenarItems]);
 
   return (
-    <div className="productosHeader">
-      <div className="prodHeadL">
-        <IconButton title="Recargar Todo" onClick={handleReload}><ReloadIcon /></IconButton>
-      </div>
-      <div className="prodHeadMid">
-        {/* Input Buscar */}
+    <div className="toolbar">
+      {/* Fila 1: búsqueda y alta */}
+      <div className="toolbarRow toolbarRowTop">
         <div className="search-input-wrapper">
           <SearchIcon />
           <input
@@ -74,7 +77,19 @@ export function FormSearch({ itemsManage, tipo, newItemHandle, ordenCampos = [],
           />
         </div>
 
-        {/* Ordenar por columna */}
+        {newItemHandle && (
+          <Button variant="success" onClick={newItemHandle} className="toolbarNuevo">
+            <NewIcon /> Nuevo
+          </Button>
+        )}
+
+        <IconButton title="Recargar Todo" onClick={handleReload} loading={loading}>
+          <ReloadIcon />
+        </IconButton>
+      </div>
+
+      {/* Fila 2: recarga, ordenamiento, estado y limpieza */}
+      <div className="toolbarRow toolbarRowBottom">
         {ordenCampos.length > 0 && (
           <div className="sort-wrapper">
             <select
@@ -98,7 +113,6 @@ export function FormSearch({ itemsManage, tipo, newItemHandle, ordenCampos = [],
           </div>
         )}
 
-        {/* Filtro de estado */}
         {mostrarEstado && (
           <div className="estado-filter" role="group" aria-label="Filtrar por estado">
             {OPCIONES_ESTADO.map((op) => (
@@ -114,9 +128,15 @@ export function FormSearch({ itemsManage, tipo, newItemHandle, ordenCampos = [],
             ))}
           </div>
         )}
-      </div>
-      <div className="prodHeadR">
-        {newItemHandle && <Button variant="success" onClick={newItemHandle}>+ Nuevo</Button>}
+
+        <Button
+          variant="outline-danger"
+          onClick={handleLimpiar}
+          disabled={!hayFiltros || Boolean(error)}
+          className="toolbarLimpiar"
+        >
+          <CancelIcon /> Limpiar filtros
+        </Button>
       </div>
     </div>
   )

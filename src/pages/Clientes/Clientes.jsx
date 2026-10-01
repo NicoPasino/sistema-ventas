@@ -1,7 +1,7 @@
 import { useContext, useState } from "react";
 import { FormSearch } from '../../components/pages/formSearch';
 import { ModalEditarCliente } from "./modalEditarCliente";
-import { TablaGenerica } from '../../components/pages/tablaGenerica';
+import { TablaPaginada } from '../../components/pages/tablaPaginada';
 import { Contenido } from './ContenidoTabla';
 import { DataContext } from "../../context/dataContext";
 
@@ -28,9 +28,14 @@ export default function Clientes() {
   return (
     <div>
       <FormSearch tipo={"Cliente"} itemsManage={clientes} newItemHandle={ () => setModalNew(true) } ordenCampos={ordenCampos} />
-      <TablaGenerica itemsManage={clientes} headers={tableHeaders} editable >
-        <Contenido lista={items} setIdCliente={setIdCliente} />
-      </TablaGenerica>
+      <TablaPaginada
+        items={items}
+        itemsManage={clientes}
+        headers={tableHeaders}
+        editable
+        clavePaginacion="clientes"
+        renderFilas={(lista) => <Contenido lista={lista} setIdCliente={setIdCliente} />}
+      />
       {(modalNew || idCliente) && (
         <ModalEditarCliente 
           id={idCliente}
