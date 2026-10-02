@@ -26,6 +26,10 @@ tr td{
   vertical-align: middle;
   /* height: 100%; */
 }
+.sinItems {
+  text-align: center;
+  color: #999;
+}
 .tablaCol{
   width: auto;
 }
@@ -42,11 +46,6 @@ tr td{
   color: #bbb;
   font-size: 0.9em;
   width: 28%;
-  padding-block: 0;
-}
-.tablaColProveedor {
-  text-align: start;
-  width: 18%;
   padding-block: 0;
 }
 .tablaColCantidad {

@@ -116,8 +116,3 @@ input:read-only::-webkit-inner-spin-button { opacity: 0; }
 .totalValue {
   color: #ccc;
 }
-
-.sinItems {
-  text-align: center;
-  color: #999;
-}

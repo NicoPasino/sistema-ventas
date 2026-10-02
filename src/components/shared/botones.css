@@ -12,6 +12,7 @@
   border-radius: 5px;
   cursor: pointer;
   transition: filter 0.2s, border-color 0.2s;
+  text-decoration: none;
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
   -ms-border-radius: 5px;

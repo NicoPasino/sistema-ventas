@@ -2,6 +2,7 @@ import { useContext, useState } from "react";
 import { DataContext } from "../../context/dataContext";
 import { FormSearch } from '../../components/pages/formSearch';
 import { ModalEditarProducto } from "./modalEditarProducto.jsx";
+import { ModalVerProducto } from "./ModalVerProducto.jsx";
 import { TablaPaginada } from '../../components/pages/tablaPaginada';
 import { Contenido } from './ContenidoTabla.jsx';
 import { usePopup } from '../../context/notificationContext.jsx';
@@ -14,9 +15,10 @@ export default function Productos() {
   const { items, eliminar, reloadItems } = productos;
   const [idProducto, setIdProducto] = useState();
   const [modalNew, setModalNew] = useState(false);
+  const [productoVer, setProductoVer] = useState();
   const { showPopup } = usePopup();
   
-  const tableHeaders = ["Código", "Producto", "Descripción", "Categoría", "Proveedor", "Stock", "Precio", "Estado"];
+  const tableHeaders = ["Código", "Producto", "Descripción", "Categoría", "Stock", "Precio", "Estado"];
   const ordenCampos = [
     { label: "Código", valor: (p) => p.idPublica },
     { label: "Producto", valor: (p) => p.nombre },
@@ -50,8 +52,15 @@ export default function Productos() {
         headers={tableHeaders}
         editable
         clavePaginacion="productos"
-        renderFilas={(lista) => <Contenido lista={lista} setIdProducto={setIdProducto} eliminar={handleDelete} />}
+        renderFilas={(lista) => <Contenido lista={lista} setIdProducto={setIdProducto} setProductoVer={setProductoVer} eliminar={handleDelete} />}
       />
+      {productoVer && (
+        <ModalVerProducto
+          producto={productoVer}
+          onClose={() => setProductoVer()}
+          onEditar={() => { setIdProducto(productoVer.idPublica); setProductoVer(); }}
+        />
+      )}
       {(modalNew || idProducto) && (
         <ModalEditarProducto 
           id={idProducto} 

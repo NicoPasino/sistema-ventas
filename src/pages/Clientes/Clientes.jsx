@@ -1,6 +1,7 @@
 import { useContext, useState } from "react";
 import { FormSearch } from '../../components/pages/formSearch';
 import { ModalEditarCliente } from "./modalEditarCliente";
+import { ModalVerCliente } from "./ModalVerCliente";
 import { TablaPaginada } from '../../components/pages/tablaPaginada';
 import { Contenido } from './ContenidoTabla';
 import { DataContext } from "../../context/dataContext";
@@ -10,6 +11,7 @@ export default function Clientes() {
   const { items } = clientes;
   const [idCliente, setIdCliente] = useState(); // editMode
   const [modalNew, setModalNew] = useState(false);
+  const [clienteVer, setClienteVer] = useState();
 
   const tableHeaders = ["Nombre", "Correo", "Telefono", "Documento", "Registrado"];
   const ordenCampos = [
@@ -34,8 +36,15 @@ export default function Clientes() {
         headers={tableHeaders}
         editable
         clavePaginacion="clientes"
-        renderFilas={(lista) => <Contenido lista={lista} setIdCliente={setIdCliente} />}
+        renderFilas={(lista) => <Contenido lista={lista} setIdCliente={setIdCliente} setClienteVer={setClienteVer} />}
       />
+      {clienteVer && (
+        <ModalVerCliente
+          cliente={clienteVer}
+          onClose={() => setClienteVer()}
+          onEditar={() => { setIdCliente(clienteVer.documento); setClienteVer(); }}
+        />
+      )}
       {(modalNew || idCliente) && (
         <ModalEditarCliente 
           id={idCliente}
