@@ -2,8 +2,9 @@ import { useContext } from 'react'
 import './tarjetas.css'
 import { UserSettingsContext } from '../../context/userSettingsContext'
 import { GoToIcon } from '../../assets/icons';
+import { IconButton } from '../shared/botones';
 
-export function TarjetaBlanca ({title, children, footer}) {
+export function TarjetaBlanca ({title, children, tab}) {
   const {handleTab} = useContext(UserSettingsContext)
 
   return (
@@ -11,9 +12,9 @@ export function TarjetaBlanca ({title, children, footer}) {
       <h2 className='tarjetaBlancaHeader'>{title}</h2>
       <div className="tarjetaBlancaBody">
         {children}
-        {footer &&
+        {tab &&
           <p className='tarjetaBlancaFooter'>
-            <i className='iconEdit svgView' onClick={() => handleTab(footer)} title={"ir a " + footer}> <GoToIcon/> </i>
+            <IconButton variant="secondary" size="md" title={"Ir a " + tab} onClick={() => handleTab(tab)}> <GoToIcon/> </IconButton>
           </p>
         }
       </div>
@@ -30,17 +31,28 @@ export function HeaderCard ({title, subtitle}) {
   )
 }
 
-export function TarjetaInfo ({text, number, color, svg, onClick}) {
-  return (
-    <div className={"tarjetaInfo" + (onClick ? " pointer" : "")} onClick={onClick}>
+export function TarjetaInfo ({text, number, detalle, color, svg, onClick}) {
+  const contenido = (
+    <>
       <div className="tarjetaInfoIcon" style={{ backgroundColor: color }}>
         {svg}
       </div>
       <div className="tarjetaInfoContent">
-        <div className="tarjetaInfoNumber">{number}</div>
+        <div className="tarjetaInfoNumber">
+          {number}
+          {detalle && <span className="tarjetaInfoDetalle">{detalle}</span>}
+        </div>
         <div className="tarjetaInfoText">{text}</div>
       </div>
-    </div>
+    </>
+  );
+
+  if (!onClick) return <div className="tarjetaInfo">{contenido}</div>;
+
+  return (
+    <button type="button" className="tarjetaInfo pointer" onClick={onClick}>
+      {contenido}
+    </button>
   )
 }
 

@@ -20,7 +20,7 @@ function DesglosarFecha(_fecha) {
   const fechaStr = `${dd}-${MMMM}-${yyyy}`;                 // "07-agosto-2026"
   const fechaConHora = `${fecha} ${hora}`;                  // "07/12/2026 00:40"
   const fechaConHoraStr = `${fechaStr} ${hora}`;            // "07-agosto-2026 00:40"
-  const fechaLarga = `${D}, ${d} de ${MMMM} del ${yyyy}`;   // "jueves, 7 de agosto del 2026"
+  const fechaLarga = `${D}, ${d} de ${MMMM} de ${yyyy}`;    // "jueves, 7 de agosto de 2026"
   const fechaDate = `${yyyy}-${mm}-${dd} ${horaLarga}`;     // "2026-12-07 00:00:00"
   // const ISO = `${yyyy}-${mm}-${dd}T${horaLarga}`;
 

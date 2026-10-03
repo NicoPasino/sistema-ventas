@@ -1,12 +1,31 @@
 import { getRangoStock, estadoStock, nivelStockCSS } from "./stock";
 
-export function MoneyDisplay(amount) {
-  // 1. Formatear el número a moneda local
-  const formatted = new Intl.NumberFormat('es-AR', {
+export function formatearMoneda(amount, { compacto = false } = {}) {
+  const valor = Number(amount) || 0;
+
+  if (compacto) {
+    return new Intl.NumberFormat('es-AR', {
+      style: 'currency',
+      currency: 'ARS',
+      notation: 'compact',
+      maximumFractionDigits: 1,
+    }).format(valor);
+  }
+
+  return new Intl.NumberFormat('es-AR', {
     style: 'currency',
     currency: 'ARS',
     minimumFractionDigits: 2,
-  }).format(amount);
+  }).format(valor);
+}
+
+// Acepta el valor posicional (MoneyDisplay(100)) y también por prop
+// (MoneyDisplay amount={100}). Sin esto, el segundo caso pasaba el objeto de
+// props entero a Number() -> NaN -> $ 0.
+export function MoneyDisplay(valor) {
+  // 1. Formatear el número a moneda local
+  const amount = valor && typeof valor === "object" && "amount" in valor ? valor.amount : valor;
+  const formatted = formatearMoneda(amount);
 
   // 2. Separamos la parte entera de los decimales
   const parts = formatted.split(',');

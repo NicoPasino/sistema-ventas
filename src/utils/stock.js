@@ -8,7 +8,7 @@ const COLOR_POR_NIVEL = {
   exceso: "colorCianClaro",
 };
 
-function aNumero(valor, porDefecto) {
+export function aNumero(valor, porDefecto) {
   if (valor === null || valor === undefined || valor === "") return porDefecto;
   const n = Number(valor);
   return Number.isNaN(n) ? porDefecto : n;

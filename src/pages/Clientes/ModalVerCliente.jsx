@@ -8,6 +8,7 @@ import { getEstadisticasCliente } from '../../utils/estadisticasCliente';
 import { getDate } from '../../utils/getDate';
 import { MailIcon, WhatsAppIcon } from '../../assets/icons';
 import '../../components/pages/modals.css';
+import { totalVenta } from '../../utils/ventas';
 
 const ULTIMAS_VENTAS = 5;
 
@@ -119,7 +120,7 @@ export function ModalVerCliente({ cliente, onClose, onEditar }) {
             <tr key={i}>
               <td className="tablaColID">{v.numero}</td>
               <td className="tablaColFecha">{getDate(v.fechaVenta).fecha}</td>
-              <td className="tablaColPrecio">{MoneyDisplay(v.productos?.reduce((acc, p) => acc + (p.subTotal || 0), 0))}</td>
+              <td className="tablaColPrecio">{MoneyDisplay(totalVenta(v))}</td>
             </tr>
           ))
         )}

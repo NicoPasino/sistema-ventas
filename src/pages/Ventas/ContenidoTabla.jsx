@@ -3,6 +3,7 @@ import { GrayDisplay, MoneyDisplay, WhiteDisplay } from '../../utils/displayConv
 import { ListaVaciaT } from '../../components/pages/textosComponent';
 import { getDate } from '../../utils/getDate';
 import { ViewIcon } from '../../assets/icons';
+import { totalVenta } from '../../utils/ventas';
 
 const PRODUCTOS_VISIBLES = 2;
 
@@ -11,7 +12,7 @@ function FilaVenta({ item, setVenta }) {
 
   const { tiempoTranscurrido, fechaDinamica } = getDate(fechaVenta);
   const listaProductos = Array.isArray(productos) ? productos : [];
-  const totalCalculado = listaProductos.reduce((total, p) => total + (p.subTotal || 0), 0);
+  const totalCalculado = totalVenta(item);
   const [verTodos, setVerTodos] = useState(false);
 
   const visibles = verTodos ? listaProductos : listaProductos.slice(0, PRODUCTOS_VISIBLES);

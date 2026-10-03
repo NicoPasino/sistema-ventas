@@ -168,6 +168,7 @@ export function useItems({ itemsDB, categoriasDB, estadoInicial = "todos" }) {
 
   return useMemo(() => ({
     items,
+    itemsOriginales,
     agregar,
     actualizar,
     obtenerItem,
@@ -182,5 +183,5 @@ export function useItems({ itemsDB, categoriasDB, estadoInicial = "todos" }) {
     loading,
     error,
     categorias
-  }), [items, agregar, actualizar, obtenerItem, eliminar, reloadItems, filtrarItemsLocal, filtrarPorEstado, limpiarFiltros, filtros.estado, hayFiltros, ordenarItems, loading, error, categorias]);
+  }), [items, itemsOriginales, agregar, actualizar, obtenerItem, eliminar, reloadItems, filtrarItemsLocal, filtrarPorEstado, limpiarFiltros, filtros.estado, hayFiltros, ordenarItems, loading, error, categorias]);
 }

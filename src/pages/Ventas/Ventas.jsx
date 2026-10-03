@@ -6,6 +6,7 @@ import { FormNuevaVenta } from "./formNuevaVenta.jsx";
 import { TablaPaginada } from '../../components/pages/tablaPaginada';
 import { Contenido } from './ContenidoTabla.jsx';
 import { ModalVerVenta } from './ModalVerVenta.jsx';
+import { totalVenta, unidadesVenta } from '../../utils/ventas';
 
 export default function Ventas() {
   const { ventas } = useContext(DataContext);
@@ -17,10 +18,10 @@ export default function Ventas() {
   const ordenCampos = [
     { label: "Número", valor: (v) => v.numero },
     { label: "Cliente", valor: (v) => v.cliente?.nombre ?? "" },
-    { label: "Productos", valor: (v) => (v.productos || []).reduce((t, p) => t + (p.cantidad || 0), 0) },
+    { label: "Productos", valor: (v) => unidadesVenta(v) },
     { label: "Detalles", valor: (v) => v.detalle },
     { label: "Fecha", valor: (v) => v.fechaVenta },
-    { label: "Total", valor: (v) => (v.productos || []).reduce((t, p) => t + (p.subTotal || 0), 0) },
+    { label: "Total", valor: (v) => totalVenta(v) },
   ];
 
   return (

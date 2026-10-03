@@ -1,6 +1,6 @@
 import { UserSettingsContext } from "../../context/userSettingsContext";
 import { DataContext } from "../../context/dataContext";
-import { useContext } from "react";
+import { useContext, useMemo } from "react";
 import { getDate } from "../../utils/getDate";
 import { HeaderCard } from "../../components/pages/tarjetas";
 import { BajoStock, TopClientes, TopProductos, TarjetasResumen } from "./tarjetasInicio";
@@ -9,18 +9,20 @@ export default function Inicio() {
   const {getUser} = useContext(UserSettingsContext);
   const {productos, clientes, ventas} = useContext(DataContext);
 
+  const fechaLarga = useMemo(() => getDate().fechaLarga, []);
+
   return (
     <>
-      <HeaderCard title={getDate().fechaLarga} subtitle={`Bienvenido ${getUser}.`} />
+      <HeaderCard title={fechaLarga} subtitle={`Bienvenido ${getUser}.`} />
 
       <TarjetasResumen productos={productos} clientes={clientes} ventas={ventas} />
 
       <div className="divTarjetas">
-        <BajoStock productos={productos} title="📉 Productos con bajo stock" footer="Productos"/>
+        <BajoStock productos={productos} title="📉 Productos con bajo stock" tab="Productos" />
 
-        <TopClientes clientes={clientes} top={5} title="🏆 Top 5 Clientes" footer="Ventas"/>
+        <TopClientes clientes={clientes} ventas={ventas} title="🏆 Top 5 Clientes por facturación" tab="Ventas" />
 
-        <TopProductos ventas={ventas} top={5} title="🏆 Top Productos Vendidos" footer="Ventas"/>
+        <TopProductos ventas={ventas} title="🏆 Top Productos Vendidos" tab="Ventas" />
       </div>
     </>
   )

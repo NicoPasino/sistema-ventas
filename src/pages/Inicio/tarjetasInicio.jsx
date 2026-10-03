@@ -1,117 +1,164 @@
-import { useContext } from 'react'
+import { useContext, useMemo } from 'react'
 import { Cargando, ListaVacia, ErrorMensaje } from "../../components/pages/textosComponent";
 import { TarjetaBlanca, TarjetaInfo } from "../../components/pages/tarjetas";
-import { CategoriasIcon, ClientesIcon, ProductosIcon, VentasIcon } from "../../assets/icons";
+import { CartIcon, CategoriasIcon, ClientesIcon, ProductosIcon, VentasIcon, WarningIcon } from "../../assets/icons";
 import { UserSettingsContext } from "../../context/userSettingsContext";
-import { nivelStockCSS, stockEstado } from "../../utils/stock";
+import { nivelStockCSS } from "../../utils/stock";
+import { formatearMoneda, MoneyDisplay } from "../../utils/displayConvert";
+import { getRankingClientesFacturacion } from "../../utils/estadisticasCliente";
+import { getResumenStock, getResumenVentas } from "../../utils/estadisticasInicio";
 
-export function BajoStock({ productos, title, footer, top = 5 }) {
+const TOP = 5;
+
+export function BajoStock({ productos, title, tab, top = TOP }) {
+  const { bajoStock } = useMemo(() => getResumenStock(productos.itemsOriginales), [productos.itemsOriginales]);
+
   let contenido;
-  
+
   if (productos.loading) contenido = <Cargando text={"productos"} />
   else if (productos.error) contenido = <ErrorMensaje msg={productos.error}/>
   else {
-    const productosBajoStock = [...productos.items]
-      .map((producto) => ({ ...producto, ...stockEstado(producto) }))
-      .filter((producto) => producto.cantidad <= producto.min)
-      .sort((a, b) => a.cantidad - b.cantidad);
+    const visibles = bajoStock.slice(0, top);
 
-    const bajoStock = productosBajoStock
-      .slice(0, top);
-
-    contenido = bajoStock.length === 0 ? <ListaVacia text={"No hay productos con bajo stock." }/> : (
-    <ul>
-      {bajoStock.map((prod, i) => {
-        return ( <li key={i}>
-              <strong>{prod.nombre}</strong> — <span className="colorGrisClaro">
-                <span className={nivelStockCSS(prod.nivel)}>{prod.cantidad}</span> en stock (mín. {prod.min}).
-              </span>
-            </li> )
-      })}
-      {productosBajoStock.length > top && (
-        <p className="colorGrisClaro">+{productosBajoStock.length - top} productos...</p>
-      )}
-    </ul>
+    contenido = visibles.length === 0 ? <ListaVacia text={"No hay productos con bajo stock." }/> : (
+      <ul>
+        {visibles.map((prod) => {
+          return ( <li key={prod.idPublica ?? prod.nombre}>
+                <strong>{prod.nombre}</strong> — <span className="colorGrisClaro">
+                  <span className={nivelStockCSS(prod.nivel)}>{prod.cantidad}</span> en stock (mín. {prod.min}).
+                </span>
+              </li> )
+        })}
+        {bajoStock.length > top && (
+          <p className="colorGrisClaro">+{bajoStock.length - top} productos...</p>
+        )}
+      </ul>
     );
   }
 
-  return <TarjetaBlanca title={title} footer={footer}>{contenido}</TarjetaBlanca>
+  return <TarjetaBlanca title={title} tab={tab}>{contenido}</TarjetaBlanca>
 }
 
-export function TopClientes({ clientes, title, footer, top = 5 }) {
-  let contenido;
-  if (clientes.loading) contenido = <Cargando text={"clientes"} />
-  else if (clientes.error) contenido = <ErrorMensaje msg={clientes.error}/>
-  else {
-    const topClientes = [...clientes.items]
-      .sort((a, b) => b.nroCompras - a.nroCompras)
-      .filter((cliente) => cliente.nroCompras > 0)
-      .slice(0, top);
+export function TopClientes({ clientes, ventas, title, tab, top = TOP }) {
+  const ranking = useMemo(
+    () => getRankingClientesFacturacion(clientes.itemsOriginales, ventas.itemsOriginales),
+    [clientes.itemsOriginales, ventas.itemsOriginales]
+  );
 
-    contenido = topClientes.length === 0 ? <ListaVacia text={"No hay clientes." }/> : (
+  let contenido;
+  if (ventas.loading) contenido = <Cargando text={"ventas"} />
+  else if (ventas.error) contenido = <ErrorMensaje msg={ventas.error}/>
+  else {
+    const topClientes = ranking.slice(0, top);
+
+    contenido = topClientes.length === 0 ? <ListaVacia text={"Ningún cliente tiene compras todavía."}/> : (
       <ul>
-        {topClientes.map((cliente, index) => (
-          <li key={index}>
-            <strong>{cliente.nombre}</strong> — <span className="colorGrisClaro">{cliente.nroCompras} compras.</span>
+        {topClientes.map((fila) => (
+          <li key={fila.clave}>
+            <strong>{fila.nombre}</strong> — {MoneyDisplay(fila.totalGastado)}{" "}
+            <span className="colorGrisClaro">en {fila.totalVentas} compras.</span>
           </li>
         ))}
       </ul>
     );
   }
 
-  return <TarjetaBlanca title={title} footer={footer}>{contenido}</TarjetaBlanca>
+  return <TarjetaBlanca title={title} tab={tab}>{contenido}</TarjetaBlanca>
 }
 
-export function TopProductos({ ventas, title, footer, top = 5 }) {
-  let contenido;
-  if (ventas.loading) contenido = <Cargando text={"productos más vendidos"}/>
-  else if (ventas.error) contenido = <ErrorMensaje msg={ventas.error}/>
-  else {
+export function TopProductos({ ventas, title, tab, top = TOP }) {
+  const topProductos = useMemo(() => {
     const contador = {};
-    ventas.items.forEach((venta) => {
+    ventas.itemsOriginales.forEach((venta) => {
       const productos = Array.isArray(venta.productos) ? venta.productos : [];
       productos.forEach(({ producto, cantidad }) => {
         if (producto) contador[producto] = (contador[producto] || 0) + (Number(cantidad) || 0);
       });
     });
 
-    const topProductos = Object.entries(contador)
+    return Object.entries(contador)
       .map(([nombre, cantidad]) => ({ nombre, cantidad }))
       .sort((a, b) => b.cantidad - a.cantidad)
       .slice(0, top);
+  }, [ventas.itemsOriginales, top]);
 
-    contenido = topProductos.length === 0 ? <ListaVacia text={"No hay ventas."}/> : (
-      <ul>
-        {topProductos.map((producto, index) => (
-          <li key={index}>
-            <strong>{producto.nombre}</strong> — <span className="colorGrisClaro">{producto.cantidad} vendidos.</span>
-          </li>
-        ))}
-      </ul>
-    );
-  }
+  let contenido;
+  if (ventas.loading) contenido = <Cargando text={"productos más vendidos"}/>
+  else if (ventas.error) contenido = <ErrorMensaje msg={ventas.error}/>
+  else contenido = topProductos.length === 0 ? <ListaVacia text={"No hay ventas."}/> : (
+    <ul>
+      {topProductos.map((producto) => (
+        <li key={producto.nombre}>
+          <strong>{producto.nombre}</strong> — <span className="colorGrisClaro">{producto.cantidad} vendidos.</span>
+        </li>
+      ))}
+    </ul>
+  );
 
-  return <TarjetaBlanca title={title} footer={footer}>{contenido}</TarjetaBlanca>
+  return <TarjetaBlanca title={title} tab={tab}>{contenido}</TarjetaBlanca>
 }
 
 export function TarjetasResumen({ productos, clientes, ventas }) {
   const { handleTab } = useContext(UserSettingsContext)
 
+  const resumenVentas = useMemo(() => getResumenVentas(ventas.itemsOriginales), [ventas.itemsOriginales]);
+  const resumenStock = useMemo(() => getResumenStock(productos.itemsOriginales), [productos.itemsOriginales]);
+
+  const moneda = (amount) => formatearMoneda(amount, { compacto: true });
+
   return (
-    <div className="divTarjetasInfo">
-      <CantidadInfo datos={productos} text="Total Productos" color="#0d6efd" svg={<ProductosIcon />} onClick={() => handleTab("Productos")} />
-      <CantidadInfo datos={ventas} text="Total Ventas" color="#198754" svg={<VentasIcon />} onClick={() => handleTab("Ventas")} />
-      {/* <CantidadInfo datos={productos} text="Categorías" color="#ffc107" svg={<CategoriasIcon />} cantidad={productos.categorias.length} onClick={() => handleTab("Productos")} /> */}
-      <CantidadInfo datos={clientes} text="Total Clientes" color="#0dcaf0" svg={<ClientesIcon />} onClick={() => handleTab("Clientes")} />
-    </div>
+    <>
+      <GrupoTarjetas>
+        <CantidadInfo datos={productos} text="Total Productos" color="#0d6efd" svg={<ProductosIcon />} onClick={() => handleTab("Productos")} />
+        <CantidadInfo datos={ventas} text="Total Ventas" color="#198754" svg={<VentasIcon />} onClick={() => handleTab("Ventas")} />
+        <CantidadInfo datos={clientes} text="Total Clientes" color="#0dcaf0" svg={<ClientesIcon />} onClick={() => handleTab("Clientes")} />
+        <CantidadInfo datos={ventas} valor={resumenVentas.unidades} text="Unidades Vendidas" color="#198754" svg={<ProductosIcon />} onClick={() => handleTab("Ventas")} />
+        {/* <CantidadInfo datos={productos} valor={resumenStock.unidades} text="Unidades en Stock" color="#6c757d" svg={<ProductosIcon />} onClick={() => handleTab("Productos")} /> */}
+        <CantidadInfo datos={productos} valor={productos.categorias.length} text="Total Categorías" color="#ffc107" svg={<CategoriasIcon />} onClick={() => handleTab("Productos")} />
+        {/* <CantidadInfo
+          datos={productos}
+          valor={resumenStock.alertas}
+          color={hayAlertas ? "#dc3545" : "#198754"}
+          svg={<WarningIcon />}
+          text={hayAlertas ? "Alertas de Stock" : "Stock Sin Alertas"}
+          onClick={() => handleTab("Productos")}
+        /> */}
+      </GrupoTarjetas>
+
+      <GrupoTarjetas>
+        <CantidadInfo datos={ventas} valor={resumenVentas.facturacion} formato={moneda} text="Facturación Total" color="#ffc107" svg={<CartIcon />} onClick={() => handleTab("Ventas")} />
+        <CantidadInfo
+          datos={ventas}
+          valor={resumenVentas.ultimos30.ventas}
+          detalle={moneda(resumenVentas.ultimos30.facturacion)}
+          text="Ventas Últimos 30 Días"
+          color="#0dcaf0"
+          svg={<VentasIcon />}
+          onClick={() => handleTab("Ventas")}
+        />
+        <CantidadInfo datos={productos} valor={resumenStock.valor} formato={moneda} text="Valor de Stock" color="#ffc107" svg={<CartIcon />} onClick={() => handleTab("Productos")} />
+      </GrupoTarjetas>
+    </>
   );
 }
 
-function CantidadInfo({ datos, cantidad, text, color, svg, onClick }) {
+function GrupoTarjetas({ children }) {
+  return (
+    <section className="tarjetasGrupo">
+      <div className="divTarjetasInfo">{children}</div>
+    </section>
+  );
+}
+
+function CantidadInfo({ datos, valor, detalle, formato, text, color, svg, onClick }) {
   let number;
   if (datos.loading) number = "…"
   else if (datos.error) number = "—"
-  else number = cantidad ?? datos.items.length;
+  else if (formato) number = formato(valor ?? datos.itemsOriginales.length)
+  else number = valor ?? datos.itemsOriginales.length;
 
-  return <TarjetaInfo text={text} number={number} color={color} svg={svg} onClick={onClick} />;
+  // el detalle solo se pinta cuando los datos cargaron bien y hay valor real
+  const detalleFinal = datos.loading || datos.error ? null : detalle;
+
+  return <TarjetaInfo text={text} number={number} detalle={detalleFinal} color={color} svg={svg} onClick={onClick} />;
 }
