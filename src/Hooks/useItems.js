@@ -134,6 +134,17 @@ export function useItems({ itemsDB, categoriasDB, estadoInicial = "todos" }) {
     }
   }, [itemsDB]);
 
+  const cambiarActivo = useCallback(async (id, activo) => {
+    const respuestaConfirm = confirm(`¿Realmente quieres ${activo ? "activar" : "desactivar"} este elemento?`);
+    if (!respuestaConfirm) return undefined;
+    try {
+      return await itemsDB.cambiarActivo(id, activo);
+    } catch (err) {
+      console.error(err);
+      return { error: "Error al cambiar el estado del elemento." };
+    }
+  }, [itemsDB]);
+
   const cambiarFiltros = useCallback((cambios) => {
     const nuevosFiltros = { ...filtrosRef.current, ...cambios };
     filtrosRef.current = nuevosFiltros;
@@ -173,6 +184,7 @@ export function useItems({ itemsDB, categoriasDB, estadoInicial = "todos" }) {
     actualizar,
     obtenerItem,
     eliminar,
+    cambiarActivo,
     reloadItems,
     filtrarItemsLocal,
     filtrarPorEstado,
@@ -183,5 +195,5 @@ export function useItems({ itemsDB, categoriasDB, estadoInicial = "todos" }) {
     loading,
     error,
     categorias
-  }), [items, itemsOriginales, agregar, actualizar, obtenerItem, eliminar, reloadItems, filtrarItemsLocal, filtrarPorEstado, limpiarFiltros, filtros.estado, hayFiltros, ordenarItems, loading, error, categorias]);
+  }), [items, itemsOriginales, agregar, actualizar, obtenerItem, eliminar, cambiarActivo, reloadItems, filtrarItemsLocal, filtrarPorEstado, limpiarFiltros, filtros.estado, hayFiltros, ordenarItems, loading, error, categorias]);
 }

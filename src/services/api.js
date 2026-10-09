@@ -12,10 +12,14 @@ async function request(path, options = {}) {
         return { message: resJson.message || "Error 400: Solicitud incorrecta (sin mensaje del servidor)." };
       } else if (res.status === 404) {
         return { error: "Error 404: Solicitud no encontrada (sin mensaje del servidor)." };
+      } else if (res.status === 405) {
+        return { error: "Error 405: Solicitud rechazada (Método no permitido)." };
       } else if (res.status === 500) {
         return { error: "Error 500: Error desde el servidor (sin mensaje del servidor)." };
+      } else if (res.status === 501) {
+        return { error: "Error 501: Error desde el servidor (Funcionalidad no implementada)." };
       } else {
-        return { error: "Error: (Respuesta no controlada)." };
+        return { error: `Error ${res.status}: (Respuesta no controlada).` };
       }
     })
     .catch(() => {
@@ -30,6 +34,7 @@ function buildCollection(name) {
     obtenerPorId: async (id) => request(`/${name}/${id}`),
     agregar: async (item) => request(`/${name}`, { method: 'POST', body: JSON.stringify(item) }),
     eliminar: async (id) => request(`/${name}/${Number(id)}`, { method: 'DELETE' }),
+    cambiarActivo: async (id, activo) => request(`/${name}/${Number(id)}`, { method: 'PATCH', body: JSON.stringify({ Activo: activo }) }),
     actualizar: async (item) => {
       const id = item.IdPublica ?? item.idPublica;
       if (!id) throw new Error('No se encontró ID en el item para actualizar');

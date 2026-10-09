@@ -12,7 +12,7 @@ import { aTimestamp } from '../../utils/getDate.js';
 
 export default function Productos() {
   const { productos } = useContext(DataContext);
-  const { items, eliminar, reloadItems } = productos;
+  const { items, cambiarActivo, reloadItems } = productos;
   const [idProducto, setIdProducto] = useState();
   const [modalNew, setModalNew] = useState(false);
   const [productoVer, setProductoVer] = useState();
@@ -37,8 +37,8 @@ export default function Productos() {
     setModalNew(false);
   }
 
-  async function handleDelete(id) {
-    const res = await eliminar(id);
+  async function handleCambiarActivo(id, activo) {
+    const res = await cambiarActivo(id, activo);
     if (!res) return;
     CheckRes(res, { onSuccess: reloadItems, showPopup });
   }
@@ -52,7 +52,7 @@ export default function Productos() {
         headers={tableHeaders}
         editable
         clavePaginacion="productos"
-        renderFilas={(lista) => <Contenido lista={lista} setIdProducto={setIdProducto} setProductoVer={setProductoVer} eliminar={handleDelete} />}
+        renderFilas={(lista) => <Contenido lista={lista} setIdProducto={setIdProducto} setProductoVer={setProductoVer} cambiarActivo={handleCambiarActivo} />}
       />
       {productoVer && (
         <ModalVerProducto

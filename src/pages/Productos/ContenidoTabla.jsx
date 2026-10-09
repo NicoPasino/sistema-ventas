@@ -2,7 +2,7 @@ import { EstadoDisplay, esActivo, GrayDisplay, MoneyDisplay, StockDisplay } from
 import { DeleteIcon, EditIcon, RestoreIcon, ViewIcon } from '../../assets/icons';
 import { ListaVaciaT } from '../../components/pages/textosComponent';
 
-export function Contenido({lista, setIdProducto, setProductoVer, eliminar}) {
+export function Contenido({lista, setIdProducto, setProductoVer, cambiarActivo}) {
   if (!lista || lista.length == 0) return <ListaVaciaT />;
 
   return (
@@ -24,8 +24,8 @@ export function Contenido({lista, setIdProducto, setProductoVer, eliminar}) {
               <i className='iconEdit svgView' onClick={()=> setProductoVer(item)} title="Ver detalle"> <ViewIcon /> </i>
               <i className='iconEdit svgEdit' onClick={()=> setIdProducto(idPublica)}> <EditIcon /> </i>
               {activoBool
-                ? <i className='iconEdit svgDelete' onClick={()=> eliminar(idPublica)}> <DeleteIcon /> </i>
-                : <i className='iconEdit svgRestore' onClick={()=> eliminar(idPublica)}> <RestoreIcon /> </i>
+                ? <i className='iconEdit svgDelete' onClick={()=> cambiarActivo(idPublica, false)}> <DeleteIcon /> </i>
+                : <i className='iconEdit svgRestore' onClick={()=> cambiarActivo(idPublica, true)}> <RestoreIcon /> </i>
               }
             </div>
           </td>
