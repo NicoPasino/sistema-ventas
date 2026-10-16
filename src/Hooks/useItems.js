@@ -40,6 +40,7 @@ export function useItems({ itemsDB, categoriasDB, estadoInicial = "todos" }) {
   const [categorias, setCategorias] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
+  const [errorCategorias, setErrorCategorias] = useState(false);
   const [orden, setOrden] = useState(null);
   const filtrosPorDefecto = useMemo(() => ({ ...FILTROS_INICIALES, estado: estadoInicial }), [estadoInicial]);
   const [filtros, setFiltros] = useState(() => ({ ...filtrosPorDefecto }));
@@ -85,7 +86,12 @@ export function useItems({ itemsDB, categoriasDB, estadoInicial = "todos" }) {
       if (categoriasRes && typeof categoriasRes === "object" && "ok" in categoriasRes) {
         categoriasRes = categoriasRes.ok ? categoriasRes.data : categoriasRes;
       }
-      if (mostrarError(categoriasRes)) return;
+      const errorCategoriasMsj = categoriasRes?.error || categoriasRes?.message;
+      if (errorCategoriasMsj) {
+        setErrorCategorias(errorCategoriasMsj);
+        return;
+      }
+      setErrorCategorias(false);
       setCategorias(Array.isArray(categoriasRes) ? categoriasRes : []);
     } catch (err) {
       setError("Error al cargar los datos.");
@@ -198,6 +204,7 @@ export function useItems({ itemsDB, categoriasDB, estadoInicial = "todos" }) {
     ordenarItems,
     loading,
     error,
+    errorCategorias,
     categorias
-  }), [items, itemsOriginales, agregar, actualizar, obtenerItem, eliminar, cambiarActivo, reloadItems, filtrarItemsLocal, filtrarPorEstado, limpiarFiltros, filtros.estado, hayFiltros, ordenarItems, loading, error, categorias]);
+  }), [items, itemsOriginales, agregar, actualizar, obtenerItem, eliminar, cambiarActivo, reloadItems, filtrarItemsLocal, filtrarPorEstado, limpiarFiltros, filtros.estado, hayFiltros, ordenarItems, loading, error, errorCategorias, categorias]);
 }
