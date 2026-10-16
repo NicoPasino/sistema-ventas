@@ -45,7 +45,7 @@ function buildCollection(name) {
     cambiarActivo: async (id, activo) => request(`/${name}/${Number(id)}`, { method: 'PATCH', body: JSON.stringify({ Activo: activo }) }),
     actualizar: async (item) => {
       const id = item.IdPublica ?? item.idPublica;
-      if (!id) throw new Error('No se encontró ID en el item para actualizar');
+      if (!id) return { error: 'No se encontró ID en el item para actualizar' };
       return request(`/${name}/${id}`, { method: 'PATCH', body: JSON.stringify(item) });
     },
   };
