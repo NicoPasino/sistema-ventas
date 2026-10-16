@@ -61,6 +61,7 @@ export function useItems({ itemsDB, categoriasDB, estadoInicial = "todos" }) {
     setOrden(null);
     try {
       let res = await itemsDB.obtenerTodos();
+      if (res && typeof res === "object" && "ok" in res) res = res.ok ? res.data : res;
 
       // Convertir fechas de UTC a local
       if (Array.isArray(res)) {
@@ -80,7 +81,10 @@ export function useItems({ itemsDB, categoriasDB, estadoInicial = "todos" }) {
       mostrarFiltrados(lista, filtrosRef.current, null);
 
       if (!categoriasDB) return;
-      const categoriasRes = await categoriasDB.obtenerTodos();
+      let categoriasRes = await categoriasDB.obtenerTodos();
+      if (categoriasRes && typeof categoriasRes === "object" && "ok" in categoriasRes) {
+        categoriasRes = categoriasRes.ok ? categoriasRes.data : categoriasRes;
+      }
       if (mostrarError(categoriasRes)) return;
       setCategorias(Array.isArray(categoriasRes) ? categoriasRes : []);
     } catch (err) {

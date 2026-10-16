@@ -1,29 +1,37 @@
 const apiUrl = import.meta.env.VITE_API_URL;
 
 async function request(path, options = {}) {
-  return await fetch(`${apiUrl}${path}`, { headers: { 'Content-Type': 'application/json' }, ...options, })
+  return await fetch(`${apiUrl}${path}`, { headers: { 'Content-Type': 'application/json' }, ...options })
     .then(async (res) => {
       if (res.status === 204 || res.status === 201 || res.status === 202) {
-        return { ok: true };
+        return { ok: true, data: null };
       } else if (res.status === 200) {
-        return res.json().catch(() => ({}));
+        try {
+          const data = await res.json();
+          if (data && typeof data === 'object' && ('error' in data || 'message' in data)) {
+            return { ok: false, error: data.error || data.message || `Error ${res.status}: Error del servidor.`, status: res.status };
+          }
+          return { ok: true, data: data ?? null };
+        } catch {
+          return { ok: true, data: null };
+        }
       } else if (res.status === 400) {
         let resJson = await res.json().catch(() => ({}));
-        return { message: resJson.message || "Error 400: Solicitud incorrecta (sin mensaje del servidor)." };
+        return { ok: false, error: resJson.message || resJson.error || "Error 400: Solicitud incorrecta (sin mensaje del servidor).", status: res.status };
       } else if (res.status === 404) {
-        return { error: "Error 404: Solicitud no encontrada (sin mensaje del servidor)." };
+        return { ok: false, error: "Error 404: Solicitud no encontrada (sin mensaje del servidor).", status: res.status };
       } else if (res.status === 405) {
-        return { error: "Error 405: Solicitud rechazada (Método no permitido)." };
+        return { ok: false, error: "Error 405: Solicitud rechazada (Método no permitido).", status: res.status };
       } else if (res.status === 500) {
-        return { error: "Error 500: Error desde el servidor (sin mensaje del servidor)." };
+        return { ok: false, error: "Error 500: Error desde el servidor (sin mensaje del servidor).", status: res.status };
       } else if (res.status === 501) {
-        return { error: "Error 501: Error desde el servidor (Funcionalidad no implementada)." };
+        return { ok: false, error: "Error 501: Error desde el servidor (Funcionalidad no implementada).", status: res.status };
       } else {
-        return { error: `Error ${res.status}: (Respuesta no controlada).` };
+        return { ok: false, error: `Error ${res.status}: (Respuesta no controlada).`, status: res.status };
       }
     })
     .catch(() => {
-      return { error: "Error al conectar con la API del Servidor." };
+      return { ok: false, error: "Error al conectar con la API del Servidor." };
     })
 }
 
