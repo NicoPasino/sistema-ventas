@@ -39,11 +39,11 @@ export function FormSearch({ itemsManage, tipo, newItemHandle, ordenCampos = [],
   }, [filtrarPorEstado, error]);
 
   // limpia búsqueda y estado sin volver a pedir los datos, el orden se mantiene
+  // se permite limpiar incluso con error para recuperar el control del toolbar
   const handleLimpiar = useCallback(() => {
-    if (error) return;
     setBusqueda("");
     limpiarFiltros();
-  }, [limpiarFiltros, error]);
+  }, [limpiarFiltros]);
 
   const handleOrdenar = useCallback((index) => {
     const campo = ordenCampos[index];
@@ -132,7 +132,7 @@ export function FormSearch({ itemsManage, tipo, newItemHandle, ordenCampos = [],
         <Button
           variant="outline-danger"
           onClick={handleLimpiar}
-          disabled={!hayFiltros || Boolean(error)}
+          disabled={!hayFiltros}
           className="toolbarLimpiar"
         >
           <CancelIcon /> Limpiar filtros
