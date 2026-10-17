@@ -40,7 +40,7 @@ export function BuscadorCliente({ clienteSelecManag }) {
 }
 
 export function BuscadorProductos({ newItemsManag }) {
-  const { newItems, setNewItems } = newItemsManag;
+  const { setNewItems } = newItemsManag;
   const { productos } = useContext(DataContext);
   const { items } = productos;
   const [cantidad, setCantidad] = useState(1);
@@ -50,13 +50,23 @@ export function BuscadorProductos({ newItemsManag }) {
 
   const handleSeleccionarProducto = (producto) => {
     const cant = parseInt(cantidad) || 1;
-    const newData = {
-      keyId: Date.now(),
-      producto,
-      cantidad: cant,
-      total: producto.precio * cant,
-    };
-    setNewItems([...newItems, newData]);
+    setNewItems((prevItems) => {
+      const existente = prevItems.find((item) => item.producto.idPublica === producto.idPublica);
+      if (existente) {
+        const nuevaCantidad = existente.cantidad + cant;
+        return prevItems.map((item) =>
+          item.producto.idPublica === producto.idPublica
+            ? { ...item, cantidad: nuevaCantidad, total: Number(item.producto.precio) * nuevaCantidad }
+            : item
+        );
+      }
+      return [...prevItems, {
+        keyId: crypto.randomUUID(),
+        producto,
+        cantidad: cant,
+        total: Number(producto.precio) * cant,
+      }];
+    });
     setCantidad(1);
   };
 

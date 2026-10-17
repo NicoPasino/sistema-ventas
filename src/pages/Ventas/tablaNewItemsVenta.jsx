@@ -26,9 +26,28 @@ export function TablaNewItemsVenta({ newItemsManag, productosList }) {
   };
 
   const headers = ["Producto", "Cantidad", "Precio Unit.", "Subtotal"];
-  const calcularTotal = () => newItems.reduce((acc, item) => acc + item.total, 0);
+  const calcularTotal = () => newItems.reduce((acc, item) => acc + Number(item.total) || 0, 0);
 
-  const hayStock = (idPub, cantidad) => productosList.find((p) => p.idPublica == idPub)?.cantidad - cantidad >= 0;
+  const cantidadesEnCarrito = (idPub) =>
+    newItems
+      .filter((item) => item.producto.idPublica === idPub)
+      .reduce((acc, item) => acc + (Number(item.cantidad) || 0), 0);
+
+  const hayStock = (idPub) => {
+    const producto = productosList.find((p) => p.idPublica == idPub);
+    if (!producto) return false;
+    return producto.cantidad - cantidadesEnCarrito(idPub) >= 0;
+  };
+
+  const stockTitle = (idPub) => {
+    const producto = productosList.find((p) => p.idPublica == idPub);
+    if (!producto) return 'Producto no encontrado en el catálogo';
+    const enCarrito = cantidadesEnCarrito(idPub);
+    const disponible = producto.cantidad - enCarrito;
+    return disponible >= 0
+      ? `Stock: ${disponible}/${producto.cantidad} (${enCarrito} en carrito)`
+      : `Stock insuficiente: ${producto.cantidad} disponibles, ${enCarrito} en carrito`;
+  };
 
   return (
     <>
@@ -46,7 +65,7 @@ export function TablaNewItemsVenta({ newItemsManag, productosList }) {
               <td>
                 <div className="flex justify-center items-center gap-2">
                   <span>{item.cantidad}</span>
-                  {!hayStock(item.producto.idPublica, item.cantidad) && <WarningI title="Stock insuficiente"/>}
+                  {!hayStock(item.producto.idPublica) && <WarningI title={stockTitle(item.producto.idPublica)}/>}
                 </div>
               </td>
               <td>{MoneyDisplay(item.producto.precio)}</td>
