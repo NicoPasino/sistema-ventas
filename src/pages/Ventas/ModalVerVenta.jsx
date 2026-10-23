@@ -3,6 +3,7 @@ import { Button } from '../../components/shared/botones';
 import { TablaGenerica } from '../../components/pages/tablaGenerica';
 import { MoneyDisplay, GrayDisplay } from '../../utils/displayConvert';
 import { getDate } from '../../utils/getDate';
+import { totalVenta } from '../../utils/ventas';
 import '../../components/pages/modals.css';
 
 export function ModalVerVenta({ venta, onClose }) {
@@ -11,7 +12,7 @@ export function ModalVerVenta({ venta, onClose }) {
   const { numero, cliente, detalle, fechaVenta, productos } = venta;
   const { fechaLarga, hora, tiempoTranscurrido } = getDate(fechaVenta);
   const listaProductos = Array.isArray(productos) ? productos : [];
-  const total = listaProductos.reduce((acc, p) => acc + (p.subTotal || 0), 0);
+  const total = totalVenta(venta);
 
   return (
     <Modal
@@ -22,11 +23,11 @@ export function ModalVerVenta({ venta, onClose }) {
       <div className="modalDatos">
         <div className="modalDato">
           <span className="modalLabel">Cliente</span>
-          <span className="modalValor">{cliente.nombre}</span>
+          <span className="modalValor">{cliente?.nombre || GrayDisplay("(Sin cliente)")}</span>
         </div>
         <div className="modalDato">
           <span className="modalLabel">Email</span>
-          <span className="modalValor">{GrayDisplay(cliente.correo || "(Sin correo)")}</span>
+          <span className="modalValor">{GrayDisplay(cliente?.correo || "(Sin correo)")}</span>
         </div>
         <div className="modalDato">
           <span className="modalLabel">Fecha</span>

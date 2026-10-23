@@ -34,7 +34,7 @@ function FilaVenta({ item, setVenta }) {
   return (
     <tr>
       <td className='tablaColID'>        {GrayDisplay(numero)} </td>
-      <td className='tablaColNombre'>    {cliente.nombre} </td>
+      <td className='tablaColNombre'>    {cliente?.nombre || GrayDisplay("(Sin cliente)")} </td>
       <td className='tablaColDetalles'>  {renderProductos()} </td>
       <td className='tablaColDetalles'>  {detalle ? GrayDisplay(detalle) : GrayDisplay("(Sin detalle)", false)} </td>
       <td className='tablaColFecha'      title={tiempoTranscurrido}> {fechaDinamica} </td>
