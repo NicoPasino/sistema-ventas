@@ -27,7 +27,6 @@ export function FormNuevaVenta() {
   async function submitHandler(event) {
     event.preventDefault();
     if (enviando) return;
-    const query = Object.fromEntries(new window.FormData(event.target));
     if (!clienteSeleccionado) return showPopup({ type: 'warning', message: 'Cliente no seleccionado.' });
     if (!newItems[0]) return showPopup({ type: 'warning', message: 'Producto/s no seleccionado/s.' });
 
@@ -36,7 +35,11 @@ export function FormNuevaVenta() {
       const ItemsId = newItems.map(i => i.producto.idPublica);
       const ItemsCant = newItems.map(i => parseInt(i.cantidad));
 
-      const nuevoItem = { ...query, ItemsId, ItemsCant };
+      const nuevoItem = {
+        DNI: Number(clienteSeleccionado.documento),
+        ItemsId,
+        ItemsCant,
+      };
       const res = await agregar({ nuevoItem });
 
       const onSuccess = () => { event.target.reset(); handleClear(); reloadProductos(); reloadVentas(); hideAlert() };

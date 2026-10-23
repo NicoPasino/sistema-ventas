@@ -27,9 +27,6 @@ export function BuscadorCliente({ clienteSelecManag }) {
         onCreate={() => setShowModalNew(true)}
         className='mb-6'
       />
-      <input type="hidden" name="DNI" value={clienteSeleccionado?.documento ?? ""} />
-      <input type="hidden" name="nombre" value={clienteSeleccionado?.nombre ?? ""} />
-
       {showModalNew && (
         <ModalEditarCliente
           onClose={() => setShowModalNew(false)}
