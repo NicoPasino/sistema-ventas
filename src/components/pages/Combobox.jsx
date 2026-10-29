@@ -119,7 +119,11 @@ export function Combobox({
   };
 
   const selectedItem = value
-    ? items.find((item) => getItemKey(item) === getItemKey(value))
+    ? items.find((item) => {
+        const itemKey = getItemKey ? getItemKey(item) : item;
+        const valueKey = typeof value === 'object' && value !== null && getItemKey ? getItemKey(value) : value;
+        return itemKey === valueKey;
+      })
     : null;
 
   const displayValue = renderSelected

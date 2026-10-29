@@ -20,10 +20,11 @@ export function FormSearch({ itemsManage, tipo, newItemHandle, ordenCampos = [],
     : tipo === "Producto" ? "Buscar en Productos..."
     : "Buscar...";
 
-  // solo recarga: mantiene la búsqueda y el filtro de estado que estén aplicados
+  // recarga: resetea orden y búsqueda visual
   const handleReload = useCallback(() => {
     setCampoOrden(null);
     setDireccion("asc");
+    setBusqueda("");
     reloadItems();
   }, [reloadItems]);
 

@@ -60,6 +60,9 @@ export function useItems({ itemsDB, categoriasDB, estadoInicial = "todos" }) {
   const recargarItems = useCallback(async () => {
     setLoading(true);
     setOrden(null);
+    const nuevosFiltros = { ...filtrosPorDefecto };
+    filtrosRef.current = nuevosFiltros;
+    setFiltros(nuevosFiltros);
     try {
       let res = await itemsDB.obtenerTodos();
       if (res && typeof res === "object" && "ok" in res) res = res.ok ? res.data : res;
@@ -79,7 +82,7 @@ export function useItems({ itemsDB, categoriasDB, estadoInicial = "todos" }) {
 
       const lista = Array.isArray(res) ? res : [];
       setItemsOriginales(lista);
-      mostrarFiltrados(lista, filtrosRef.current, null);
+      mostrarFiltrados(lista, nuevosFiltros, null);
 
       if (!categoriasDB) return;
       let categoriasRes = await categoriasDB.obtenerTodos();
@@ -100,7 +103,7 @@ export function useItems({ itemsDB, categoriasDB, estadoInicial = "todos" }) {
     } finally {
       setLoading(false);
     }
-  }, [itemsDB, categoriasDB, mostrarError, mostrarFiltrados]);
+  }, [itemsDB, categoriasDB, mostrarError, mostrarFiltrados, filtrosPorDefecto]);
 
   useEffect(() => {
     recargarItems();
@@ -180,8 +183,8 @@ export function useItems({ itemsDB, categoriasDB, estadoInicial = "todos" }) {
   const ordenarItems = useCallback((accesor, direccion) => {
     const nuevoOrden = { accesor, direccion };
     setOrden(nuevoOrden);
-    setItems(aplicarOrden(items, nuevoOrden));
-  }, [items]);
+    setItems((prevItems) => aplicarOrden(prevItems, nuevoOrden));
+  }, []);
 
   const reloadItems = recargarItems;
 
