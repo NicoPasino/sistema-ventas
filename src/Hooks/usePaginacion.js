@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { useNotifications } from "../context/notificationContext";
 
 export const OPCIONES_POR_PAGINA = [10, 25, 50, 100];
 export const ITEMS_POR_PAGINA_INICIAL = 25;
@@ -7,18 +8,25 @@ function claveStorage(clave) {
   return `paginaSize_${clave}`;
 }
 
+// el inicial también debe pertenecer al catálogo: si no, el <select> quedaría vacío
+function porPaginaValido(porPaginaInicial, opciones) {
+  return opciones.includes(porPaginaInicial) ? porPaginaInicial : (opciones[0] ?? ITEMS_POR_PAGINA_INICIAL);
+}
+
 function leerPorPaginaGuardado(clave, porPaginaInicial, opciones) {
+  const inicial = porPaginaValido(porPaginaInicial, opciones);
   try {
     const guardado = Number(localStorage.getItem(claveStorage(clave)));
-    return opciones.includes(guardado) ? guardado : porPaginaInicial;
+    return opciones.includes(guardado) ? guardado : inicial;
   } catch {
-    return porPaginaInicial;
+    return inicial;
   }
 }
 
 export function usePaginacion({ items = [], clave, opciones = OPCIONES_POR_PAGINA, porPaginaInicial = ITEMS_POR_PAGINA_INICIAL }) {
   const [pagina, setPagina] = useState(1);
   const [porPagina, setPorPaginaInterno] = useState(() => leerPorPaginaGuardado(clave, porPaginaInicial, opciones));
+  const { showPopup } = useNotifications() ?? {};
 
   // la lista cambia al buscar, filtrar, ordenar o recargar: siempre volver a la primera página
   useEffect(() => {
@@ -37,7 +45,12 @@ export function usePaginacion({ items = [], clave, opciones = OPCIONES_POR_PAGIN
 
   const setPorPagina = useCallback((valor) => {
     const nuevo = Number(valor);
-    if (!Number.isFinite(nuevo) || nuevo <= 0) return;
+    // solo valores del catálogo: si no coincide con una <option>, el <select>
+    // se rendería vacío y además se persistiría un tamaño inconsistente
+    if (!opciones.includes(nuevo)) {
+      showPopup?.({ type: "warning", message: "Cantidad de filas por página no válida." });
+      return;
+    }
     setPorPaginaInterno(nuevo);
     setPagina(1);
     try {
@@ -45,7 +58,7 @@ export function usePaginacion({ items = [], clave, opciones = OPCIONES_POR_PAGIN
     } catch {
       // localStorage no disponible: el valor solo queda en memoria
     }
-  }, [clave]);
+  }, [clave, opciones, showPopup]);
 
   const irA = useCallback((nuevaPagina) => {
     setPagina(Math.min(Math.max(1, Number(nuevaPagina) || 1), totalPaginas));
