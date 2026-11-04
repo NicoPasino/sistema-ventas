@@ -109,9 +109,9 @@ export function TarjetasResumen({ productos, clientes, ventas }) {
   return (
     <>
       <GrupoTarjetas>
-        <CantidadInfo datos={productos} text="Total Productos" color="#0d6efd" svg={<ProductosIcon />} onClick={() => handleTab("Productos")} />
-        <CantidadInfo datos={ventas} text="Total Ventas" color="#198754" svg={<VentasIcon />} onClick={() => handleTab("Ventas")} />
-        <CantidadInfo datos={clientes} text="Total Clientes" color="#0dcaf0" svg={<ClientesIcon />} onClick={() => handleTab("Clientes")} />
+        <CantidadInfo datos={productos} valor={productos.itemsOriginales?.length ?? 0} text="Total Productos" color="#0d6efd" svg={<ProductosIcon />} onClick={() => handleTab("Productos")} />
+        <CantidadInfo datos={ventas} valor={ventas.itemsOriginales?.length ?? 0} text="Total Ventas" color="#198754" svg={<VentasIcon />} onClick={() => handleTab("Ventas")} />
+        <CantidadInfo datos={clientes} valor={clientes.itemsOriginales?.length ?? 0} text="Total Clientes" color="#0dcaf0" svg={<ClientesIcon />} onClick={() => handleTab("Clientes")} />
         <CantidadInfo datos={ventas} valor={resumenVentas.unidades} text="Unidades Vendidas" color="#198754" svg={<ProductosIcon />} onClick={() => handleTab("Ventas")} />
         {/* <CantidadInfo datos={productos} valor={resumenStock.unidades} text="Unidades en Stock" color="#6c757d" svg={<ProductosIcon />} onClick={() => handleTab("Productos")} /> */}
         <CantidadInfo datos={productos} valor={productos.categorias.length} text="Total Categorías" color="#ffc107" svg={<CategoriasIcon />} onClick={() => handleTab("Productos")} />
