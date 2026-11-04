@@ -1,20 +1,18 @@
 import { useContext, useRef, useState } from 'react';
-import { DataContext } from '../../context/dataContext';
-import { usePopup } from '../../context/notificationContext';
+import { ClientesContext } from '../../context/dataContext';
 import { Button } from '../../components/shared/botones';
 import { Modal } from '../../components/shared/Modal';
 import '../../components/pages/modals.css';
 import { CheckRes } from '../../utils/checkRes';
 import { NuevoCliente } from './nuevoCliente';
-import { useAlert } from '../../context/notificationContext';
+import { useNotifications } from '../../context/notificationContext';
 import { Alert } from '../../components/notification/Alert';
 
 export function ModalEditarCliente({ id, onClose }) {
-  const { clientes } = useContext(DataContext);
+  const clientes = useContext(ClientesContext);
   const { agregar, actualizar, reloadItems } = clientes;
-  const { showPopup } = usePopup();
+  const { showPopup, showAlert, hideAlert } = useNotifications();
   const nuevoClienteRef = useRef(null);
-  const { showAlert, hideAlert } = useAlert();
   const [enviando, setEnviando] = useState(false);
 
   const handleClose = () => { onClose?.(); hideAlert();};

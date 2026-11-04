@@ -4,18 +4,18 @@ import { ModalEditarCliente } from "./modalEditarCliente";
 import { ModalVerCliente } from "./ModalVerCliente";
 import { TablaPaginada } from '../../components/pages/tablaPaginada';
 import { Contenido } from './ContenidoTabla';
-import { DataContext } from "../../context/dataContext";
-import { usePopup } from '../../context/notificationContext.jsx';
+import { useNotifications } from '../../context/notificationContext.jsx';
+import { ClientesContext } from "../../context/dataContext";
 import { CheckRes } from '../../utils/checkRes.js';
 import { esActivo } from '../../utils/displayConvert.jsx';
 
 export default function Clientes() {
-  const { clientes } = useContext(DataContext);
+  const clientes = useContext(ClientesContext);
   const { items, cambiarActivo, reloadItems } = clientes;
   const [idCliente, setIdCliente] = useState(); // editMode
   const [modalNew, setModalNew] = useState(false);
   const [clienteVer, setClienteVer] = useState();
-  const { showPopup } = usePopup();
+  const { showPopup } = useNotifications();
 
   const tableHeaders = ["Nombre", "Correo", "Telefono", "Documento", "Registrado", "Estado"];
   const ordenCampos = [

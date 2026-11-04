@@ -45,6 +45,11 @@ export function useItems({ itemsDB, categoriasDB, estadoInicial = "todos" }) {
   const filtrosPorDefecto = useMemo(() => ({ ...FILTROS_INICIALES, estado: estadoInicial }), [estadoInicial]);
   const [filtros, setFiltros] = useState(() => ({ ...filtrosPorDefecto }));
   const filtrosRef = useRef({ ...filtrosPorDefecto });
+  // Últimos valores vigentes: permiten leerlos desde callbacks estables sin
+  // recrearlos (y sin provocar recargas) cuando cambian.
+  const filtrosPorDefectoRef = useRef(filtrosPorDefecto);
+  const estadoInicialPrevioRef = useRef(estadoInicial);
+  filtrosPorDefectoRef.current = filtrosPorDefecto;
 
   const mostrarFiltrados = useCallback((lista, filtrosAplicados, ordenAplicado) => {
     const filtrados = filtrarLista(lista, filtrosAplicados);
@@ -60,7 +65,7 @@ export function useItems({ itemsDB, categoriasDB, estadoInicial = "todos" }) {
   const recargarItems = useCallback(async () => {
     setLoading(true);
     setOrden(null);
-    const nuevosFiltros = { ...filtrosPorDefecto };
+    const nuevosFiltros = { ...filtrosPorDefectoRef.current };
     filtrosRef.current = nuevosFiltros;
     setFiltros(nuevosFiltros);
     try {
@@ -103,11 +108,23 @@ export function useItems({ itemsDB, categoriasDB, estadoInicial = "todos" }) {
     } finally {
       setLoading(false);
     }
-  }, [itemsDB, categoriasDB, mostrarError, mostrarFiltrados, filtrosPorDefecto]);
+  }, [itemsDB, categoriasDB, mostrarError, mostrarFiltrados]);
 
   useEffect(() => {
     recargarItems();
   }, [recargarItems]);
+
+  // Si cambia `estadoInicial` hay que resincronizar el estado de filtros y su
+  // ref espejo con el nuevo default; si no, `hayFiltros` y la lista quedan
+  // comparando contra valores viejos (#19).
+  useEffect(() => {
+    if (estadoInicialPrevioRef.current === estadoInicial) return;
+    estadoInicialPrevioRef.current = estadoInicial;
+    const sincronizados = { ...filtrosRef.current, estado: estadoInicial };
+    filtrosRef.current = sincronizados;
+    setFiltros(sincronizados);
+    mostrarFiltrados(itemsOriginales, sincronizados, orden);
+  }, [estadoInicial, itemsOriginales, orden, mostrarFiltrados]);
 
   const agregar = useCallback(async ({ nuevoItem }) => {
     try {
@@ -174,11 +191,11 @@ export function useItems({ itemsDB, categoriasDB, estadoInicial = "todos" }) {
   }, [cambiarFiltros]);
 
   const limpiarFiltros = useCallback(() => {
-    const nuevosFiltros = { ...filtrosPorDefecto };
+    const nuevosFiltros = { ...filtrosPorDefectoRef.current };
     filtrosRef.current = nuevosFiltros;
     setFiltros(nuevosFiltros);
     mostrarFiltrados(itemsOriginales, nuevosFiltros, orden);
-  }, [filtrosPorDefecto, itemsOriginales, orden, mostrarFiltrados]);
+  }, [itemsOriginales, orden, mostrarFiltrados]);
 
   const ordenarItems = useCallback((accesor, direccion) => {
     const nuevoOrden = { accesor, direccion };

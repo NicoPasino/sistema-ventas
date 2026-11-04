@@ -1,9 +1,9 @@
 import { useContext, forwardRef, useEffect, useImperativeHandle, useState } from "react";
-import { DataContext } from "../../context/dataContext";
+import { ClientesContext } from "../../context/dataContext";
 import { validarCliente } from "../../validations/validarCliente";
 
 export const NuevoCliente = forwardRef(function NuevoCliente({ id }, ref) {
-  const { clientes } = useContext(DataContext);
+  const clientes = useContext(ClientesContext);
   const { items } = clientes;
   const [cliente, setCliente] = useState(clienteDefault);
   const [errors, setErrors] = useState({});

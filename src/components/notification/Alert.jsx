@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useAlert } from '../../context/notificationContext';
+import { useNotifications } from '../../context/notificationContext';
 import { NOTIFICATION_ICONS } from '../../assets/icons';
 import './alert.css';
 
@@ -11,7 +11,7 @@ const DEFAULT_TITLES = {
 };
 
 export function Alert() {
-  const { alert, hideAlert } = useAlert();
+  const { alert, hideAlert } = useNotifications();
 
   useEffect(() => {
     if (!alert?.autoClose) return;

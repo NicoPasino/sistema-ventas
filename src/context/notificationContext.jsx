@@ -37,14 +37,8 @@ export function NotificationProvider({ children }) {
   );
 }
 
+// Único hook de notificaciones: expone el contexto completo
+// ({ alert, showAlert, hideAlert, showPopup, hidePopup }) (#28).
 export function useNotifications() {
-  return useContext(NotificationContext);
-}
-
-export function useAlert() {
-  return useContext(NotificationContext);
-}
-
-export function usePopup() {
   return useContext(NotificationContext);
 }

@@ -1,22 +1,20 @@
 import '../../components/pages/formNueva.css';
 import { useContext, useState } from 'react';
 import { DataContext } from '../../context/dataContext';
-import { usePopup } from '../../context/notificationContext';
+import { useNotifications } from '../../context/notificationContext';
 import { Button } from '../../components/shared/botones';
 import { CheckRes } from '../../utils/checkRes';
 import { BuscadorCliente, BuscadorProductos } from './campoBuscador';
 import { TablaNewItemsVenta } from './tablaNewItemsVenta';
-import { useAlert } from '../../context/notificationContext';
 import { Alert } from '../../components/notification/Alert';
 
 export function FormNuevaVenta() {
   const { ventas, productos } = useContext(DataContext);
   const { agregar, reloadItems: reloadVentas } = ventas;
   const { items: productosList, reloadItems: reloadProductos } = productos;
-  const { showPopup } = usePopup();
+  const { showPopup, showAlert, hideAlert } = useNotifications();
   const [newItems, setNewItems] = useState([]);
   const [clienteSeleccionado, setClienteSeleccionado] = useState(null);
-  const { showAlert, hideAlert } = useAlert();
   const [enviando, setEnviando] = useState(false);
 
   const handleClear = () => {

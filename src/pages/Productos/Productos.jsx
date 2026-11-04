@@ -1,22 +1,22 @@
 import { useContext, useState } from "react";
-import { DataContext } from "../../context/dataContext";
+import { ProductosContext } from "../../context/dataContext";
 import { FormSearch } from '../../components/pages/formSearch';
 import { ModalEditarProducto } from "./modalEditarProducto.jsx";
 import { ModalVerProducto } from "./ModalVerProducto.jsx";
 import { TablaPaginada } from '../../components/pages/tablaPaginada';
 import { Contenido } from './ContenidoTabla.jsx';
-import { usePopup } from '../../context/notificationContext.jsx';
+import { useNotifications } from '../../context/notificationContext.jsx';
 import { CheckRes } from '../../utils/checkRes.js';
 import { esActivo } from '../../utils/displayConvert.jsx';
 import { aTimestamp } from '../../utils/getDate.js';
 
 export default function Productos() {
-  const { productos } = useContext(DataContext);
+  const productos = useContext(ProductosContext);
   const { items, cambiarActivo, reloadItems } = productos;
   const [idProducto, setIdProducto] = useState();
   const [modalNew, setModalNew] = useState(false);
   const [productoVer, setProductoVer] = useState();
-  const { showPopup } = usePopup();
+  const { showPopup } = useNotifications();
   
   const tableHeaders = ["Código", "Producto", "Descripción", "Categoría", "Stock", "Precio", "Estado"];
   const ordenCampos = [

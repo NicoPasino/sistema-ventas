@@ -1,5 +1,5 @@
 import { useContext, useMemo } from "react";
-import { DataContext } from "../../context/dataContext";
+import { VentasContext } from "../../context/dataContext";
 import { Modal } from '../../components/shared/Modal';
 import { Button } from '../../components/shared/botones';
 import { TablaGenerica } from '../../components/pages/tablaGenerica';
@@ -18,7 +18,7 @@ function getLinkWhatsApp(telefono) {
 }
 
 export function ModalVerCliente({ cliente, onClose, onEditar }) {
-  const { ventas } = useContext(DataContext);
+  const ventas = useContext(VentasContext);
   const { items: listaVentas } = ventas;
 
   const { totalVentas, totalGastado, ultimaFecha, ventas: suyas } = useMemo(

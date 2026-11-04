@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import { DataContext } from "../../context/dataContext";
+import { VentasContext } from "../../context/dataContext";
 import { UserSettingsContext } from "../../context/userSettingsContext.jsx";
 import { FormSearch } from "../../components/pages/formSearch";
 import { FormNuevaVenta } from "./formNuevaVenta.jsx";
@@ -9,7 +9,7 @@ import { ModalVerVenta } from './ModalVerVenta.jsx';
 import { totalVenta, unidadesVenta } from '../../utils/ventas';
 
 export default function Ventas() {
-  const { ventas } = useContext(DataContext);
+  const ventas = useContext(VentasContext);
   const { items } = ventas;
   const { handleTab } = useContext(UserSettingsContext);
   const [ventaSeleccionada, setVentaSeleccionada] = useState(null);

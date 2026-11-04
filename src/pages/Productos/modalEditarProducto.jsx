@@ -1,21 +1,19 @@
 import '../../components/pages/modals.css';
-import { DataContext } from '../../context/dataContext';
+import { ProductosContext } from '../../context/dataContext';
 import { useContext, useRef, useState } from 'react';
 import { NuevoProducto } from './nuevoProducto';
-import { usePopup } from '../../context/notificationContext';
 import { Button } from '../../components/shared/botones';
 import { Modal } from '../../components/shared/Modal';
 import { ImageIcon } from '../../assets/icons';
 import { CheckRes } from '../../utils/checkRes';
 import { Alert } from '../../components/notification/Alert';
-import { useAlert } from '../../context/notificationContext';
+import { useNotifications } from '../../context/notificationContext';
 
 export function ModalEditarProducto({id, setIdProducto}) {
-  const { productos } = useContext(DataContext);
+  const productos = useContext(ProductosContext);
   const { agregar, actualizar, reloadItems } = productos;
-  const { showPopup } = usePopup();
+  const { showPopup, showAlert, hideAlert } = useNotifications();
   const nuevoProductoRef = useRef(null);
-  const { showAlert, hideAlert } = useAlert();
   const [enviando, setEnviando] = useState(false);
 
   const handleClose = () => { setIdProducto?.(); hideAlert();}

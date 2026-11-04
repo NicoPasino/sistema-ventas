@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState, forwardRef, useImperativeHandle } from "react";
-import { DataContext } from "../../context/dataContext";
+import { ProductosContext } from "../../context/dataContext";
 import { validarProducto } from "../../validations/validarProducto";
 import { esActivo } from "../../utils/displayConvert";
 
@@ -17,7 +17,7 @@ function sonIguales(a, b) {
 }
 
 export const NuevoProducto = forwardRef(function NuevoProducto({ id }, ref) {
-  const { productos } = useContext(DataContext);
+  const productos = useContext(ProductosContext);
   const { categorias, loading, items } = productos;
   const [producto, setProducto] = useState(productoDefault);
   const [productoOriginal, setProductoOriginal] = useState(null);
