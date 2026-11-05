@@ -7,11 +7,13 @@ import { UserSettingsProvider } from './context/userSettingsContext.jsx'
 import { NotificationProvider } from './context/notificationContext.jsx'
 
 createRoot(document.getElementById('root')).render(
-  <NotificationProvider>
-    <UserSettingsProvider>
-      <DataProvider>
-        <App />
-      </DataProvider>
-    </UserSettingsProvider>
-  </NotificationProvider>,
+  <StrictMode>
+    <NotificationProvider>
+      <UserSettingsProvider>
+        <DataProvider>
+          <App />
+        </DataProvider>
+      </UserSettingsProvider>
+    </NotificationProvider>
+  </StrictMode>
 )
