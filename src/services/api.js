@@ -55,5 +55,3 @@ export const productosAPI = buildCollection('productos');
 export const ventasAPI = buildCollection('ventas');
 export const clientesAPI = buildCollection('clientes');
 export const categoriasAPI = buildCollection('categorias');
-
-export default { productosAPI, ventasAPI, categoriasAPI };
