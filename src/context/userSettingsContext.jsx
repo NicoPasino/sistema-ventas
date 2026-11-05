@@ -1,9 +1,11 @@
 import { createContext, useEffect, useState } from 'react';
 import { userSettings } from '../Hooks/userSettings';
+import { useNotifications } from './notificationContext';
 
 export const UserSettingsContext = createContext();
 
 export function UserSettingsProvider ({ children }) {
+  const { hideAlert } = useNotifications();
   const [getUser, setUser] = useState('Usuario')
   const [getTab, setTab] = useState('Inicio')
 
@@ -15,6 +17,7 @@ export function UserSettingsProvider ({ children }) {
 
   
   function handleTab(tab) {
+    hideAlert();
     setTab(tab);
     userSettings.editUser({newTab: tab});
   }

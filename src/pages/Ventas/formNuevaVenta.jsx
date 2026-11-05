@@ -20,6 +20,7 @@ export function FormNuevaVenta() {
   const handleClear = () => {
     setNewItems([]);
     setClienteSeleccionado(null);
+    hideAlert();
   }
 
   async function submitHandler(event) {
