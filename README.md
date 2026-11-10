@@ -10,6 +10,7 @@ Frontend de un sistema de ventas para gestionar productos, clientes y ventas des
 ![Vite](https://img.shields.io/badge/Vite-6-646CFF?logo=vite&logoColor=white)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4-06B6D4?logo=tailwindcss&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-ES2023-F7DF1E?logo=javascript&logoColor=black)
+![Licencia](https://img.shields.io/badge/Licencia-MIT-3DA639)
 
 ---
 
@@ -65,7 +66,7 @@ Frontend de un sistema de ventas para gestionar productos, clientes y ventas des
 ## ⚙️ Instalación y ejecución
 
 ### Requisitos
-- Node.js 18+
+- Node.js 22+
 - pnpm
 - Una instancia de la [API](https://github.com/NicoPasino/Sistema-Ventas-API) en ejecución
 
@@ -212,6 +213,12 @@ Componentes reutilizables separados por área. Tailwind v4 se configura únicame
 - Dashboard con gráficos interactivos.
 - Base de datos local para modo offline (IndexedDB).
 - Modal propio para confirmaciones (reemplazo de `confirm()`).
+
+---
+
+## 📄 Licencia
+
+Este proyecto está bajo la [Licencia MIT](LICENSE).
 
 ---
 

@@ -14,7 +14,7 @@ React 19 + Vite 6, plain JavaScript (no TypeScript), Tailwind CSS v4 via the `@t
 - `.env` / `.env.local` are gitignored; copy `.env.example` to `.env.local` to develop locally. Only `VITE_`-prefixed vars reach the client.
 
 ## Architecture
-- Navigation is **not** react-router. `App.jsx` looks up `UserSettingsContext.getTab` in a `componentes` map to render pages. Active tab + username persist to localStorage key `usuario` via `src/Hooks/userSettings.js`. Extend the tab map for new pages; do not introduce routing (react-router-dom is installed but unused).
+- Navigation is **not** react-router. `App.jsx` looks up `UserSettingsContext.getTab` in a `componentes` map to render pages. Active tab + username persist to localStorage key `usuario` via `src/Hooks/userSettings.js`. Extend the tab map for new pages; do not introduce routing (no react-router).
 - All API calls go through `buildCollection(name)` in `src/services/api.js`, returning `{obtenerTodos, buscarPorCampo, obtenerPorId, agregar, eliminar, actualizar}`.
 - Global state: `DataProvider` (`src/context/dataContext.jsx`) exposes `{productos, clientes, ventas}`, each from `useItems({itemsDB, categoriasDB?})` in `src/Hooks/useItems.js` (items + CRUD + `filtrarItemsLocal` for client-side filter, `buscarItems` for server search, plus loading/error/mensaje/categorias). Each domain is also provided in its own context (`ProductosContext`, `ClientesContext`, `VentasContext`) so consumers only re-render when their data changes; `DataContext` is the combined one for views that need all three.
 - Tables: `TablaGenerica` (`src/components/pages/tablaGenerica.jsx`) is the bare `<table>` shell. List pages use `TablaPaginada` instead — it wraps `TablaGenerica` + `Paginacion` and owns `usePaginacion` (`src/Hooks/usePaginacion.js`). Pagination is **100% client-side**: no API params, `useItems` is untouched. Pass the full filtered list as `items` and a render prop `renderFilas={(lista) => <Contenido lista={lista} ... />}`; the page size (10/25/50/100, default 25) persists in localStorage under `paginaSize_<clavePaginacion>`.
@@ -27,7 +27,6 @@ React 19 + Vite 6, plain JavaScript (no TypeScript), Tailwind CSS v4 via the `@t
 - ESLint (`eslint.config.js`) ignores `dist/`; `no-unused-vars` ignores `^[A-Z_]`.
 
 ## Gotchas
-- `bootstrap` and `idb` are dependencies but unimported — use Tailwind + custom CSS, not bootstrap.
 - `privado/` and `.env*` are gitignored; never commit anything from `privado/` (private notes that may reference stale import paths).
 - Delete confirmation uses the native `confirm()` in `useItems.js` (TODO'd for a modal).
 - Never paginate inside `useItems`: `Inicio` (`tarjetasInicio.jsx`) reads `items` and `items.length` for its cards and totals. Slice at render time instead.
