@@ -99,3 +99,13 @@ main {
   flex-direction: column;
   overflow: auto;
 }
+
+.appVersion {
+  margin-top: auto;
+  padding-top: 20px;
+  color: #6f7575;
+  font-size: 0.85em;
+  letter-spacing: 0.02em;
+  text-align: center;
+  user-select: none;
+}

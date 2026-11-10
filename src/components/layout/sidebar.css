@@ -102,3 +102,17 @@
   color: gray !important;
   cursor: default !important;
 }
+
+.sidebarVersion {
+  margin-top: auto;
+  padding: 12px 15px;
+  color: #575e5e;
+  font-size: 0.85em;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  user-select: none;
+}
+.sidebar.closed .sidebarVersion {
+  padding-inline: 0;
+  text-align: center;
+}

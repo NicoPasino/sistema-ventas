@@ -24,6 +24,8 @@ export default function Inicio() {
 
         <TopProductos ventas={ventas} title="🏆 Top Productos Vendidos" tab="Ventas" />
       </div>
+
+      <p className="appVersion">Sistema de Ventas · v{__APP_VERSION__}</p>
     </>
   )
 }

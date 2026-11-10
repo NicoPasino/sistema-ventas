@@ -64,6 +64,10 @@ export function Sidebar() {
           <Tab name={"Clientes"}> <ClientesIcon /> </Tab>
         </dt>
       </dl>
+
+      <span className="sidebarVersion" title={`Sistema de Ventas v${__APP_VERSION__}`}>
+        v{__APP_VERSION__}
+      </span>
     </div>
   )
 }
