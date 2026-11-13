@@ -1,15 +1,14 @@
 
 export function CheckRes(res, { onSuccess, onMessage, showPopup } = {}) {
   if (res?.error) {
-    showPopup?.({ type: 'error', message: getTitleByType('error') });
-    onMessage?.('error', res.error);
-  } else if (res?.message) {
-    showPopup?.({ type: 'warning', message: getTitleByType('warning') });
-    onMessage?.('warning', res.message);
-  } else {
-    showPopup?.({ type: 'success', message: getTitleByType('success') });
-    onSuccess?.();
+    // Si el llamador ya muestra el detalle inline (Alert), no duplicarlo en el popup.
+    if (onMessage) onMessage('error', res.error);
+    else showPopup?.({ type: 'error', message: res.error || getTitleByType('error') });
+    return;
   }
+
+  showPopup?.({ type: 'success', message: getTitleByType('success') });
+  onSuccess?.();
 }
 
 export function getTitleByType(type) {

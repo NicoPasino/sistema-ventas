@@ -1,5 +1,34 @@
 const apiUrl = import.meta.env.VITE_API_URL;
 
+const ERRORES_POR_STATUS = {
+  400: "Error 400: Solicitud incorrecta (sin mensaje del servidor).",
+  404: "Error 404: Solicitud no encontrada (sin mensaje del servidor).",
+  405: "Error 405: Solicitud rechazada (Método no permitido).",
+  500: "Error 500: Error desde el servidor (sin mensaje del servidor).",
+  501: "Error 501: Error desde el servidor (Funcionalidad no implementada).",
+};
+
+// Extrae el detalle del body de error: JSON con message/error/detail/title,
+// JSON que sea un string (StatusCode(500, "...")) o texto plano.
+async function leerDetalle(res) {
+  try {
+    const texto = await res.text();
+    if (!texto) return null;
+    try {
+      const body = JSON.parse(texto);
+      if (typeof body === 'string') return body.trim() || null;
+      if (body && typeof body === 'object') {
+        return body.message || body.error || body.detail || body.title || null;
+      }
+      return null;
+    } catch {
+      return texto.trim() || null;
+    }
+  } catch {
+    return null;
+  }
+}
+
 async function request(path, options = {}) {
   return await fetch(`${apiUrl}${path}`, { headers: { 'Content-Type': 'application/json' }, ...options })
     .then(async (res) => {
@@ -15,19 +44,10 @@ async function request(path, options = {}) {
         } catch {
           return { ok: true, data: null };
         }
-      } else if (res.status === 400) {
-        let resJson = await res.json().catch(() => ({}));
-        return { ok: false, error: resJson.message || resJson.error || "Error 400: Solicitud incorrecta (sin mensaje del servidor).", status: res.status };
-      } else if (res.status === 404) {
-        return { ok: false, error: "Error 404: Solicitud no encontrada (sin mensaje del servidor).", status: res.status };
-      } else if (res.status === 405) {
-        return { ok: false, error: "Error 405: Solicitud rechazada (Método no permitido).", status: res.status };
-      } else if (res.status === 500) {
-        return { ok: false, error: "Error 500: Error desde el servidor (sin mensaje del servidor).", status: res.status };
-      } else if (res.status === 501) {
-        return { ok: false, error: "Error 501: Error desde el servidor (Funcionalidad no implementada).", status: res.status };
       } else {
-        return { ok: false, error: `Error ${res.status}: (Respuesta no controlada).`, status: res.status };
+        const detalle = await leerDetalle(res);
+        const fallback = ERRORES_POR_STATUS[res.status] ?? `Error ${res.status}: (Respuesta no controlada).`;
+        return { ok: false, error: detalle || fallback, status: res.status };
       }
     })
     .catch(() => {
@@ -45,7 +65,7 @@ function buildCollection(name) {
     cambiarActivo: async (id, activo) => request(`/${name}/${Number(id)}`, { method: 'PATCH', body: JSON.stringify({ Activo: activo }) }),
     actualizar: async (item) => {
       const id = item.IdPublica ?? item.idPublica;
-      if (!id) return { error: 'No se encontró ID en el item para actualizar' };
+      if (!id) return { ok: false, error: 'No se encontró ID en el item para actualizar' };
       return request(`/${name}/${id}`, { method: 'PATCH', body: JSON.stringify(item) });
     },
   };
