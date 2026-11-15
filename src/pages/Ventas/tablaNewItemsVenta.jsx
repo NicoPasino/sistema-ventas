@@ -2,92 +2,79 @@ import { TablaGenerica } from "../../components/pages/tablaGenerica";
 import { MoneyDisplay } from "../../utils/displayConvert";
 import { DeleteIcon, MasCantidadIcon, MenosCantidadIcon, WarningIcon } from "../../assets/icons";
 
-export function TablaNewItemsVenta({ newItemsManag, productosList }) {
-  const { newItems, setNewItems } = newItemsManag;
-
-  const handleDelItem = (id) => setNewItems(newItems.filter((e) => e.keyId !== id));
-  const handleRestarCantidad = (keyId) => {
-    setNewItems(newItems.map((item) => {
-      if (item.keyId === keyId && item.cantidad > 1) {
-        const nuevaCantidad = item.cantidad - 1;
-        return { ...item, cantidad: nuevaCantidad, total: item.producto.precio * nuevaCantidad };
-      }
-      return item;
-    }));
-  };
-  const handleSumarCantidad = (keyId) => {
-    setNewItems(newItems.map((item) => {
-      if (item.keyId === keyId) {
-        const nuevaCantidad = item.cantidad + 1;
-        return { ...item, cantidad: nuevaCantidad, total: item.producto.precio * nuevaCantidad };
-      }
-      return item;
-    }));
-  };
+export function TablaNewItemsVenta({ carrito }) {
+  const { items, sumar, restar, quitar, subtotalDe, lineasSinStock } = carrito;
+  const sinStockPorId = new Map(lineasSinStock.map((linea) => [linea.producto?.idPublica, linea]));
 
   const headers = ["Producto", "Cantidad", "Precio Unit.", "Subtotal"];
-  const calcularTotal = () => newItems.reduce((acc, item) => acc + Number(item.total) || 0, 0);
-
-  const cantidadesEnCarrito = (idPub) =>
-    newItems
-      .filter((item) => item.producto.idPublica === idPub)
-      .reduce((acc, item) => acc + (Number(item.cantidad) || 0), 0);
-
-  const hayStock = (idPub) => {
-    const producto = productosList.find((p) => p.idPublica == idPub);
-    if (!producto) return false;
-    return producto.cantidad - cantidadesEnCarrito(idPub) >= 0;
-  };
-
-  const stockTitle = (idPub) => {
-    const producto = productosList.find((p) => p.idPublica == idPub);
-    if (!producto) return 'Producto no encontrado en el catálogo';
-    const enCarrito = cantidadesEnCarrito(idPub);
-    const disponible = producto.cantidad - enCarrito;
-    return disponible >= 0
-      ? `Stock: ${disponible}/${producto.cantidad} (${enCarrito} en carrito)`
-      : `Stock insuficiente: ${producto.cantidad} disponibles, ${enCarrito} en carrito`;
-  };
 
   return (
-    <>
-      <TablaGenerica
-        itemsManage={{ loading: false, error: null }}
-        headers={headers}
-        editable
-      >
-        {newItems.length === 0 ? (
-          <tr><td colSpan={headers.length + 1} className="sinItems">No hay productos agregados</td></tr>
-        ) : (
-          newItems.map((item) => (
+    <TablaGenerica
+      itemsManage={{ loading: false, error: null }}
+      headers={headers}
+      editable
+    >
+      {items.length === 0 ? (
+        <tr>
+          <td colSpan={headers.length + 1} className="sinItems">
+            <div className="ventaCarritoVacio">
+              <span>Todavía no agregaste productos</span>
+            </div>
+          </td>
+        </tr>
+      ) : (
+        items.map((item) => {
+          const producto = item.producto ?? {};
+          const lineaSinStock = sinStockPorId.get(producto.idPublica);
+
+          return (
             <tr key={item.keyId}>
-              <td>{item.producto.nombre}</td>
+              <td className="tablaColNombre">{producto.nombre}</td>
               <td>
-                <div className="flex justify-center items-center gap-2">
-                  <span>{item.cantidad}</span>
-                  {!hayStock(item.producto.idPublica) && <WarningI title={stockTitle(item.producto.idPublica)}/>}
+                <div className="ventaCantidad">
+                  <span className="ventaCantidadValor">{item.cantidad}</span>
+                  {lineaSinStock && (
+                    <WarningIcono
+                      title={`Stock insuficiente: ${producto.cantidad} en stock, ${lineaSinStock.pedido} en carrito`}
+                    />
+                  )}
                 </div>
               </td>
-              <td>{MoneyDisplay(item.producto.precio)}</td>
-              <td>{MoneyDisplay(item.total)}</td>
+              <td>{MoneyDisplay(producto.precio)}</td>
+              <td>{MoneyDisplay(subtotalDe(item))}</td>
               <td>
-                <div className='flex items-center justify-around'>
-                  <i className='iconEdit svgView' onClick={() => handleRestarCantidad(item.keyId)}> <MenosCantidadIcon /> </i>
-                  <i className='iconEdit svgEdit' onClick={() => handleSumarCantidad(item.keyId)}> <MasCantidadIcon /> </i>
-                  <i className='iconEdit svgDelete' onClick={() => handleDelItem(item.keyId)}> <DeleteIcon /> </i>
+                <div className="tablaColAcciones">
+                  <i
+                    className={`iconEdit svgView ${item.cantidad <= 1 ? 'svgDisabled' : ''}`}
+                    title="Restar cantidad"
+                    onClick={() => restar(item.keyId)}
+                  >
+                    <MenosCantidadIcon />
+                  </i>
+                  <i
+                    className="iconEdit svgEdit"
+                    title="Sumar cantidad"
+                    onClick={() => sumar(item.keyId)}
+                  >
+                    <MasCantidadIcon />
+                  </i>
+                  <i
+                    className="iconEdit svgDelete"
+                    title="Quitar producto"
+                    onClick={() => quitar(item.keyId)}
+                  >
+                    <DeleteIcon />
+                  </i>
                 </div>
               </td>
             </tr>
-          ))
-        )}
-      </TablaGenerica>
-      {newItems.length > 0 && (
-        <div className='total'><span className='totalText'>Total:</span> <span className='totalValue'>{MoneyDisplay(calcularTotal())}</span></div>
+          );
+        })
       )}
-    </>
-  )
+    </TablaGenerica>
+  );
 }
 
-function WarningI({title}) { 
+function WarningIcono({ title }) {
   return <span className="text-yellow-500 cursor-help" title={title}><WarningIcon /></span>;
 }

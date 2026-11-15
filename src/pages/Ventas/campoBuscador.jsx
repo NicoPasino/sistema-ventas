@@ -1,22 +1,40 @@
 import { ModalEditarCliente } from '../Clientes/modalEditarCliente';
+import { ModalVerCliente } from '../Clientes/ModalVerCliente';
 import { useContext, useState } from 'react';
 import { DataContext } from '../../context/dataContext';
 import { Combobox } from '../../components/pages/Combobox';
+import { Button } from '../../components/shared/botones';
+import { DetalleCliente } from './DetalleCliente';
 
 export function BuscadorCliente({ clienteSelecManag }) {
   const { clienteSeleccionado, setClienteSeleccionado } = clienteSelecManag;
   const { clientes } = useContext(DataContext);
-  const { items } = clientes;
+  // itemsOriginales: evitar que el buscador de la pestaña Clientes deje
+  // filtrada la lista de esta pantalla (el DataProvider vive por encima de App).
+  const { itemsOriginales } = clientes;
   const [showModalNew, setShowModalNew] = useState(false);
+  const [verCliente, setVerCliente] = useState(false);
 
   const getItemKey = (item) => item.documento;
-  const getItemLabel = (item) => `${item.documento} - ${item.nombre}`;
+  // Sin DNI a la vista: el documento queda como clave, no como texto.
+  const getItemLabel = (item) => item.nombre || item.documento;
 
   return (
-    <div>
-      <label>Cliente:</label>
+    <div className="ventaTopCampo">
+      <div className="ventaTopLabel">
+        <label>Cliente</label>
+        <Button
+          size="sm"
+          variant="outline-primary"
+          disabled={!clienteSeleccionado}
+          onClick={() => setVerCliente(true)}
+        >
+          Ver cliente
+        </Button>
+      </div>
+
       <Combobox
-        items={items}
+        items={itemsOriginales ?? []}
         value={clienteSeleccionado}
         onChange={(cliente) => setClienteSeleccionado(cliente)}
         placeholder="Seleccionar cliente..."
@@ -25,62 +43,23 @@ export function BuscadorCliente({ clienteSelecManag }) {
         maxItems={20}
         showCreateButton={true}
         onCreate={() => setShowModalNew(true)}
-        className='mb-6'
       />
+
+      <DetalleCliente cliente={clienteSeleccionado} />
+
       {showModalNew && (
         <ModalEditarCliente
           onClose={() => setShowModalNew(false)}
         />
       )}
-    </div>
-  )
-}
 
-export function BuscadorProductos({ newItemsManag }) {
-  const { setNewItems } = newItemsManag;
-  const { productos } = useContext(DataContext);
-  const { items } = productos;
-  const [cantidad, setCantidad] = useState(1);
-
-  const getItemKey = (item) => item.idPublica;
-  const getItemLabel = (item) => `${item.idPublica} - ${item.nombre} - $${item.precio}`;
-
-  const handleSeleccionarProducto = (producto) => {
-    const cant = parseInt(cantidad) || 1;
-    setNewItems((prevItems) => {
-      const existente = prevItems.find((item) => item.producto.idPublica === producto.idPublica);
-      if (existente) {
-        const nuevaCantidad = existente.cantidad + cant;
-        return prevItems.map((item) =>
-          item.producto.idPublica === producto.idPublica
-            ? { ...item, cantidad: nuevaCantidad, total: Number(item.producto.precio) * nuevaCantidad }
-            : item
-        );
-      }
-      return [...prevItems, {
-        keyId: crypto.randomUUID(),
-        producto,
-        cantidad: cant,
-        total: Number(producto.precio) * cant,
-      }];
-    });
-    setCantidad(1);
-  };
-
-  return (
-    <div className='flex-row mb-6'>
-      <div className='flex-1'>
-        <label>Buscar Productos:</label>
-        <Combobox
-          items={items}
-          value={null}
-          onChange={(producto) => handleSeleccionarProducto(producto)}
-          placeholder="Seleccionar producto..."
-          getItemKey={getItemKey}
-          getItemLabel={getItemLabel}
-          maxItems={20}
+      {verCliente && clienteSeleccionado && (
+        <ModalVerCliente
+          cliente={clienteSeleccionado}
+          onClose={() => setVerCliente(false)}
         />
-      </div>
+      )}
     </div>
-  )
+  );
 }
+

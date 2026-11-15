@@ -4,44 +4,71 @@ import { DataContext } from '../../context/dataContext';
 import { useNotifications } from '../../context/notificationContext';
 import { Button } from '../../components/shared/botones';
 import { CheckRes } from '../../utils/checkRes';
-import { BuscadorCliente, BuscadorProductos } from './campoBuscador';
+import { BuscadorCliente } from './campoBuscador';
 import { TablaNewItemsVenta } from './tablaNewItemsVenta';
 import { Alert } from '../../components/notification/Alert';
+import { ModalSelectorProductos } from './ModalSelectorProductos';
+import { RelojVenta } from './RelojVenta';
+import { useCarritoVenta } from '../../Hooks/useCarritoVenta';
+import { GrayDisplay, MoneyDisplay } from '../../utils/displayConvert';
+import { NewIcon } from '../../assets/icons';
 
 export function FormNuevaVenta() {
   const { ventas, productos } = useContext(DataContext);
-  const { agregar, reloadItems: reloadVentas } = ventas;
-  const { items: productosList, reloadItems: reloadProductos } = productos;
+  const { agregar: agregarVenta, reloadItems: reloadVentas } = ventas;
+  const { reloadItems: reloadProductos } = productos;
   const { showPopup, showAlert, hideAlert } = useNotifications();
-  const [newItems, setNewItems] = useState([]);
+  const carrito = useCarritoVenta();
   const [clienteSeleccionado, setClienteSeleccionado] = useState(null);
+  const [detalle, setDetalle] = useState('');
   const [enviando, setEnviando] = useState(false);
+  const [selectorAbierto, setSelectorAbierto] = useState(false);
 
   const handleClear = () => {
-    setNewItems([]);
+    carrito.limpiar();
     setClienteSeleccionado(null);
+    setDetalle('');
     hideAlert();
-  }
+  };
+
+  const handleLimpiar = () => {
+    if (carrito.items.length === 0 && !clienteSeleccionado && !detalle) {
+      handleClear();
+      return;
+    }
+    if (!confirm('¿Vaciar la venta actual?')) return;
+    handleClear();
+  };
 
   async function submitHandler(event) {
     event.preventDefault();
     if (enviando) return;
     if (!clienteSeleccionado) return showPopup({ type: 'warning', message: 'Cliente no seleccionado.' });
-    if (!newItems[0]) return showPopup({ type: 'warning', message: 'Producto/s no seleccionado/s.' });
+    if (carrito.items.length === 0) return showPopup({ type: 'warning', message: 'Producto/s no seleccionado/s.' });
+
+    if (carrito.lineasSinStock.length > 0) {
+      const faltantes = carrito.lineasSinStock
+        .slice(0, 3)
+        .map(({ producto, disponible }) => `${producto?.nombre ?? 'Producto'} (faltan ${Math.abs(disponible)})`)
+        .join(' · ');
+      return showPopup({ type: 'warning', message: `Stock insuficiente: ${faltantes}` });
+    }
 
     setEnviando(true);
     try {
-      const ItemsId = newItems.map(i => i.producto.idPublica);
-      const ItemsCant = newItems.map(i => parseInt(i.cantidad));
-
       const nuevoItem = {
         DNI: Number(clienteSeleccionado.documento),
-        ItemsId,
-        ItemsCant,
+        ItemsId: carrito.items.map((item) => item.producto.idPublica),
+        ItemsCant: carrito.items.map((item) => parseInt(item.cantidad, 10)),
+        ...(detalle.trim() ? { Detalle: detalle.trim() } : {}),
       };
-      const res = await agregar({ nuevoItem });
+      const res = await agregarVenta({ nuevoItem });
 
-      const onSuccess = () => { event.target.reset(); handleClear(); reloadProductos(); reloadVentas(); hideAlert() };
+      const onSuccess = () => {
+        handleClear();
+        reloadProductos();
+        reloadVentas();
+      };
       const onShowAlert = (type, message) => showAlert({ type, message });
       CheckRes(res, { onSuccess, showPopup, onMessage: onShowAlert });
     } finally {
@@ -50,17 +77,85 @@ export function FormNuevaVenta() {
   }
 
   return (
-    <form className='formNueva' onSubmit={submitHandler}>
-      <Alert />
-      <div className='mb-6'>
-        <BuscadorCliente clienteSelecManag={{clienteSeleccionado, setClienteSeleccionado}}/>
-        <BuscadorProductos newItemsManag={{newItems, setNewItems}} />
-        <TablaNewItemsVenta newItemsManag={{newItems, setNewItems}} productosList={productosList}/>
-      </div>
-      <div className='submitBtns'>
-        <Button variant="danger" disabled={enviando} onClick={handleClear}>Limpiar</Button>
-        <Button variant="success" type="submit" loading={enviando} loadingText="Enviando...">Confirmar</Button>
-      </div>
-    </form>
-  )
+    <>
+      <form className="formNueva" onSubmit={submitHandler}>
+        <Alert />
+
+        <div className="ventaTop">
+          <BuscadorCliente clienteSelecManag={{ clienteSeleccionado, setClienteSeleccionado }} />
+
+          <div className="ventaTopCampo">
+            <div className="ventaTopLabel">
+              <label htmlFor="ventaDetalle">Detalle de venta {GrayDisplay("(opcional)")}</label>
+              <RelojVenta />
+            </div>
+            <textarea
+              id="ventaDetalle"
+              rows={2}
+              className="ventaDetalleInput"
+              placeholder="Ej.: pago en efectivo, retiro en local..."
+              value={detalle}
+              maxLength={200}
+              onChange={(event) => setDetalle(event.target.value)}
+            />
+          </div>
+        </div>
+
+        <section className="ventaMid">
+          <div className="ventaTablaScroll tablaSticky">
+            <TablaNewItemsVenta carrito={carrito} />
+          </div>
+          <div className="ventaToolbar">
+            <div className="ventaToolbarAcciones">
+              <button
+                type="button"
+                className="ventaAgregarFila"
+                onClick={() => setSelectorAbierto(true)}
+              >
+                <NewIcon /> Agregar producto
+              </button>
+              <Button
+                className="ventaLimpiar"
+                variant="outline-danger"
+                onClick={handleLimpiar}
+                disabled={enviando}
+              >
+                Limpiar
+              </Button>
+            </div>
+          </div>
+        </section>
+
+        <footer className="ventaBottom">
+          <div className="ventaTotal">
+            <span className="ventaTotalLabel">Total</span>
+            <span className="ventaTotalValor">{MoneyDisplay(carrito.total)}</span>
+          </div>
+
+          <div className="ventaMeta">
+            <span>{carrito.cantidadProductos} productos · {carrito.unidades} unidades</span>
+          </div>
+
+          <Button
+            className="ventaFinalizar"
+            variant="success"
+            size="lg"
+            type="submit"
+            loading={enviando}
+            loadingText="Finalizando..."
+          >
+            Finalizar venta
+          </Button>
+        </footer>
+      </form>
+
+      {selectorAbierto && (
+        <ModalSelectorProductos
+          productosManage={productos}
+          carrito={carrito}
+          onClose={() => setSelectorAbierto(false)}
+        />
+      )}
+    </>
+  );
 }

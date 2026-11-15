@@ -43,7 +43,7 @@ export function ModalVerCliente({ cliente, onClose, onEditar }) {
       footer={
         <>
           <Button variant="danger" onClick={onClose}>Cerrar</Button>
-          <Button variant="primary" onClick={onEditar}>Editar</Button>
+          {onEditar && <Button variant="primary" onClick={onEditar}>Editar</Button>}
         </>
       }
     >

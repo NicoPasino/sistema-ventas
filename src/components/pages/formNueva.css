@@ -1,10 +1,12 @@
 /* TODO: responsivo */
 
-.formNueva{
-  /* background-color: #1115;
-  padding: 25px; */
-  
-  margin-bottom: 15px;
+.formNueva {
+  /* Ocupa el alto disponible de <main> para que sólo la tabla tenga scroll. */
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
   border-radius: 10px;
   -webkit-border-radius: 10px;
   -moz-border-radius: 10px;
@@ -19,7 +21,6 @@
 }
 .formNueva select {
   padding: 5px;
-  /* width: 200px; */
 }
 
 .formNueva .group {
@@ -32,11 +33,11 @@
   -ms-border-radius: 10px;
   -o-border-radius: 10px;
 }
-.group label { 
+.group label {
   display: inline;
   margin-right: 5px;
 }
-.group input, .group select { 
+.group input, .group select {
   margin-right: 25px;
   margin-bottom: 0;
 }
@@ -64,8 +65,6 @@ input[type=number]::-webkit-inner-spin-button:hover { opacity: 1; }
 
 input:read-only::-webkit-inner-spin-button { opacity: 0; }
 
-
-/* TODO: EXPORTAR */
 .submitBtns {
   padding: 5px;
   width: 100%;
@@ -84,35 +83,265 @@ input:read-only::-webkit-inner-spin-button { opacity: 0; }
   border-radius: 10px;
 }
 
-/* #ListaCategorias {
-  width: 200px;
-} */
+/* ===== Nueva venta: bloques ===== */
 
-/* Flex layout for product selector */
-.flex-row {
+.ventaTop,
+.ventaMid,
+.ventaBottom {
+  background-color: #0005;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  padding: 12px;
+}
+
+/* ===== Nueva venta: TOP ===== */
+
+.ventaTop {
+  flex: 0 0 auto;
+  display: grid;
+  grid-template-columns: minmax(260px, 1fr) minmax(300px, 1.25fr);
+  gap: 8px 28px;
+  align-items: start;
+}
+
+.ventaTopCampo {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.ventaTopLabel {
+  min-height: 24px;
   display: flex;
   align-items: center;
-  gap: 10px;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 2px 8px;
 }
 
-.flex-row > .flex-1 {
-  flex: 1;
-}
-
-.total {
-  font-size: 1.4rem;
-  font-family: system-ui;
-  margin-block: 5px;
-  padding: 5px;
+/* El Combobox compartido mide 40%: acotado a esta pantalla ocupa la columna. */
+.ventaTop .combobox {
   width: 100%;
+}
+.ventaTop .combobox-trigger {
+  box-sizing: border-box;
+}
+
+.ventaDetalleInput {
+  width: 100%;
+  box-sizing: border-box;
+  min-height: 64px;
+  font-family: inherit;
+  line-height: 1.35;
+  resize: none;
+}
+
+.ventaClienteDatos {
   display: flex;
-  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 2px 18px;
+  font-size: 0.85em;
+}
+
+.ventaDato {
+  display: flex;
+  gap: 6px;
+  min-width: 0;
+}
+
+.ventaDatoLabel {
+  flex: 0 0 auto;
+  color: var(--colorSecondary);
+}
+
+.ventaDatoValor {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--colorLight);
+}
+
+/* ===== Nueva venta: MIDDLE ===== */
+
+.ventaMid {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.ventaToolbar {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 4px 12px;
+}
+
+.ventaToolbarAcciones {
+  flex: 1 1 320px;
+  min-width: 240px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.ventaLimpiar {
+  flex: 0 0 auto;
+}
+
+.ventaSeccionTitulo {
+  margin: 0;
+  font-size: 0.85em;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--colorPrimary);
+}
+
+.ventaTablaScroll {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: auto;
+}
+
+.ventaAgregarFila {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 8px;
+  background-color: transparent;
+  border: 1px dashed #555;
+  border-radius: 8px;
+  color: #7ece7e;
+  font-family: inherit;
+  font-size: 0.9em;
+  cursor: pointer;
+  transition: background-color 0.15s, border-color 0.15s, color 0.15s;
+}
+
+.ventaAgregarFila:hover {
+  background-color: rgba(25, 135, 84, 0.12);
+  border-color: var(--colorSuccess);
+  color: #a6e6a6;
+}
+
+.ventaAgregarFila svg {
+  width: 18px;
+  height: 18px;
+}
+
+.ventaCarritoVacio {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 14px;
+}
+
+.ventaCantidad {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.ventaCantidadValor {
+  min-width: 18px;
+  font-weight: 600;
+}
+
+/* ===== Nueva venta: BOTTOM ===== */
+
+.ventaBottom {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px 20px;
+}
+
+.ventaTotal {
+  display: flex;
+  align-items: baseline;
   gap: 10px;
+  min-width: 0;
+}
+
+.ventaTotalLabel {
+  font-size: 0.8em;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--colorSecondary);
+}
+
+.ventaTotalValor {
+  font-size: 2.4rem;
+  font-weight: 700;
+  line-height: 1.1;
   color: #fff;
+  font-variant-numeric: tabular-nums;
 }
-.totalText {
-  font-weight: bold;
+
+/* MoneyDisplay define tamaño y peso inline: el total manda el tamaño grande. */
+.ventaTotalValor > span {
+  font-size: inherit !important;
+  font-weight: inherit !important;
 }
-.totalValue {
-  color: #ccc;
+
+.ventaMeta {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  font-size: 0.85em;
+  color: var(--colorSecondary);
+}
+
+.ventaReloj {
+  margin-left: auto;
+  font-size: 0.85em;
+  color: var(--colorSecondary);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.ventaRelojHora {
+  color: var(--colorLight);
+  font-weight: 600;
+}
+
+.ventaFinalizar {
+  min-width: 190px;
+}
+
+/* ===== Responsive ===== */
+
+@media (max-width: 1280px) {
+  .ventaTop {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 760px) {
+  .ventaTop {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .ventaBottom {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .ventaMeta {
+    align-items: flex-start;
+  }
+  .ventaFinalizar {
+    width: 100%;
+  }
 }

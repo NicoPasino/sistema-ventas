@@ -1,7 +1,7 @@
 import { useRef } from 'react';
 import './modal.css';
 
-export function Modal({ title, onClose, children, footer }) {
+export function Modal({ title, onClose, children, footer, className = '' }) {
   const isMouseDownOnOverlay = useRef(false);
 
   return (
@@ -17,7 +17,7 @@ export function Modal({ title, onClose, children, footer }) {
         isMouseDownOnOverlay.current = false;
       }}
     >
-      <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+      <div className={`modal-content ${className}`.trim()} onClick={(e) => e.stopPropagation()}>
         <button className="modal-close-btn" onClick={onClose} type="button">
           &times;
         </button>

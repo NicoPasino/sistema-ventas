@@ -135,7 +135,7 @@ export function Combobox({
     : placeholder;
 
   return (
-    <div className={`combobox ${className}`} ref={triggerRef}>
+    <div className={className ? `combobox ${className}` : "combobox"} ref={triggerRef}>
       <button
         type="button"
         className={`combobox-trigger ${isOpen ? "open" : ""} ${disabled ? "disabled" : ""}`}

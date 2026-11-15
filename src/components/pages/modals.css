@@ -200,3 +200,28 @@
   font-size: 1.1rem;
   font-weight: 600;
 }
+
+/* Selector de productos de Nueva venta */
+.modal-content.modalAncho {
+  max-width: 1050px;
+}
+
+.modalSelectorBuscar {
+  width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 14px;
+}
+
+.modalSelectorResumen {
+  margin-right: auto;
+  align-self: center;
+  font-size: 0.9em;
+  color: var(--colorSecondary);
+}
+
+.modalSelectorEnCarrito {
+  margin-top: 4px;
+  font-size: 0.75em;
+  color: var(--colorSuccess);
+  white-space: nowrap;
+}

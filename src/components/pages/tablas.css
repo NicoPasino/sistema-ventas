@@ -172,6 +172,14 @@ tr td{
 .svgRestore svg { color: #fc3}
 .svgDisabled svg { color: #ccc}
 
+/* Contenedor con scroll propio y encabezado fijo (Nueva venta). */
+.tablaSticky .tablaList thead th {
+  position: sticky;
+  top: 0;
+  z-index: 3;
+  box-shadow: inset 0 -1px 0 #444;
+}
+
 /* evitar seleccion en los iconos */
 svg{
   user-select: none;
