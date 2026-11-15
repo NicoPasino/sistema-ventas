@@ -44,6 +44,7 @@ export function StockDisplay(cant, stockMinimo, stockMaximo) {
   const { min, max } = getRangoStock(stockMinimo, stockMaximo);
   const { pct, nivel } = estadoStock(cant, min, max);
   const color = nivelStockCSS(nivel);
+  const ancho = pct > 0 ? Math.max(2, Math.round(pct * 100)) : 0; // porción mínima visual
 
   return (
     <div className="stockCelda" title={`Stock: ${cant} (mín. ${min} · máx. ${max})`}>
@@ -52,7 +53,7 @@ export function StockDisplay(cant, stockMinimo, stockMaximo) {
         <span className="stockMaximo">/{max}</span>
       </div>
       <div className="stockBarra">
-        <div className={`stockBarraFill ${color}`} style={{ width: `${Math.round(pct * 100)}%` }} />
+        <div className={`stockBarraFill ${color}`} style={{ width: `${ancho}%` }} />
       </div>
     </div>
   );
