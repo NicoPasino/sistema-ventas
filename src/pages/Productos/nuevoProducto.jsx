@@ -77,7 +77,7 @@ export const NuevoProducto = forwardRef(function NuevoProducto({ id }, ref) {
     if (!lista) return <input value={"(Sin categorías)"} disabled/>
     return (
       <select id="ListaCategorias" name="idCategoria" value={idCategoria ?? ""} onChange={handleChange} disabled={loading} required>
-        <option value="">Seleccione una categoría</option>
+        <option value="">Seleccionar categoría</option>
         {lista.map((e, i) => ( <option key={i} value={e.id}>{e.nombre}</option> ))}
       </select>
     )
@@ -115,40 +115,38 @@ export const NuevoProducto = forwardRef(function NuevoProducto({ id }, ref) {
           <input type="number" name="precio" value={precio ?? ""} onChange={handleChange} onBlur={handleBlur} min="1" step={0.01} required />
           {errors.precio && <span className="field-error">{errors.precio}</span>}
         </div>
+
+        <div className="form-group">
+          <label htmlFor="ListaCategorias">Categoría</label>
+          {
+            (loading) ? <input value={"Cargando Categorías..."} disabled/>
+              : (errors.fetch) 
+                ? <input value={"Error al cargar Categorías."} disabled/>
+                : <ListaCategorias lista={categorias}/>
+          }
+          {errors.idCategoria && <span className="field-error">{errors.idCategoria}</span>}
+        </div>
       </div>
+
       
       <div className="form-row">
         <div className="form-group">
-          <label htmlFor="stockMinimo">Stock Mínimo</label>
-          <input type="number" id="stockMinimo" name="stockMinimo" value={stockMinimo ?? ""} onChange={handleChange} onBlur={handleBlur} min="0" step="1" />
+          <label htmlFor="stockMinimo">Stock Mínimo <span className="optional-label">(opcional)</span></label>
+          <input type="number" id="stockMinimo" name="stockMinimo" value={stockMinimo ?? ""} onChange={handleChange} onBlur={handleBlur} min="0" step="1" placeholder={20} />
           {errors.stockMinimo && <span className="field-error">{errors.stockMinimo}</span>}
         </div>
 
         <div className="form-group">
-          <label htmlFor="stockMaximo">Stock Máximo</label>
-          <input type="number" id="stockMaximo" name="stockMaximo" value={stockMaximo ?? ""} onChange={handleChange} onBlur={handleBlur} min="0" step="1" />
+          <label htmlFor="stockMaximo">Stock Máximo <span className="optional-label">(opcional)</span></label>
+          <input type="number" id="stockMaximo" name="stockMaximo" value={stockMaximo ?? ""} onChange={handleChange} onBlur={handleBlur} min="0" step="1" placeholder={150}/>
           {errors.stockMaximo && <span className="field-error">{errors.stockMaximo}</span>}
         </div>
 
         <div className="form-group">
-          <label htmlFor="proveedor">Proveedor</label>
+          <label htmlFor="proveedor">Proveedor <span className="optional-label">(opcional)</span></label>
           <input type="text" id="proveedor" name="proveedor" value={proveedor ?? ""} onChange={handleChange} onBlur={handleBlur} maxLength="150" />
           {errors.proveedor && <span className="field-error">{errors.proveedor}</span>}
         </div>
-      </div>
-      <p className="colorGrisClaro stockRangoNota">
-        El stock se muestra según el porcentaje entre el mínimo y el máximo. <span className="optional-label">(Si se dejan vacíos se usan 20 y 150)</span>
-      </p>
-
-      <div className="form-group">
-        <label htmlFor="ListaCategorias">Categoría</label>
-        {
-          (loading) ? <input value={"Cargando Categorías..."} disabled/>
-            : (errors.fetch) 
-              ? <input value={"Error al cargar Categorías."} disabled/>
-              : <ListaCategorias lista={categorias}/>
-        }
-        {errors.idCategoria && <span className="field-error">{errors.idCategoria}</span>}
       </div>
 
       <div className="form-group">
