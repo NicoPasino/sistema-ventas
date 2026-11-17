@@ -19,6 +19,22 @@ export function formatearMoneda(amount, { compacto = false } = {}) {
   }).format(valor);
 }
 
+export function formatearNumero(valor) {
+  return new Intl.NumberFormat('es-AR').format(Number(valor) || 0);
+}
+
+// Devuelve la variación lista para pintar: dirección para el color y texto corto.
+// null cuando no hay base de comparación.
+export function tendencia(pct) {
+  if (pct === null || pct === undefined || !Number.isFinite(pct)) return null;
+
+  const direccion = pct > 0 ? 'sube' : pct < 0 ? 'baja' : 'neutra';
+  const flecha = pct > 0 ? '↑' : pct < 0 ? '↓' : '→';
+  const valor = new Intl.NumberFormat('es-AR', { maximumFractionDigits: 1 }).format(Math.abs(pct));
+
+  return { direccion, texto: `${flecha} ${valor}%` };
+}
+
 // Acepta el valor posicional (MoneyDisplay(100)) y también por prop
 // (MoneyDisplay amount={100}). Sin esto, el segundo caso pasaba el objeto de
 // props entero a Number() -> NaN -> $ 0.

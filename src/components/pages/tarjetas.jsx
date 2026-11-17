@@ -4,55 +4,64 @@ import { UserSettingsContext } from '../../context/userSettingsContext'
 import { GoToIcon } from '../../assets/icons';
 import { IconButton } from '../shared/botones';
 
-export function TarjetaBlanca ({title, children, tab}) {
-  const {handleTab} = useContext(UserSettingsContext)
+const TONOS = {
+  primary: 'var(--colorPrimary)',
+  success: 'var(--colorSuccess)',
+  info: 'var(--colorInfo)',
+  warning: 'var(--colorWarning)',
+  danger: 'var(--colorDanger)',
+  secondary: 'var(--colorSecondary)',
+};
+
+export function TarjetaBlanca({ title, children, tab, acciones }) {
+  const { handleTab } = useContext(UserSettingsContext)
 
   return (
     <div className="tarjetaBlanca">
-      <h2 className='tarjetaBlancaHeader'>{title}</h2>
+      <div className="tarjetaBlancaTop">
+        <h2 className='tarjetaBlancaHeader'>{title}</h2>
+        {acciones && <div className="tarjetaBlancaAcciones">{acciones}</div>}
+      </div>
       <div className="tarjetaBlancaBody">
         {children}
         {tab &&
-          <p className='tarjetaBlancaFooter'>
-            <IconButton variant="secondary" size="md" title={"Ir a " + tab} onClick={() => handleTab(tab)}> <GoToIcon/> </IconButton>
-          </p>
+          <div className='tarjetaBlancaFooter'>
+            <IconButton variant="secondary" size="md" title={"Ir a " + tab} onClick={() => handleTab(tab)}> <GoToIcon /> </IconButton>
+          </div>
         }
       </div>
     </div>
   )
 }
 
-export function HeaderCard ({title, subtitle}) {
-  return (
-    <div className="headerCard">
-      <h2>{title}</h2>
-      {subtitle && <p>{subtitle}</p>}
-    </div>
-  )
-}
-
-export function TarjetaInfo ({text, number, detalle, color, svg, onClick}) {
+export function TarjetaInfo({ text, number, detalle, tono = 'primary', svg, onClick, tendencia, primaria = false }) {
   const contenido = (
     <>
-      <div className="tarjetaInfoIcon" style={{ backgroundColor: color }}>
+      <div className="tarjetaInfoIcon" style={{ backgroundColor: TONOS[tono] ?? TONOS.primary }}>
         {svg}
       </div>
       <div className="tarjetaInfoContent">
         <div className="tarjetaInfoNumber">
-          {number}
+          <span className="tarjetaInfoValor">{number}</span>
           {detalle && <span className="tarjetaInfoDetalle">{detalle}</span>}
         </div>
         <div className="tarjetaInfoText">{text}</div>
+        {tendencia && (
+          <span className={`tarjetaInfoTendencia ${tendencia.direccion}`} title={tendencia.titulo}>
+            {tendencia.texto}
+          </span>
+        )}
       </div>
     </>
   );
 
-  if (!onClick) return <div className="tarjetaInfo">{contenido}</div>;
+  const clase = ['tarjetaInfo', primaria && 'tarjetaInfoPrimaria', onClick && 'pointer'].filter(Boolean).join(' ');
+
+  if (!onClick) return <div className={clase}>{contenido}</div>;
 
   return (
-    <button type="button" className="tarjetaInfo pointer" onClick={onClick}>
+    <button type="button" className={clase} onClick={onClick} aria-label={`${text}: ${number}`}>
       {contenido}
     </button>
   )
 }
-

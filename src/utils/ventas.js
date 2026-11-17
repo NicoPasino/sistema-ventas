@@ -1,6 +1,6 @@
 import { aNumero } from "./stock";
 
-function productosDe(venta) {
+export function productosDeVenta(venta) {
   return Array.isArray(venta?.productos) ? venta.productos : [];
 }
 
@@ -12,7 +12,7 @@ function numeroVenta(valor) {
 
 // La API no siempre manda subTotal en el detalle de venta: si no llega, se calcula
 // desde el precio unitario. Por eso no alcanza con usar subTotal y ya.
-function totalLinea(linea) {
+export function totalLineaVenta(linea) {
   const subTotal = numeroVenta(linea?.subTotal);
   if (subTotal !== null) return subTotal;
 
@@ -24,9 +24,9 @@ function totalLinea(linea) {
 }
 
 export function totalVenta(venta) {
-  return productosDe(venta).reduce((acc, linea) => acc + totalLinea(linea), 0);
+  return productosDeVenta(venta).reduce((acc, linea) => acc + totalLineaVenta(linea), 0);
 }
 
 export function unidadesVenta(venta) {
-  return productosDe(venta).reduce((acc, linea) => acc + (numeroVenta(linea?.cantidad) ?? 0), 0);
+  return productosDeVenta(venta).reduce((acc, linea) => acc + (numeroVenta(linea?.cantidad) ?? 0), 0);
 }
