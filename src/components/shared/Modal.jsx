@@ -1,20 +1,30 @@
 import { useRef } from 'react';
 import './modal.css';
 
+const TOLERANCIA_CLIC_PX = 4;
+
 export function Modal({ title, onClose, children, footer, className = '' }) {
-  const isMouseDownOnOverlay = useRef(false);
+  const inicioClicOverlay = useRef(null);
 
   return (
     <div 
       className="modal-overlay" 
       onMouseDown={(e) => {
-        isMouseDownOnOverlay.current = e.target === e.currentTarget;
+        inicioClicOverlay.current = e.target === e.currentTarget
+          ? { x: e.clientX, y: e.clientY }
+          : null;
       }}
       onClick={(e) => {
-        if (isMouseDownOnOverlay.current && e.target === e.currentTarget) {
-          onClose();
-        }
-        isMouseDownOnOverlay.current = false;
+        const inicio = inicioClicOverlay.current;
+        inicioClicOverlay.current = null;
+
+        if (!inicio || e.target !== e.currentTarget) return;
+
+        const mismoPunto =
+          Math.abs(inicio.x - e.clientX) < TOLERANCIA_CLIC_PX &&
+          Math.abs(inicio.y - e.clientY) < TOLERANCIA_CLIC_PX;
+
+        if (mismoPunto) onClose();
       }}
     >
       <div className={`modal-content ${className}`.trim()} onClick={(e) => e.stopPropagation()}>
