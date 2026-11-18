@@ -41,7 +41,7 @@ function FilaVenta({ item, setVenta }) {
       <td className='tablaColPrecio'>    {MoneyDisplay(totalCalculado)} </td>
       <td>
         <div className='tablaColAcciones'>
-          <i className='iconEdit svgView' onClick={() => { setVenta(item) }}> <ViewIcon /> </i>
+          <i className='iconEdit svgView' onClick={() => { setVenta(item) }} title="Ver detalle"> <ViewIcon /> </i>
           {/* <i className='iconEdit svgEdit' onClick={()=> setIdProducto(idPublica)}> <EditIcon /> </i> */}
           {/* <i className='iconEdit svgDelete' onClick={()=> eliminar(idPublica)}> <DeleteIcon /> </i> */}
         </div>
@@ -53,7 +53,7 @@ function FilaVenta({ item, setVenta }) {
 export function Contenido({ lista, setVenta }) {
   if (!lista || lista.length == 0) return <ListaVaciaT />;
 
-  return lista.map((item, i) => (
-    <FilaVenta key={i} item={item} setVenta={setVenta} />
+  return lista.map((item) => (
+    <FilaVenta key={item.numero} item={item} setVenta={setVenta} />
   ))
 }

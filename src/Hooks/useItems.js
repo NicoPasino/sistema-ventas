@@ -41,6 +41,8 @@ export function useItems({ itemsDB, categoriasDB, estadoInicial = "todos" }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [errorCategorias, setErrorCategorias] = useState(false);
+  // { campo, accesor, direccion }: `campo` es el label del header/select,
+  // `accesor` la función de extracción y `direccion` "asc" | "desc".
   const [orden, setOrden] = useState(null);
   const filtrosPorDefecto = useMemo(() => ({ ...FILTROS_INICIALES, estado: estadoInicial }), [estadoInicial]);
   const [filtros, setFiltros] = useState(() => ({ ...filtrosPorDefecto }));
@@ -190,15 +192,17 @@ export function useItems({ itemsDB, categoriasDB, estadoInicial = "todos" }) {
     cambiarFiltros({ estado });
   }, [cambiarFiltros]);
 
+  // "Limpiar filtros" también restablece el orden, no solo búsqueda y estado.
   const limpiarFiltros = useCallback(() => {
     const nuevosFiltros = { ...filtrosPorDefectoRef.current };
     filtrosRef.current = nuevosFiltros;
     setFiltros(nuevosFiltros);
-    mostrarFiltrados(itemsOriginales, nuevosFiltros, orden);
-  }, [itemsOriginales, orden, mostrarFiltrados]);
+    setOrden(null);
+    mostrarFiltrados(itemsOriginales, nuevosFiltros, null);
+  }, [itemsOriginales, mostrarFiltrados]);
 
-  const ordenarItems = useCallback((accesor, direccion) => {
-    const nuevoOrden = { accesor, direccion };
+  const ordenarItems = useCallback((accesor, direccion, campo = null) => {
+    const nuevoOrden = { campo, accesor, direccion };
     setOrden(nuevoOrden);
     setItems((prevItems) => aplicarOrden(prevItems, nuevoOrden));
   }, []);
@@ -206,6 +210,7 @@ export function useItems({ itemsDB, categoriasDB, estadoInicial = "todos" }) {
   const reloadItems = recargarItems;
 
   const hayFiltros = (filtros.busqueda ?? "") !== "" || filtros.estado !== filtrosPorDefecto.estado;
+  const hayOrden = orden !== null;
 
   return useMemo(() => ({
     items,
@@ -221,10 +226,12 @@ export function useItems({ itemsDB, categoriasDB, estadoInicial = "todos" }) {
     limpiarFiltros,
     filtroEstado: filtros.estado,
     hayFiltros,
+    orden,
+    hayOrden,
     ordenarItems,
     loading,
     error,
     errorCategorias,
     categorias
-  }), [items, itemsOriginales, agregar, actualizar, obtenerItem, eliminar, cambiarActivo, reloadItems, filtrarItemsLocal, filtrarPorEstado, limpiarFiltros, filtros.estado, hayFiltros, ordenarItems, loading, error, errorCategorias, categorias]);
+  }), [items, itemsOriginales, agregar, actualizar, obtenerItem, eliminar, cambiarActivo, reloadItems, filtrarItemsLocal, filtrarPorEstado, limpiarFiltros, filtros.estado, hayFiltros, orden, hayOrden, ordenarItems, loading, error, errorCategorias, categorias]);
 }

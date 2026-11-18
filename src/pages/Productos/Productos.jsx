@@ -50,6 +50,7 @@ export default function Productos() {
         items={items}
         itemsManage={productos}
         headers={tableHeaders}
+        ordenCampos={ordenCampos}
         editable
         clavePaginacion="productos"
         renderFilas={(lista) => <Contenido lista={lista} setIdProducto={setIdProducto} setProductoVer={setProductoVer} cambiarActivo={handleCambiarActivo} />}

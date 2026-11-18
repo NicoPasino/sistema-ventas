@@ -14,6 +14,113 @@ th {
   padding: 5px;
   font-size: 1.2em;
 }
+/* --- Ordenar por columna --- */
+.tablaList th .thOrdenable {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  padding: 5px;
+  border: none;
+  background: none;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  transition: color 0.15s;
+}
+
+.tablaList th .thOrdenable:hover,
+.tablaList th .thOrdenable:focus-visible {
+  color: #fff;
+  font-weight: 700;
+  outline: none;
+}
+
+.tablaList th .thOrdenActivo {
+  color: #8ec5ff;
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.tablaList th .thOrdenActivo:hover,
+.tablaList th .thOrdenActivo:focus-visible {
+  color: #b6dbff;
+}
+
+/* Contenedor de la flecha: oculto en columnas sin orden, visible en la activa
+   o mientras se hace hover/foco. */
+.thOrdenFlechas {
+  position: relative;
+  display: inline-flex;
+  width: 12px;
+  height: 12px;
+  flex: none;
+  opacity: 0;
+  transform: translateY(2px);
+  transition: opacity 0.18s ease, transform 0.18s ease;
+}
+
+.thOrdenFlechasActivo,
+.thOrdenable:hover .thOrdenFlechas,
+.thOrdenable:focus-visible .thOrdenFlechas {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Las dos flechas se superponen y se intercambian con una animación corta. */
+.thOrdenFlecha {
+  position: absolute;
+  inset: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: currentColor;
+  opacity: 0;
+  transform: translateY(6px) scale(0.7);
+  transition: opacity 0.18s ease, transform 0.24s ease;
+}
+
+.thOrdenFlecha svg {
+  width: 12px;
+  height: 12px;
+}
+
+/* Dirección que se muestra en reposo (asc, o desc si esa es la activa). */
+.thOrdenFlechasAsc .thOrdenFlechaAsc,
+.thOrdenFlechasDesc .thOrdenFlechaDesc {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* Al hover se muestra la contraria, que es lo que hará el click. */
+.thOrdenable:hover .thOrdenFlechasActivo.thOrdenFlechasAsc .thOrdenFlechaAsc,
+.thOrdenable:focus-visible .thOrdenFlechasActivo.thOrdenFlechasAsc .thOrdenFlechaAsc,
+.thOrdenable:hover .thOrdenFlechasActivo.thOrdenFlechasDesc .thOrdenFlechaDesc,
+.thOrdenable:focus-visible .thOrdenFlechasActivo.thOrdenFlechasDesc .thOrdenFlechaDesc {
+  opacity: 0;
+  transform: translateY(-6px) scale(0.7);
+}
+
+.thOrdenable:hover .thOrdenFlechasActivo.thOrdenFlechasAsc .thOrdenFlechaDesc,
+.thOrdenable:focus-visible .thOrdenFlechasActivo.thOrdenFlechasAsc .thOrdenFlechaDesc,
+.thOrdenable:hover .thOrdenFlechasActivo.thOrdenFlechasDesc .thOrdenFlechaAsc,
+.thOrdenable:focus-visible .thOrdenFlechasActivo.thOrdenFlechasDesc .thOrdenFlechaAsc {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.sinResultados {
+  text-align: center;
+  color: #999;
+  padding: 18px 8px;
+}
+
+.sinResultados .btn {
+  margin-left: 10px;
+}
+
 /* todas las celdas */
 td { padding: 8px; }
 tr:nth-child(even) {background-color: #303030;}

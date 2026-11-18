@@ -6,12 +6,12 @@ export function Contenido({lista, setIdProducto, setProductoVer, cambiarActivo})
   if (!lista || lista.length == 0) return <ListaVaciaT />;
 
   return (
-    lista.map((item, i) => {
+    lista.map((item) => {
       const { idPublica, nombre, descripcion, categoria, cantidad, precio, activo, stockMinimo, stockMaximo } = item;
       const activoBool = esActivo(activo);
 
       return (
-        <tr key={i}>
+        <tr key={idPublica}>
           <td className='tablaColID'>        {GrayDisplay(idPublica)} </td>
           <td className='tablaColNombre'>    {nombre} </td>
           <td className='tablaColDetalles'>  {descripcion} </td>
@@ -22,10 +22,10 @@ export function Contenido({lista, setIdProducto, setProductoVer, cambiarActivo})
           <td>
             <div className='tablaColAcciones'>
               <i className='iconEdit svgView' onClick={()=> setProductoVer(item)} title="Ver detalle"> <ViewIcon /> </i>
-              <i className='iconEdit svgEdit' onClick={()=> setIdProducto(idPublica)}> <EditIcon /> </i>
+              <i className='iconEdit svgEdit' onClick={()=> setIdProducto(idPublica)} title="Editar producto"> <EditIcon /> </i>
               {activoBool
-                ? <i className='iconEdit svgDelete' onClick={()=> cambiarActivo(idPublica, false)}> <DeleteIcon /> </i>
-                : <i className='iconEdit svgRestore' onClick={()=> cambiarActivo(idPublica, true)}> <RestoreIcon /> </i>
+                ? <i className='iconEdit svgDelete' onClick={()=> cambiarActivo(idPublica, false)} title="Desactivar producto"> <DeleteIcon /> </i>
+                : <i className='iconEdit svgRestore' onClick={()=> cambiarActivo(idPublica, true)} title="Activar producto"> <RestoreIcon /> </i>
               }
             </div>
           </td>

@@ -10,20 +10,20 @@ const OPCIONES_ESTADO = [
 ];
 
 export function FormSearch({ itemsManage, tipo, newItemHandle, ordenCampos = [], mostrarEstado = false }) {
-  const { hayFiltros, reloadItems, filtrarItemsLocal, ordenarItems, loading, error, filtroEstado, filtrarPorEstado, limpiarFiltros } = itemsManage;
+  const { hayFiltros, hayOrden, orden, reloadItems, filtrarItemsLocal, ordenarItems, loading, error, filtroEstado, filtrarPorEstado, limpiarFiltros } = itemsManage;
   const searchRef = useRef();
   const [ busqueda, setBusqueda ] = useState("");
-  const [ campoOrden, setCampoOrden ] = useState(null);
-  const [ direccion, setDireccion ] = useState("asc");
+
+  // El orden vive en useItems para compartirlo con los headers de la tabla.
+  const campoOrden = orden?.campo ?? null;
+  const direccion = orden?.direccion ?? "asc";
 
   const placeholder = tipo === "Cliente" ? "Buscar en Clientes..."
     : tipo === "Producto" ? "Buscar en Productos..."
     : "Buscar...";
 
-  // recarga: resetea orden y búsqueda visual
+  // recarga: useItems ya resetea el orden, acá solo limpiamos la búsqueda visual
   const handleReload = useCallback(() => {
-    setCampoOrden(null);
-    setDireccion("asc");
     setBusqueda("");
     reloadItems();
   }, [reloadItems]);
@@ -39,27 +39,28 @@ export function FormSearch({ itemsManage, tipo, newItemHandle, ordenCampos = [],
     filtrarPorEstado(valor);
   }, [filtrarPorEstado, error]);
 
-  // limpia búsqueda y estado sin volver a pedir los datos, el orden se mantiene
+  // limpia búsqueda, estado y orden sin volver a pedir los datos
   // se permite limpiar incluso con error para recuperar el control del toolbar
   const handleLimpiar = useCallback(() => {
     setBusqueda("");
     limpiarFiltros();
   }, [limpiarFiltros]);
 
-  const handleOrdenar = useCallback((index) => {
-    const campo = ordenCampos[index];
-    if (!campo) return;
-    setCampoOrden(index);
-    setDireccion("asc");
-    ordenarItems(campo.valor, "asc");
-  }, [ordenCampos, ordenarItems]);
-
   const handleCambiarDireccion = useCallback(() => {
-    if (campoOrden === null) return;
+    if (!orden) return;
     const nuevaDir = direccion === "asc" ? "desc" : "asc";
-    setDireccion(nuevaDir);
-    ordenarItems(ordenCampos[campoOrden].valor, nuevaDir);
-  }, [campoOrden, direccion, ordenCampos, ordenarItems]);
+    ordenarItems(orden.accesor, nuevaDir, orden.campo);
+  }, [orden, direccion, ordenarItems]);
+
+  const handleOrdenar = useCallback((label) => {
+    const campo = ordenCampos.find((c) => c.label === label);
+    if (!campo) return;
+    if (orden?.campo === label) {
+      handleCambiarDireccion();
+      return;
+    }
+    ordenarItems(campo.valor, "asc", label);
+  }, [orden, ordenCampos, ordenarItems, handleCambiarDireccion]);
 
   return (
     <div className="toolbar">
@@ -96,12 +97,12 @@ export function FormSearch({ itemsManage, tipo, newItemHandle, ordenCampos = [],
             <select
               className="sort-select"
               title="Ordenar por columna"
-              value={campoOrden ?? -1}
-              onChange={(e) => handleOrdenar(Number(e.target.value))}
+              value={campoOrden ?? ""}
+              onChange={(e) => handleOrdenar(e.target.value)}
             >
-              <option value={-1}>Ordenar por…</option>
+              <option value="">Ordenar por…</option>
               {ordenCampos.map((c, i) => (
-                <option key={i} value={i}>{c.label}</option>
+                <option key={i} value={c.label}>{c.label}</option>
               ))}
             </select>
             <IconButton
@@ -133,7 +134,7 @@ export function FormSearch({ itemsManage, tipo, newItemHandle, ordenCampos = [],
         <Button
           variant="outline-danger"
           onClick={handleLimpiar}
-          disabled={!hayFiltros}
+          disabled={!hayFiltros && !hayOrden}
           className="toolbarLimpiar"
         >
           <CancelIcon /> Limpiar filtros

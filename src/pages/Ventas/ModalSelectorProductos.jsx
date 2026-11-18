@@ -54,6 +54,7 @@ export function ModalSelectorProductos({ productosManage, carrito, onClose }) {
         editable
         clavePaginacion="selectorProductosVenta"
         opcionesPorPagina={[5, 10, 25, 50]}
+        mostrarSinResultados={false}
         renderFilas={(pagina) => (
           pagina.length === 0 ? (
             <tr><td colSpan={HEADERS.length + 1} className="sinItems">No se encontraron productos</td></tr>

@@ -2,14 +2,23 @@ import { usePaginacion } from '../../Hooks/usePaginacion';
 import { TablaGenerica } from './tablaGenerica';
 import { Paginacion } from './paginacion';
 
-export function TablaPaginada({ items = [], itemsManage, headers, editable = false, renderFilas, clavePaginacion, opcionesPorPagina }) {
-  const { loading, error } = itemsManage;
+export function TablaPaginada({ items = [], itemsManage, headers, editable = false, renderFilas, clavePaginacion, opcionesPorPagina, ordenCampos = [], mostrarSinResultados = true }) {
+  const { loading, error, hayFiltros, hayOrden, limpiarFiltros } = itemsManage;
   const { pagina, totalPaginas, total, porPagina, setPorPagina, listaPagina, irA, paginaAnterior, paginaSiguiente, opciones } =
     usePaginacion({ items, clave: clavePaginacion, opciones: opcionesPorPagina });
 
+  const sinResultados = mostrarSinResultados && !loading && !error && items.length === 0 && (hayFiltros || hayOrden);
+
   return (
     <>
-      <TablaGenerica itemsManage={itemsManage} headers={headers} editable={editable}>
+      <TablaGenerica
+        itemsManage={itemsManage}
+        headers={headers}
+        editable={editable}
+        ordenCampos={ordenCampos}
+        sinResultados={sinResultados}
+        onLimpiar={limpiarFiltros}
+      >
         {renderFilas(listaPagina)}
       </TablaGenerica>
       {!(loading || error) && (

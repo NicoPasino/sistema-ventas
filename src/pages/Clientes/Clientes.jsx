@@ -45,6 +45,7 @@ export default function Clientes() {
         items={items}
         itemsManage={clientes}
         headers={tableHeaders}
+        ordenCampos={ordenCampos}
         editable
         clavePaginacion="clientes"
         renderFilas={(lista) => <Contenido lista={lista} setIdCliente={setIdCliente} setClienteVer={setClienteVer} cambiarActivo={handleCambiarActivo} />}

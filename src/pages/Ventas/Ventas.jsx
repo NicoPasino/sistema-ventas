@@ -31,6 +31,7 @@ export default function Ventas() {
         items={items}
         itemsManage={ventas}
         headers={tableHeaders}
+        ordenCampos={ordenCampos}
         editable
         clavePaginacion="ventas"
         renderFilas={(lista) => <Contenido lista={lista} setVenta={setVentaSeleccionada} />}
