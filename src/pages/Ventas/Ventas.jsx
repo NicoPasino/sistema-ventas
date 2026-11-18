@@ -26,7 +26,7 @@ export default function Ventas() {
 
   return (
     <div>
-      <FormSearch tipo={"Venta"} itemsManage={ventas} newItemHandle={() => handleTab("Venta")} ordenCampos={ordenCampos} />
+      <FormSearch tipo={"Venta"} itemsManage={ventas} newItemHandle={() => handleTab("Venta")} />
       <TablaPaginada
         items={items}
         itemsManage={ventas}

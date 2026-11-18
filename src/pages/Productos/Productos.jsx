@@ -45,7 +45,7 @@ export default function Productos() {
 
   return (
     <div>
-      <FormSearch tipo={"Producto"} itemsManage={productos} newItemHandle={ () => setModalNew(true) } ordenCampos={ordenCampos} mostrarEstado />
+      <FormSearch tipo={"Producto"} itemsManage={productos} newItemHandle={ () => setModalNew(true) } mostrarEstado />
       <TablaPaginada
         items={items}
         itemsManage={productos}

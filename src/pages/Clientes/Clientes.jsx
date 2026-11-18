@@ -40,7 +40,7 @@ export default function Clientes() {
 
   return (
     <div>
-      <FormSearch tipo={"Cliente"} itemsManage={clientes} newItemHandle={ () => setModalNew(true) } ordenCampos={ordenCampos} mostrarEstado />
+      <FormSearch tipo={"Cliente"} itemsManage={clientes} newItemHandle={ () => setModalNew(true) } mostrarEstado />
       <TablaPaginada
         items={items}
         itemsManage={clientes}
