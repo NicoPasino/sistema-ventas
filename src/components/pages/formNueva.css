@@ -120,11 +120,11 @@ input:read-only::-webkit-inner-spin-button { opacity: 0; }
   gap: 2px 8px;
 }
 
-/* El Combobox compartido mide 40%: acotado a esta pantalla ocupa la columna. */
-.ventaTop .combobox {
+/* El BuscadorSugerencias compartido ocupa toda la columna en esta pantalla. */
+.ventaTop .buscadorSugerencias {
   width: 100%;
 }
-.ventaTop .combobox-trigger {
+.ventaTop .buscadorSugerenciasInputWrapper {
   box-sizing: border-box;
 }
 

@@ -2,9 +2,15 @@ import { ModalEditarCliente } from '../Clientes/modalEditarCliente';
 import { ModalVerCliente } from '../Clientes/ModalVerCliente';
 import { useContext, useState } from 'react';
 import { DataContext } from '../../context/dataContext';
-import { Combobox } from '../../components/pages/Combobox';
+import { BuscadorSugerencias } from '../../components/pages/BuscadorSugerencias';
 import { Button } from '../../components/shared/botones';
 import { DetalleCliente } from './DetalleCliente';
+
+// Constantes a nivel módulo: mantienen estables las referencias que usa el
+// useMemo del buscador y evitan recálculos/re-registros innecesarios.
+const getKeyCliente = (cliente) => cliente.documento ?? cliente.nombre;
+const getLabelCliente = (cliente) => cliente.nombre || String(cliente.documento ?? '');
+const getDetalleCliente = (cliente) => cliente.documento ? `DNI ${cliente.documento}` : null;
 
 export function BuscadorCliente({ clienteSelecManag }) {
   const { clienteSeleccionado, setClienteSeleccionado } = clienteSelecManag;
@@ -14,10 +20,6 @@ export function BuscadorCliente({ clienteSelecManag }) {
   const { itemsOriginales } = clientes;
   const [showModalNew, setShowModalNew] = useState(false);
   const [verCliente, setVerCliente] = useState(false);
-
-  const getItemKey = (item) => item.documento;
-  // Sin DNI a la vista: el documento queda como clave, no como texto.
-  const getItemLabel = (item) => item.nombre || item.documento;
 
   return (
     <div className="ventaTopCampo">
@@ -33,15 +35,18 @@ export function BuscadorCliente({ clienteSelecManag }) {
         </Button>
       </div>
 
-      <Combobox
+      <BuscadorSugerencias
         items={itemsOriginales ?? []}
         value={clienteSeleccionado}
-        onChange={(cliente) => setClienteSeleccionado(cliente)}
-        placeholder="Seleccionar cliente..."
-        getItemKey={getItemKey}
-        getItemLabel={getItemLabel}
-        maxItems={20}
-        showCreateButton={true}
+        onChange={setClienteSeleccionado}
+        getKey={getKeyCliente}
+        getLabel={getLabelCliente}
+        getDetalle={getDetalleCliente}
+        placeholder="Buscar cliente por nombre o DNI..."
+        maxItems={10}
+        mensajeVacio="Sin resultados"
+        showCreateButton
+        crearLabel="Crear cliente"
         onCreate={() => setShowModalNew(true)}
       />
 
@@ -62,4 +67,3 @@ export function BuscadorCliente({ clienteSelecManag }) {
     </div>
   );
 }
-
