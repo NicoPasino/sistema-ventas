@@ -10,14 +10,14 @@ function Dato({ label, valor }) {
   return (
     <span className="ventaDato">
       <span className="ventaDatoLabel">{label}</span>
-      <span className="ventaDatoValor" title={visible ?? undefined}>
+      <span className="ventaDatoValor">
         {visible ?? GrayDisplay('-')}
       </span>
     </span>
   );
 }
 
-// Sólo DNI y correo, debajo del combobox de cliente.
+// Sólo DNI y correo, debajo del buscador de cliente.
 export function DetalleCliente({ cliente }) {
   return (
     <div className="ventaClienteDatos">

@@ -12,7 +12,7 @@ const getKeyCliente = (cliente) => cliente.documento ?? cliente.nombre;
 const getLabelCliente = (cliente) => cliente.nombre || String(cliente.documento ?? '');
 const getDetalleCliente = (cliente) => cliente.documento ? `DNI ${cliente.documento}` : null;
 
-export function BuscadorCliente({ clienteSelecManag }) {
+export function SeccionBuscarCliente({ clienteSelecManag }) {
   const { clienteSeleccionado, setClienteSeleccionado } = clienteSelecManag;
   const { clientes } = useContext(DataContext);
   // itemsOriginales: evitar que el buscador de la pestaña Clientes deje
@@ -22,17 +22,29 @@ export function BuscadorCliente({ clienteSelecManag }) {
   const [verCliente, setVerCliente] = useState(false);
 
   return (
-    <div className="ventaTopCampo">
+    <div className="ventaTopCampo ventaDiv">
       <div className="ventaTopLabel">
         <label>Cliente</label>
-        <Button
-          size="sm"
-          variant="outline-primary"
-          disabled={!clienteSeleccionado}
-          onClick={() => setVerCliente(true)}
-        >
-          Ver cliente
-        </Button>
+        <div>
+          {clienteSeleccionado ? (
+            <Button
+              size="sm"
+              variant="outline-primary"
+              onClick={() => setVerCliente(true)}
+            >
+              Ver cliente
+            </Button>
+          ) : (
+            <Button
+              size="sm"
+              variant="outline-success"
+              onClick={() => setShowModalNew(true)}
+            >
+              Nuevo cliente
+            </Button>
+          )
+        }
+        </div>
       </div>
 
       <BuscadorSugerencias

@@ -85,7 +85,8 @@ input:read-only::-webkit-inner-spin-button { opacity: 0; }
 
 /* ===== Nueva venta: bloques ===== */
 
-.ventaTop,
+.ventaDiv,
+/* .ventaTop, */
 .ventaMid,
 .ventaBottom {
   background-color: #0005;
@@ -99,13 +100,14 @@ input:read-only::-webkit-inner-spin-button { opacity: 0; }
 .ventaTop {
   flex: 0 0 auto;
   display: grid;
-  grid-template-columns: minmax(260px, 1fr) minmax(300px, 1.25fr);
-  gap: 8px 28px;
+  grid-template-columns: minmax(200px, 1fr) minmax(350px, 1.5fr);
+  gap: 8px 15px;
   align-items: start;
 }
 
 .ventaTopCampo {
   min-width: 0;
+  height: 100%;
   display: flex;
   flex-direction: column;
   gap: 4px;
@@ -131,7 +133,7 @@ input:read-only::-webkit-inner-spin-button { opacity: 0; }
 .ventaDetalleInput {
   width: 100%;
   box-sizing: border-box;
-  min-height: 64px;
+  min-height: 20px;
   font-family: inherit;
   line-height: 1.35;
   resize: none;

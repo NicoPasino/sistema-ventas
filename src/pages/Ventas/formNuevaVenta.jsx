@@ -4,7 +4,7 @@ import { DataContext } from '../../context/dataContext';
 import { useNotifications } from '../../context/notificationContext';
 import { Button } from '../../components/shared/botones';
 import { CheckRes } from '../../utils/checkRes';
-import { BuscadorCliente } from './campoBuscador';
+import { SeccionBuscarCliente } from './seccionBuscarCliente';
 import { TablaNewItemsVenta } from './tablaNewItemsVenta';
 import { Alert } from '../../components/notification/Alert';
 import { ModalSelectorProductos } from './ModalSelectorProductos';
@@ -82,9 +82,9 @@ export function FormNuevaVenta() {
         <Alert />
 
         <div className="ventaTop">
-          <BuscadorCliente clienteSelecManag={{ clienteSeleccionado, setClienteSeleccionado }} />
+          <SeccionBuscarCliente clienteSelecManag={{ clienteSeleccionado, setClienteSeleccionado }} />
 
-          <div className="ventaTopCampo">
+          <div className="ventaTopCampo ventaDiv">
             <div className="ventaTopLabel">
               <label htmlFor="ventaDetalle">Detalle de venta {GrayDisplay("(opcional)")}</label>
               <RelojVenta />
