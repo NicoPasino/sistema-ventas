@@ -1,17 +1,17 @@
-import '../../components/pages/formNueva.css';
+import '../../../components/pages/formNueva.css';
 import { useContext, useState } from 'react';
-import { DataContext } from '../../context/dataContext';
-import { useNotifications } from '../../context/notificationContext';
-import { Button } from '../../components/shared/botones';
-import { CheckRes } from '../../utils/checkRes';
+import { DataContext } from '../../../context/dataContext';
+import { useNotifications } from '../../../context/notificationContext';
+import { Button } from '../../../components/shared/botones';
+import { CheckRes } from '../../../utils/checkRes';
 import { SeccionBuscarCliente } from './seccionBuscarCliente';
 import { TablaNewItemsVenta } from './tablaNewItemsVenta';
-import { Alert } from '../../components/notification/Alert';
+import { Alert } from '../../../components/notification/Alert';
 import { ModalSelectorProductos } from './ModalSelectorProductos';
-import { RelojVenta } from './RelojVenta';
-import { useCarritoVenta } from '../../Hooks/useCarritoVenta';
-import { GrayDisplay, MoneyDisplay } from '../../utils/displayConvert';
-import { NewIcon } from '../../assets/icons';
+import { Reloj } from '../../../components/pages/Reloj';
+import { useCarritoVenta } from '../../../Hooks/useCarritoVenta';
+import { GrayDisplay, MoneyDisplay } from '../../../utils/displayConvert';
+import { NewIcon } from '../../../assets/icons';
 
 export function FormNuevaVenta() {
   const { ventas, productos } = useContext(DataContext);
@@ -87,7 +87,7 @@ export function FormNuevaVenta() {
           <div className="ventaTopCampo ventaDiv">
             <div className="ventaTopLabel">
               <label htmlFor="ventaDetalle">Detalle de venta {GrayDisplay("(opcional)")}</label>
-              <RelojVenta />
+              <Reloj />
             </div>
             <textarea
               id="ventaDetalle"

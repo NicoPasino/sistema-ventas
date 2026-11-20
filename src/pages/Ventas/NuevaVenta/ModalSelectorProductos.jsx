@@ -1,10 +1,10 @@
 import { useMemo, useState } from 'react';
-import { Modal } from '../../components/shared/Modal';
-import { Button, IconButton } from '../../components/shared/botones';
-import { TablaPaginada } from '../../components/pages/tablaPaginada';
-import { esActivo, GrayDisplay, MoneyDisplay, StockDisplay } from '../../utils/displayConvert';
-import { MasCantidadIcon, MenosCantidadIcon } from '../../assets/icons';
-import '../../components/pages/modals.css';
+import { Modal } from '../../../components/shared/Modal';
+import { Button, IconButton } from '../../../components/shared/botones';
+import { TablaPaginada } from '../../../components/pages/tablaPaginada';
+import { esActivo, GrayDisplay, MoneyDisplay, StockDisplay } from '../../../utils/displayConvert';
+import { MasCantidadIcon, MenosCantidadIcon } from '../../../assets/icons';
+import '../../../components/pages/modals.css';
 
 const HEADERS = ['Código', 'Producto', 'Categoría', 'Stock', 'Precio'];
 

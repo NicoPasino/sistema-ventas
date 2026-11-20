@@ -1,4 +1,4 @@
-import { GrayDisplay } from '../../utils/displayConvert';
+import { GrayDisplay } from '../../../utils/displayConvert';
 
 function valorVisible(valor) {
   if (valor === null || valor === undefined || String(valor).trim() === '') return null;

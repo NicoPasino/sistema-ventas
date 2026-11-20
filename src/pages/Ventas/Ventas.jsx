@@ -2,7 +2,7 @@ import { useContext, useState } from "react";
 import { VentasContext } from "../../context/dataContext";
 import { UserSettingsContext } from "../../context/userSettingsContext.jsx";
 import { FormSearch } from "../../components/pages/formSearch";
-import { FormNuevaVenta } from "./formNuevaVenta.jsx";
+import { FormNuevaVenta } from "./NuevaVenta/formNuevaVenta.jsx";
 import { TablaPaginada } from '../../components/pages/tablaPaginada';
 import { Contenido } from './ContenidoTabla.jsx';
 import { ModalVerVenta } from './ModalVerVenta.jsx';

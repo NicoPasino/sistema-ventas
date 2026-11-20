@@ -1,9 +1,9 @@
-import { ModalEditarCliente } from '../Clientes/modalEditarCliente';
-import { ModalVerCliente } from '../Clientes/ModalVerCliente';
+import { ModalEditarCliente } from '../../Clientes/modalEditarCliente';
+import { ModalVerCliente } from '../../Clientes/ModalVerCliente';
 import { useContext, useState } from 'react';
-import { DataContext } from '../../context/dataContext';
-import { BuscadorSugerencias } from '../../components/pages/BuscadorSugerencias';
-import { Button } from '../../components/shared/botones';
+import { DataContext } from '../../../context/dataContext';
+import { BuscadorSugerencias } from '../../../components/pages/BuscadorSugerencias';
+import { Button } from '../../../components/shared/botones';
 import { DetalleCliente } from './DetalleCliente';
 
 // Constantes a nivel módulo: mantienen estables las referencias que usa el

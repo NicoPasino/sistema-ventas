@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import { getDate } from '../../utils/getDate';
 
-// La fecha/hora es informativa: la venta la fecha el servidor. Se aísla en su
-// propio componente para que el setInterval no re-renderice todo el formulario.
-export function RelojVenta() {
+// Reloj informativo en vivo. Se aísla en su propio componente para que el
+// setInterval no re-renderice al padre.
+export function Reloj() {
   const [now, setNow] = useState(() => new Date());
 
   useEffect(() => {
@@ -24,7 +24,7 @@ export function RelojVenta() {
   const { fechaLarga, horaLarga } = getDate(now);
 
   return (
-    <span className="ventaReloj" title="Fecha y hora del sistema (no se envía con la venta)">
+    <span className="ventaReloj" title="Fecha y hora del sistema">
       {fechaLarga} · <span className="ventaRelojHora">{horaLarga}</span>
     </span>
   );
