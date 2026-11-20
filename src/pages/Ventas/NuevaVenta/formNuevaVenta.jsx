@@ -24,6 +24,8 @@ export function FormNuevaVenta() {
   const [enviando, setEnviando] = useState(false);
   const [selectorAbierto, setSelectorAbierto] = useState(false);
 
+  const btnLimpiarDisabled = enviando || (carrito.items.length === 0 && !clienteSeleccionado && !detalle);
+
   const handleClear = () => {
     carrito.limpiar();
     setClienteSeleccionado(null);
@@ -112,15 +114,15 @@ export function FormNuevaVenta() {
                 className="ventaAgregarFila"
                 onClick={() => setSelectorAbierto(true)}
               >
-                <NewIcon /> Agregar producto
+                <NewIcon /> Agregar Productos
               </button>
               <Button
                 className="ventaLimpiar"
                 variant="outline-danger"
                 onClick={handleLimpiar}
-                disabled={enviando}
+                disabled={btnLimpiarDisabled}
               >
-                Limpiar
+                Limpiar Venta
               </Button>
             </div>
           </div>

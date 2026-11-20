@@ -6,7 +6,7 @@ export function TablaNewItemsVenta({ carrito }) {
   const { items, sumar, restar, quitar, subtotalDe, lineasSinStock } = carrito;
   const sinStockPorId = new Map(lineasSinStock.map((linea) => [linea.producto?.idPublica, linea]));
 
-  const headers = ["Producto", "Cantidad", "Precio Unit.", "Subtotal"];
+  const headers = ["Producto", "Precio", "Cantidad", "Subtotal"];
 
   return (
     <TablaGenerica
@@ -18,7 +18,7 @@ export function TablaNewItemsVenta({ carrito }) {
         <tr>
           <td colSpan={headers.length + 1} className="sinItems">
             <div className="ventaCarritoVacio">
-              <span>Todavía no agregaste productos</span>
+              <span>Sin productos agregados</span>
             </div>
           </td>
         </tr>
@@ -30,6 +30,7 @@ export function TablaNewItemsVenta({ carrito }) {
           return (
             <tr key={item.keyId}>
               <td className="tablaColNombre">{producto.nombre}</td>
+              <td>{MoneyDisplay(producto.precio)}</td>
               <td>
                 <div className="ventaCantidad">
                   <span className="ventaCantidadValor">{item.cantidad}</span>
@@ -40,7 +41,6 @@ export function TablaNewItemsVenta({ carrito }) {
                   )}
                 </div>
               </td>
-              <td>{MoneyDisplay(producto.precio)}</td>
               <td>{MoneyDisplay(subtotalDe(item))}</td>
               <td>
                 <div className="tablaColAcciones">

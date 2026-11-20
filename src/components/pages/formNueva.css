@@ -225,12 +225,12 @@ input:read-only::-webkit-inner-spin-button { opacity: 0; }
   font-family: inherit;
   font-size: 0.9em;
   cursor: pointer;
+  border-color: var(--colorSuccess);
   transition: background-color 0.15s, border-color 0.15s, color 0.15s;
 }
 
 .ventaAgregarFila:hover {
   background-color: rgba(25, 135, 84, 0.12);
-  border-color: var(--colorSuccess);
   color: #a6e6a6;
 }
 
