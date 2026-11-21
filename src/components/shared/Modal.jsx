@@ -3,7 +3,7 @@ import './modal.css';
 
 const TOLERANCIA_CLIC_PX = 4;
 
-export function Modal({ title, onClose, children, footer, className = '' }) {
+export function Modal({ title, onClose, children, footer, className = '', headerAcciones = null }) {
   const inicioClicOverlay = useRef(null);
 
   return (
@@ -32,8 +32,9 @@ export function Modal({ title, onClose, children, footer, className = '' }) {
           &times;
         </button>
         
-        <div className="modal-header">
+        <div className={`modal-header ${headerAcciones ? "conAcciones" : ""}`.trim()}>
           <h2>{title}</h2>
+          {headerAcciones && <div className="modal-header-acciones">{headerAcciones}</div>}
         </div>
         
         <div className="modal-body">

@@ -243,6 +243,13 @@ export const WhatsAppIcon = () => {
     </svg>
   )
 }
+export const PhoneIcon = () => {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-5">
+      <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 0 0 2.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.5-1.2a1.125 1.125 0 0 0-1.219.411l-1.018 1.362a15.053 15.053 0 0 1-6.405-6.405l1.362-1.018a1.125 1.125 0 0 0 .411-1.219l-1.2-4.5A1.125 1.125 0 0 0 6.766 5.25H5.25A2.25 2.25 0 0 0 3 7.5V6.75Z" />
+    </svg>
+  )
+}
 
 export const ImageIcon = () => {
   return (

@@ -225,3 +225,132 @@
   color: var(--colorSuccess);
   white-space: nowrap;
 }
+
+/* modal detalle de cliente (compacto, estilo dashboard) */
+.modal-content.modalCliente .modal-header {
+  padding: 16px 60px 16px 24px;
+}
+
+.modal-content.modalCliente .modal-footer {
+  padding: 16px 24px;
+}
+
+.modal-content.modalCliente .modal-body {
+  padding: 16px 24px 18px;
+}
+
+.modalCliente .modalSeccion {
+  margin-bottom: 8px;
+}
+
+.modalCliente .modalSeccion:not(:first-child) {
+  margin-top: 18px;
+  padding-top: 12px;
+}
+
+.modalClienteDatos {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px 20px;
+  margin-bottom: 16px;
+}
+
+.modalClienteDatos .modalDato {
+  min-width: 0;
+}
+
+.modalClienteDatos .modalLabel {
+  min-width: 78px;
+  font-size: 0.72rem;
+}
+
+.modalClienteDatos .modalValor {
+  font-size: 0.85em;
+}
+
+.modalClienteTituloSeccion {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.modalClienteConteo {
+  padding: 1px 8px;
+  border-radius: 999px;
+  background-color: rgba(13, 110, 253, 0.16);
+  color: #7fb2ff;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.modalClienteTabla th,
+.modalClienteTabla td {
+  padding: 6px 8px;
+}
+
+.modalClienteTabla th {
+  font-size: 0.95em;
+}
+
+.modalClienteFechaRelativa {
+  color: #9aa0a6;
+  font-size: 0.85em;
+}
+
+.modalClientePie {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.modalClienteMas {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.modalClienteTotal {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-left: auto;
+  color: #9aa0a6;
+  font-size: 0.8rem;
+}
+
+.modalClienteTotal strong {
+  color: #fff;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+@media (max-width: 540px) {
+  .modal-content.modalCliente .modal-header {
+    padding: 16px 56px 16px 16px;
+  }
+
+  .modal-content.modalCliente .modal-body,
+  .modal-content.modalCliente .modal-footer {
+    padding-inline: 16px;
+  }
+
+  .modalClienteDatos {
+    grid-template-columns: 1fr;
+  }
+
+  .modalClientePie {
+    flex-wrap: wrap;
+  }
+
+  .modalClienteTotal {
+    width: 100%;
+    justify-content: flex-end;
+  }
+}
