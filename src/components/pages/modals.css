@@ -354,3 +354,106 @@
     justify-content: flex-end;
   }
 }
+
+/* modal detalle de producto (compacto, estilo dashboard) */
+.modal-content.modalProducto .modal-header {
+  padding: 16px 60px 16px 24px;
+}
+
+.modal-content.modalProducto .modal-body {
+  padding: 16px 24px 18px;
+}
+
+.modal-content.modalProducto .modal-footer {
+  padding: 16px 24px;
+}
+
+.modalProducto .modalSeccion {
+  margin-bottom: 8px;
+}
+
+.modalProducto .modalSeccion:not(:first-child) {
+  margin-top: 18px;
+  padding-top: 12px;
+}
+
+.modalProductoCodigo {
+  padding: 2px 8px;
+  border-radius: 999px;
+  background-color: rgba(255, 255, 255, 0.06);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.modalProductoDatos {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px 20px;
+  margin-bottom: 16px;
+}
+
+.modalProductoDatos .modalDato {
+  min-width: 0;
+}
+
+.modalProductoDatos .modalLabel {
+  min-width: 78px;
+  font-size: 0.72rem;
+}
+
+.modalProductoDatos .modalValor {
+  font-size: 0.85em;
+}
+
+.modalProductoDatoAncho {
+  grid-column: 1 / -1;
+}
+
+.modalProductoDatos .modalProductoPrecio {
+  color: #fff;
+  font-size: 1.05rem;
+  font-weight: 600;
+}
+
+.modalProductoStock {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.modalProductoStock .stockCelda {
+  width: 110px;
+}
+
+.modalProductoNivel {
+  padding: 2px 8px;
+  border-radius: 999px;
+  background-color: rgba(255, 255, 255, 0.06);
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.modalProductoAuditoria {
+  margin: 12px 0 0;
+  padding-top: 10px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  color: #9aa0a6;
+  font-size: 0.75rem;
+}
+
+@media (max-width: 540px) {
+  .modal-content.modalProducto .modal-header {
+    padding: 16px 56px 16px 16px;
+  }
+
+  .modal-content.modalProducto .modal-body,
+  .modal-content.modalProducto .modal-footer {
+    padding-inline: 16px;
+  }
+
+  .modalProductoDatos {
+    grid-template-columns: 1fr;
+  }
+}
