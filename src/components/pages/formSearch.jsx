@@ -44,7 +44,7 @@ export function FormSearch({ itemsManage, tipo, newItemHandle, mostrarEstado = f
   }, [limpiarFiltros]);
 
   return (
-    <div className="toolbar">
+    <div className="toolbar divBackground">
       {/* Fila 1: búsqueda */}
       <div className="toolbarRow toolbarRowTop">
         <div className="search-input-wrapper">

@@ -14,12 +14,11 @@ export default function Ventas() {
   const { handleTab } = useContext(UserSettingsContext);
   const [ventaSeleccionada, setVentaSeleccionada] = useState(null);
 
-  const tableHeaders = ["Número", "Cliente", "Productos", "Detalles", "Fecha", "Total"];
+  const tableHeaders = ["Número", "Cliente", "Productos", "Fecha", "Total"];
   const ordenCampos = [
     { label: "Número", valor: (v) => v.numero },
     { label: "Cliente", valor: (v) => v.cliente?.nombre ?? "" },
     { label: "Productos", valor: (v) => unidadesVenta(v) },
-    { label: "Detalles", valor: (v) => v.detalle },
     { label: "Fecha", valor: (v) => v.fechaVenta },
     { label: "Total", valor: (v) => totalVenta(v) },
   ];

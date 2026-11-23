@@ -1,49 +1,38 @@
-import { useState } from 'react';
 import { GrayDisplay, MoneyDisplay, WhiteDisplay } from '../../utils/displayConvert';
 import { ListaVaciaT } from '../../components/pages/textosComponent';
 import { getDate } from '../../utils/getDate';
 import { ViewIcon } from '../../assets/icons';
 import { totalVenta } from '../../utils/ventas';
 
-const PRODUCTOS_VISIBLES = 2;
-
 function FilaVenta({ item, setVenta }) {
-  const { numero, cliente, fechaVenta, productos, detalle } = item;
+  const { numero, cliente, fechaVenta, productos } = item;
 
   const { tiempoTranscurrido, fechaDinamica } = getDate(fechaVenta);
   const listaProductos = Array.isArray(productos) ? productos : [];
-  const totalCalculado = totalVenta(item);
-  const [verTodos, setVerTodos] = useState(false);
-
-  const visibles = verTodos ? listaProductos : listaProductos.slice(0, PRODUCTOS_VISIBLES);
-
-  function renderProductos() {
-    return (
-      <>
-        {visibles.map((p, j) => (
-          <div key={j}>{p.producto} {WhiteDisplay(`x${p.cantidad}`)}</div>
-        ))}
-        {listaProductos.length > PRODUCTOS_VISIBLES && <button className="botonVerMas" onClick={() => setVerTodos(!verTodos)}>
-          {verTodos ? "Ocultar" : `+${listaProductos.length - PRODUCTOS_VISIBLES} más`}
-        </button>
-        }
-      </>
-    )
-  }
+  const nombreCliente = cliente?.nombre;
 
   return (
     <tr>
-      <td className='tablaColID'>        {GrayDisplay(numero)} </td>
-      <td className='tablaColNombre'>    {cliente?.nombre || GrayDisplay("(Sin cliente)")} </td>
-      <td className='tablaColDetalles'>  {renderProductos()} </td>
-      <td className='tablaColDetalles'>  {detalle ? GrayDisplay(detalle) : GrayDisplay("(Sin detalle)", false)} </td>
-      <td className='tablaColFecha'      title={tiempoTranscurrido}> {fechaDinamica} </td>
-      <td className='tablaColPrecio'>    {MoneyDisplay(totalCalculado)} </td>
-      <td>
+      <td className='tablaColID'>{GrayDisplay(numero)}</td>
+      <td className='tablaColNombre'>
+        {nombreCliente
+          ? <button type="button" className='botonNombreTabla' onClick={() => setVenta(item)} title={`Ver detalle de la venta a ${nombreCliente}`}>{nombreCliente}</button>
+          : GrayDisplay("(Sin cliente)")
+        }
+      </td>
+      <td className='tablaColDetalles'>
+        {listaProductos.length === 0
+          ? GrayDisplay("(Sin productos)")
+          : listaProductos.map((p, j) => (
+            <div key={j}>{p.producto} {WhiteDisplay(`x${p.cantidad}`)}</div>
+          ))
+        }
+      </td>
+      <td className='tablaColFecha' title={tiempoTranscurrido}>{fechaDinamica}</td>
+      <td className='tablaColPrecio'>{MoneyDisplay(totalVenta(item))}</td>
+      <td className='tablaColAccionesCelda'>
         <div className='tablaColAcciones'>
-          <i className='iconEdit svgView' onClick={() => { setVenta(item) }} title="Ver detalle"> <ViewIcon /> </i>
-          {/* <i className='iconEdit svgEdit' onClick={()=> setIdProducto(idPublica)}> <EditIcon /> </i> */}
-          {/* <i className='iconEdit svgDelete' onClick={()=> eliminar(idPublica)}> <DeleteIcon /> </i> */}
+          <button type="button" className='botonAccion iconEdit svgView' onClick={() => setVenta(item)} title="Ver detalle" aria-label={`Ver detalle de la venta N° ${numero}`}><ViewIcon /></button>
         </div>
       </td>
     </tr>

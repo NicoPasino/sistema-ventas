@@ -17,11 +17,10 @@ export default function Clientes() {
   const [clienteVer, setClienteVer] = useState();
   const { showPopup } = useNotifications();
 
-  const tableHeaders = ["Nombre", "Correo", "Telefono", "Documento", "Registrado", "Estado"];
+  const tableHeaders = ["Nombre", "Correo", "Documento", "Registrado", "Estado"];
   const ordenCampos = [
     { label: "Nombre", valor: (c) => c.nombre },
     { label: "Correo", valor: (c) => c.correo },
-    { label: "Telefono", valor: (c) => c.telefono },
     { label: "Documento", valor: (c) => c.documento },
     { label: "Registrado", valor: (c) => c.fechaCreacion },
     { label: "Estado", valor: (c) => (esActivo(c.activo) ? 1 : 0) },

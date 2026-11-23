@@ -5,9 +5,9 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
-  margin-bottom: 20px;
-  width: 100%;
+  margin-bottom: 10px;
   min-width: 0;
+  justify-self: center;
 }
 
 .toolbarRow {
@@ -37,12 +37,17 @@
     flex-direction: row;
     flex-wrap: wrap;
     align-items: center;
+    width: 100%;
   }
   /* las filas se disuelven: sus hijos pasan a ser hijos directos de .toolbar */
   .toolbarRow {
     display: contents;
   }
   /* el buscador crece y "Nuevo" + "Limpiar" quedan juntos al final */
+}
+
+@media (min-width: 768px) {
+  .toolbar { width: 85%; }
 }
 
 /* header.css define un `svg { height: 30px }` global: los tamaños se fijan acá */

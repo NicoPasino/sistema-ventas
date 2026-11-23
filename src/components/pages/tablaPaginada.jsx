@@ -10,17 +10,19 @@ export function TablaPaginada({ items = [], itemsManage, headers, editable = fal
   const sinResultados = mostrarSinResultados && !loading && !error && items.length === 0 && (hayFiltros || hayOrden);
 
   return (
-    <>
-      <TablaGenerica
-        itemsManage={itemsManage}
-        headers={headers}
-        editable={editable}
-        ordenCampos={ordenCampos}
-        sinResultados={sinResultados}
-        onLimpiar={limpiarFiltros}
-      >
-        {renderFilas(listaPagina)}
-      </TablaGenerica>
+    <div className="listaTabla divBackground">
+      <div className="listaTablaScroll">
+        <TablaGenerica
+          itemsManage={itemsManage}
+          headers={headers}
+          editable={editable}
+          ordenCampos={ordenCampos}
+          sinResultados={sinResultados}
+          onLimpiar={limpiarFiltros}
+        >
+          {renderFilas(listaPagina)}
+        </TablaGenerica>
+      </div>
       {!(loading || error) && (
         <Paginacion
           pagina={pagina}
@@ -34,6 +36,6 @@ export function TablaPaginada({ items = [], itemsManage, headers, editable = fal
           opciones={opciones}
         />
       )}
-    </>
+    </div>
   )
 }
