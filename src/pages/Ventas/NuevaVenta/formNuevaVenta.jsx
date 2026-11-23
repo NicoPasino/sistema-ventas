@@ -80,7 +80,7 @@ export function FormNuevaVenta() {
 
   return (
     <>
-      <form className="formNueva" onSubmit={submitHandler}>
+      <form className="formNueva  divMarginWAuto" onSubmit={submitHandler}>
         <Alert />
 
         <div className="ventaTop">

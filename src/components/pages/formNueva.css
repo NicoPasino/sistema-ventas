@@ -86,7 +86,6 @@ input:read-only::-webkit-inner-spin-button { opacity: 0; }
 /* ===== Nueva venta: bloques ===== */
 
 .ventaDiv,
-/* .ventaTop, */
 .ventaMid,
 .ventaBottom {
   background-color: #0005;
@@ -169,7 +168,6 @@ input:read-only::-webkit-inner-spin-button { opacity: 0; }
 
 .ventaMid {
   flex: 1 1 auto;
-  min-height: 0;
   display: flex;
   flex-direction: column;
   gap: 8px;
