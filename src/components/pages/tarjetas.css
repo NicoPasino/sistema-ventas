@@ -62,7 +62,7 @@
 .dashboard {
   display: flex;
   flex-direction: column;
-  gap: 45px;
+  gap: 30px;
 }
 
 .dashboard > .appVersion {

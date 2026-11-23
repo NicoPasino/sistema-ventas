@@ -29,15 +29,17 @@ export default function Inicio() {
         errorVentas={ventas.error}
       />
 
-      <ResumenKpis
-        productos={productos}
-        clientes={clientes}
-        ventas={ventas}
-        resumen={resumen}
-        dias={dias}
-      />
+      <div className="divBackground divMarginWAuto">
+        <ResumenKpis
+          productos={productos}
+          clientes={clientes}
+          ventas={ventas}
+          resumen={resumen}
+          dias={dias}
+        />
+      </div>
 
-      <div className="dashboardMedio">
+      <div className="dashboardMedio divBackground divMarginWAuto">
         <SerieVentas
           ventas={ventas}
           serie={resumen.serie}
@@ -49,7 +51,7 @@ export default function Inicio() {
         <TarjetaUltimasVentas ventas={ventas} ultimasVentas={resumen.ultimasVentas} />
       </div>
 
-      <div className="divTarjetas">
+      <div className="divTarjetas divBackground divMarginWAuto">
         <TarjetaBajoStock productos={productos} resumenStock={resumen.resumenStock} top={8} />
         <TarjetaTopProductos ventas={ventas} topProductos={resumen.topProductos} />
         <TarjetaTopClientes clientes={clientes} ventas={ventas} ranking={resumen.rankingClientes} />
