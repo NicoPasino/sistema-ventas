@@ -38,7 +38,7 @@ export default function Clientes() {
   }
 
   return (
-    <div>
+    <div className="divBackground divMarginWAuto">
       <FormSearch tipo={"Cliente"} itemsManage={clientes} newItemHandle={ () => setModalNew(true) } mostrarEstado />
       <TablaPaginada
         items={items}

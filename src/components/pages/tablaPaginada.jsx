@@ -10,7 +10,7 @@ export function TablaPaginada({ items = [], itemsManage, headers, editable = fal
   const sinResultados = mostrarSinResultados && !loading && !error && items.length === 0 && (hayFiltros || hayOrden);
 
   return (
-    <div className="listaTabla divBackground">
+    <div className="listaTabla">
       <div className="listaTablaScroll">
         <TablaGenerica
           itemsManage={itemsManage}

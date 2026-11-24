@@ -39,7 +39,7 @@ export default function Productos() {
   }
 
   return (
-    <div>
+    <div className="divBackground">
       <FormSearch tipo={"Producto"} itemsManage={productos} newItemHandle={ () => setModalNew(true) } mostrarEstado />
       <TablaPaginada
         items={items}

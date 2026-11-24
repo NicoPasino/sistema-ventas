@@ -140,9 +140,6 @@ main {
   border-radius: 10px;
   padding: 25px;
   box-shadow: 0 15px 25px 0 rgba(0, 0, 0, 0.2);
-}
-
-.divMarginWAuto {
   width: 100%;
   margin-inline: auto;
   display: flex;
@@ -151,5 +148,5 @@ main {
 }
 
 @media (min-width: 768px) {
-  .divMarginWAuto { width: 85%; }
+  .divBackground { width: 85%; }
 }

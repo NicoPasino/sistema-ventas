@@ -80,7 +80,7 @@ export function FormNuevaVenta() {
 
   return (
     <>
-      <form className="formNueva  divMarginWAuto" onSubmit={submitHandler}>
+      <form className="formNueva divBackground" onSubmit={submitHandler} style={{ padding: "15px" }}>
         <Alert />
 
         <div className="ventaTop">

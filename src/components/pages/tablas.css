@@ -1,13 +1,3 @@
-.listaTabla {
-  width: 100%;
-  min-width: 0;
-  justify-self: center;
-}
-
-@media (min-width: 768px) {
-  .listaTabla { width: 85%; }
-}
-
 .listaTablaScroll {
   overflow-x: auto;
 }

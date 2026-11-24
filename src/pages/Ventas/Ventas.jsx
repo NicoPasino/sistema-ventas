@@ -24,7 +24,7 @@ export default function Ventas() {
   ];
 
   return (
-    <div>
+    <div className="divBackground">
       <FormSearch tipo={"Venta"} itemsManage={ventas} newItemHandle={() => handleTab("Venta")} />
       <TablaPaginada
         items={items}

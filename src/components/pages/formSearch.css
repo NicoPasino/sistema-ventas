@@ -5,7 +5,6 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
-  margin-bottom: 10px;
   min-width: 0;
   justify-self: center;
 }
@@ -44,10 +43,6 @@
     display: contents;
   }
   /* el buscador crece y "Nuevo" + "Limpiar" quedan juntos al final */
-}
-
-@media (min-width: 768px) {
-  .toolbar { width: 85%; }
 }
 
 /* header.css define un `svg { height: 30px }` global: los tamaños se fijan acá */
