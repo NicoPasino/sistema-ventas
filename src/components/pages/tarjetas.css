@@ -41,18 +41,6 @@
   font-size: 0.95rem;
 }
 
-.heroAcciones {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 8px;
-}
-
-.heroAcciones .btn svg {
-  width: 16px;
-  height: 16px;
-}
-
 .heroUltima {
   font-size: 0.78rem;
   color: #9aa0a6;
@@ -62,7 +50,7 @@
 .dashboard {
   display: flex;
   flex-direction: column;
-  gap: 30px;
+  gap: 20px;
 }
 
 .dashboard > .appVersion {
@@ -95,7 +83,7 @@
   border-radius: 10px;
   overflow: hidden;
   min-width: 0;
-  min-height: 84px;
+  min-height: 60px;
   padding: 0;
   color: inherit;
   font: inherit;
@@ -104,7 +92,7 @@
 }
 
 .tarjetaInfoPrimaria {
-  min-height: 112px;
+  min-height: 105px;
 }
 
 .tarjetaInfoIcon {
@@ -238,11 +226,20 @@ button.tarjetaInfo:focus-visible {
   border-radius: 10px;
   padding: 16px;
   min-width: 0;
-  transition: background-color 0.2s;
+  transition: background-color 0.2s, border-color 0.2s;
 }
 
 .tarjetaBlanca:hover {
   background-color: var(--cardBgHover);
+}
+
+.tarjetaBlancaNavegable {
+  cursor: pointer;
+}
+
+.tarjetaBlancaNavegable:focus-visible {
+  outline: 2px solid #69f;
+  outline-offset: 2px;
 }
 
 .tarjetaBlancaTop {
@@ -289,23 +286,6 @@ button.tarjetaInfo:focus-visible {
   flex-direction: column;
   flex: 1;
   padding-top: 14px;
-}
-
-.tarjetaBlancaFooter {
-  display: flex;
-  justify-content: flex-end;
-  margin: auto 0 0;
-  padding-top: 5px;
-}
-
-.tarjetaBlancaFooter > .btn {
-  opacity: 0;
-  transition: opacity 0.2s;
-}
-
-.tarjetaBlanca:hover .tarjetaBlancaFooter > .btn,
-.tarjetaBlanca:focus-within .tarjetaBlancaFooter > .btn {
-  opacity: 1;
 }
 
 /* ===== Series / gráfico ===== */
@@ -526,10 +506,6 @@ button.tarjetaInfo:focus-visible {
   .heroInicio {
     align-items: flex-start;
     padding: 18px;
-  }
-
-  .heroAcciones {
-    align-items: flex-start;
   }
 
   .heroTitulo {

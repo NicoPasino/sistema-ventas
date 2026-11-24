@@ -1,12 +1,35 @@
+import { useMemo, useState } from "react";
 import { TarjetaBlanca } from "../../components/pages/tarjetas";
-import { formatearMoneda, formatearNumero } from "../../utils/displayConvert";
+import { ToggleOpciones } from "../../components/pages/toggleOpciones";
+import { MoneyDisplay, formatearNumero } from "../../utils/displayConvert";
+import { getTopProductosVendidos } from "../../utils/estadisticasInicio";
 import { EstadoDatos } from "./estadosDatos";
 
-export function TarjetaTopProductos({ ventas, topProductos, top = 5 }) {
-  const visibles = topProductos.slice(0, top);
+const MODOS = [
+  { value: "facturacion", label: "Facturación" },
+  { value: "cantidad", label: "Cantidad" },
+];
+
+export function TarjetaTopProductos({ ventas, top = 5 }) {
+  const [modo, setModo] = useState("facturacion");
+  const ventasOriginales = ventas?.itemsOriginales;
+
+  const visibles = useMemo(() => {
+    const orden = modo === "cantidad" ? "unidades" : "facturacion";
+    return getTopProductosVendidos(ventasOriginales, { orden, top });
+  }, [ventasOriginales, modo, top]);
+
+  const acciones = (
+    <ToggleOpciones
+      ariaLabel="Modo de ranking de productos"
+      opciones={MODOS}
+      valor={modo}
+      onChange={setModo}
+    />
+  );
 
   return (
-    <TarjetaBlanca title="Top productos" tab="Ventas">
+    <TarjetaBlanca title="Top productos" tab="Ventas" acciones={acciones}>
       <EstadoDatos
         datos={ventas}
         cargando="productos más vendidos"
@@ -18,14 +41,22 @@ export function TarjetaTopProductos({ ventas, topProductos, top = 5 }) {
               <span className="rankingNumero">{indice + 1}</span>
               <span className="rankingTexto">
                 <span className="rankingNombre">{producto.nombre}</span>
-                <span className="rankingSecundario">{formatearNumero(producto.cantidad)} vendidos</span>
+                <span className="rankingSecundario">
+                  {modo === "cantidad"
+                    ? <MoneyDisplay amount={producto.facturacion} compacto />
+                    : `${formatearNumero(producto.cantidad)} vendidos`}
+                </span>
               </span>
-              <span className="rankingValor">{formatearMoneda(producto.facturacion, { compacto: true })}</span>
+              <span className="rankingValor">
+                {modo === "cantidad"
+                  ? formatearNumero(producto.cantidad)
+                  : <MoneyDisplay amount={producto.facturacion} compacto />}
+              </span>
             </li>
           ))}
         </ol>
 
-        <p className="rankingNota">Ranking por facturación</p>
+        {/* <p className="rankingNota">Ranking por {modo === "cantidad" ? "cantidad" : "facturación"}</p> */}
       </EstadoDatos>
     </TarjetaBlanca>
   );

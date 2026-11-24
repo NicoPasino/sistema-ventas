@@ -1,12 +1,34 @@
+import { useMemo, useState } from "react";
 import { TarjetaBlanca } from "../../components/pages/tarjetas";
-import { formatearMoneda } from "../../utils/displayConvert";
+import { ToggleOpciones } from "../../components/pages/toggleOpciones";
+import { MoneyDisplay, formatearNumero } from "../../utils/displayConvert";
+import { getRankingClientesFacturacion } from "../../utils/estadisticasCliente";
 import { EstadoDatos } from "./estadosDatos";
 
-export function TarjetaTopClientes({ clientes, ventas, ranking, top = 5 }) {
-  const visibles = ranking.slice(0, top);
+const MODOS = [
+  { value: "facturacion", label: "Facturación" },
+  { value: "compras", label: "Cantidad" },
+];
+
+export function TarjetaTopClientes({ clientes, ventas, top = 5 }) {
+  const [modo, setModo] = useState("facturacion");
+
+  const visibles = useMemo(() => {
+    const orden = modo === "compras" ? "compras" : "facturacion";
+    return getRankingClientesFacturacion(clientes?.itemsOriginales, ventas?.itemsOriginales, { orden }).slice(0, top);
+  }, [clientes?.itemsOriginales, ventas?.itemsOriginales, modo, top]);
+
+  const acciones = (
+    <ToggleOpciones
+      ariaLabel="Modo de ranking de clientes"
+      opciones={MODOS}
+      valor={modo}
+      onChange={setModo}
+    />
+  );
 
   return (
-    <TarjetaBlanca title="Top clientes" tab="Ventas">
+    <TarjetaBlanca title="Top clientes" tab="Ventas" acciones={acciones}>
       <EstadoDatos
         datos={[clientes, ventas]}
         cargando="clientes"
@@ -19,13 +41,21 @@ export function TarjetaTopClientes({ clientes, ventas, ranking, top = 5 }) {
               <span className="rankingTexto">
                 <span className="rankingNombre">{cliente.nombre}</span>
                 <span className="rankingSecundario">
-                  {cliente.totalVentas} {cliente.totalVentas === 1 ? "compra" : "compras"}
+                  {modo === "compras"
+                    ? <MoneyDisplay amount={cliente.totalGastado} compacto />
+                    : `${formatearNumero(cliente.totalVentas)} ${cliente.totalVentas === 1 ? "compra" : "compras"}`}
                 </span>
               </span>
-              <span className="rankingValor">{formatearMoneda(cliente.totalGastado, { compacto: true })}</span>
+              <span className="rankingValor">
+                {modo === "compras"
+                  ? formatearNumero(cliente.totalVentas)
+                  : <MoneyDisplay amount={cliente.totalGastado} compacto />}
+              </span>
             </li>
           ))}
         </ol>
+
+        {/* <p className="rankingNota">Ranking por {modo === "compras" ? "cantidad" : "facturación"}</p> */}
       </EstadoDatos>
     </TarjetaBlanca>
   );

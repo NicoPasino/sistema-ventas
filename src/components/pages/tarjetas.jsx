@@ -1,8 +1,6 @@
 import { useContext } from 'react'
 import './tarjetas.css'
 import { UserSettingsContext } from '../../context/userSettingsContext'
-import { GoToIcon } from '../../assets/icons';
-import { IconButton } from '../shared/botones';
 
 const TONOS = {
   primary: 'var(--colorPrimary)',
@@ -13,22 +11,46 @@ const TONOS = {
   secondary: 'var(--colorSecondary)',
 };
 
+const INTERACTIVO = 'button, a, input, select, textarea, [role="button"], [role="link"]';
+
 export function TarjetaBlanca({ title, children, tab, acciones }) {
   const { handleTab } = useContext(UserSettingsContext)
+  const navegable = Boolean(tab);
+
+  const irATab = () => {
+    if (navegable) handleTab(tab);
+  };
+
+  const handleClick = (e) => {
+    if (!navegable) return;
+    const interactivo = e.target.closest(INTERACTIVO);
+    if (interactivo && interactivo !== e.currentTarget) return;
+    irATab();
+  };
+
+  const handleKeyDown = (e) => {
+    if (!navegable) return;
+    if (e.target !== e.currentTarget) return;
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      irATab();
+    }
+  };
 
   return (
-    <div className="tarjetaBlanca">
+    <div
+      className={`tarjetaBlanca${navegable ? ' tarjetaBlancaNavegable' : ''}`}
+      onClick={navegable ? handleClick : undefined}
+      onKeyDown={navegable ? handleKeyDown : undefined}
+      role={navegable ? 'link' : undefined}
+      tabIndex={navegable ? 0 : undefined}
+    >
       <div className="tarjetaBlancaTop">
         <h2 className='tarjetaBlancaHeader'>{title}</h2>
         {acciones && <div className="tarjetaBlancaAcciones">{acciones}</div>}
       </div>
       <div className="tarjetaBlancaBody">
         {children}
-        {tab &&
-          <div className='tarjetaBlancaFooter'>
-            <IconButton variant="secondary" size="md" title={"Ir a " + tab} onClick={() => handleTab(tab)}> <GoToIcon /> </IconButton>
-          </div>
-        }
       </div>
     </div>
   )

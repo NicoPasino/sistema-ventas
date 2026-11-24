@@ -1,5 +1,5 @@
 import { TarjetaBlanca } from "../../components/pages/tarjetas";
-import { formatearMoneda } from "../../utils/displayConvert";
+import { MoneyDisplay } from "../../utils/displayConvert";
 import { getDate } from "../../utils/getDate";
 import { EstadoDatos } from "./estadosDatos";
 
@@ -26,7 +26,7 @@ export function TarjetaUltimasVentas({ ventas, ultimasVentas }) {
                   {fechaRelativa(venta.fechaVenta)}
                 </span>
               </span>
-              <span className="rankingValor">{formatearMoneda(venta.total, { compacto: true })}</span>
+              <span className="rankingValor"><MoneyDisplay amount={venta.total} compacto /></span>
             </li>
           ))}
         </ul>

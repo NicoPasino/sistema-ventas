@@ -38,6 +38,26 @@ body {
 .colorGrisClaro { color: rgb(184, 184, 184)}
 .colorBlancoClaro { color: rgb(232, 232, 232)}
 
+.moneyDisplay {
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: inherit;
+}
+
+.moneySimbolo {
+  color: #b1b1b1;
+}
+
+.moneyDecimal {
+  font-size: 0.72em;
+  margin-left: 1px;
+}
+
+.moneyCompacto {
+  font-size: 0.82em;
+  margin-left: 2px;
+}
+
 .flex{display: flex;}
 .flexEnd{
   display: flex;
@@ -124,8 +144,10 @@ main {
 
 .divMarginWAuto {
   width: 100%;
-  min-width: 0;
   margin-inline: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
 }
 
 @media (min-width: 768px) {

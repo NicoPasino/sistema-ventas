@@ -46,9 +46,9 @@ export function getEstadisticasCliente(cliente, ventas) {
   };
 }
 
-// Ranking por facturación total en una sola pasada sobre las ventas (O(clientes + ventas)).
+// Ranking por facturación total o cantidad de compras en una sola pasada sobre las ventas (O(clientes + ventas)).
 // Las ventas sin cliente identificable se descartan: no se pueden atribuir a nadie.
-export function getRankingClientesFacturacion(clientes, ventas) {
+export function getRankingClientesFacturacion(clientes, ventas, { orden = "facturacion" } = {}) {
   const listaVentas = Array.isArray(ventas) ? ventas : [];
   const listaClientes = Array.isArray(clientes) ? clientes : [];
 
@@ -78,6 +78,8 @@ export function getRankingClientesFacturacion(clientes, ventas) {
     acumulado.set(clave, actual);
   }
 
+  const criterio = orden === "compras" ? "totalVentas" : "totalGastado";
+
   return [...acumulado.entries()]
     .map(([clave, datos]) => ({
       clave,
@@ -85,5 +87,5 @@ export function getRankingClientesFacturacion(clientes, ventas) {
       nombre: clientesPorClave.get(clave)?.nombre ?? datos.ultimaVenta?.cliente?.nombre ?? "(sin nombre)",
       ...datos,
     }))
-    .sort((a, b) => b.totalGastado - a.totalGastado);
+    .sort((a, b) => b[criterio] - a[criterio] || b.totalGastado - a.totalGastado);
 }

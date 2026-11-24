@@ -21,13 +21,7 @@ export default function Inicio() {
 
   return (
     <div className="dashboard">
-      <HeroInicio
-        fechaLarga={fechaLarga}
-        usuario={getUser}
-        ultimaVenta={resumen.resumenVentas.ultimaVenta}
-        cargandoVentas={ventas.loading}
-        errorVentas={ventas.error}
-      />
+      <HeroInicio fechaLarga={fechaLarga} usuario={getUser} />
 
       <div className="divBackground divMarginWAuto">
         <ResumenKpis
@@ -39,22 +33,23 @@ export default function Inicio() {
         />
       </div>
 
-      <div className="dashboardMedio divBackground divMarginWAuto">
-        <SerieVentas
-          ventas={ventas}
-          serie={resumen.serie}
-          comparacion={resumen.comparacion}
-          dias={dias}
-          onCambiarDias={setDias}
-        />
-
-        <TarjetaUltimasVentas ventas={ventas} ultimasVentas={resumen.ultimasVentas} />
-      </div>
-
-      <div className="divTarjetas divBackground divMarginWAuto">
-        <TarjetaBajoStock productos={productos} resumenStock={resumen.resumenStock} top={8} />
-        <TarjetaTopProductos ventas={ventas} topProductos={resumen.topProductos} />
-        <TarjetaTopClientes clientes={clientes} ventas={ventas} ranking={resumen.rankingClientes} />
+      <div className="divBackground divMarginWAuto">
+        <div className="dashboardMedio">
+          <SerieVentas
+            ventas={ventas}
+            serie={resumen.serie}
+            comparacion={resumen.comparacion}
+            dias={dias}
+            onCambiarDias={setDias}
+          />
+          <TarjetaUltimasVentas ventas={ventas} ultimasVentas={resumen.ultimasVentas} />
+        </div>
+        
+        <div className="divTarjetas">
+          <TarjetaBajoStock productos={productos} resumenStock={resumen.resumenStock} top={8} />
+          <TarjetaTopProductos ventas={ventas} />
+          <TarjetaTopClientes clientes={clientes} ventas={ventas} />
+        </div>
       </div>
 
       <p className="appVersion">Sistema de Ventas · v{__APP_VERSION__}</p>

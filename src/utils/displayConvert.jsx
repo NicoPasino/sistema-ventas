@@ -1,22 +1,32 @@
 import { getRangoStock, estadoStock, nivelStockCSS } from "./stock";
 
+const FORMATO_MONEDA = new Intl.NumberFormat('es-AR', {
+  style: 'currency',
+  currency: 'ARS',
+  minimumFractionDigits: 2,
+});
+
+const FORMATO_MONEDA_COMPACTA = new Intl.NumberFormat('es-AR', {
+  style: 'currency',
+  currency: 'ARS',
+  notation: 'compact',
+  maximumFractionDigits: 1,
+});
+
+function opcionesMoneda(compacto) {
+  return compacto ? FORMATO_MONEDA_COMPACTA : FORMATO_MONEDA;
+}
+
 export function formatearMoneda(amount, { compacto = false } = {}) {
   const valor = Number(amount) || 0;
+  return opcionesMoneda(compacto).format(valor);
+}
 
-  if (compacto) {
-    return new Intl.NumberFormat('es-AR', {
-      style: 'currency',
-      currency: 'ARS',
-      notation: 'compact',
-      maximumFractionDigits: 1,
-    }).format(valor);
-  }
-
-  return new Intl.NumberFormat('es-AR', {
-    style: 'currency',
-    currency: 'ARS',
-    minimumFractionDigits: 2,
-  }).format(valor);
+function claseParteMoneda(tipo) {
+  if (tipo === 'currency' || tipo === 'literal') return 'moneySimbolo';
+  if (tipo === 'fraction') return 'moneyDecimal';
+  if (tipo === 'compact') return 'moneyCompacto';
+  return 'moneyNumero';
 }
 
 export function formatearNumero(valor) {
@@ -38,23 +48,23 @@ export function tendencia(pct) {
 // Acepta el valor posicional (MoneyDisplay(100)) y también por prop
 // (MoneyDisplay amount={100}). Sin esto, el segundo caso pasaba el objeto de
 // props entero a Number() -> NaN -> $ 0.
-export function MoneyDisplay(valor) {
-  // 1. Formatear el número a moneda local
-  const amount = valor && typeof valor === "object" && "amount" in valor ? valor.amount : valor;
-  const formatted = formatearMoneda(amount);
-
-  // 2. Separamos la parte entera de los decimales
-  const parts = formatted.split(',');
+export function MoneyDisplay(valor, opciones = {}) {
+  const esObjeto = valor && typeof valor === 'object';
+  const amount = esObjeto && 'amount' in valor ? valor.amount : valor;
+  const compacto = esObjeto && 'compacto' in valor ? valor.compacto : opciones.compacto;
+  const numero = Number(amount) || 0;
+  const partes = opcionesMoneda(Boolean(compacto)).formatToParts(numero);
 
   return (
-    <span style={{ fontWeight: '600', fontSize: '1.1rem' }}>
-      {parts[0]}
-      <span style={{ fontSize: '0.6em', verticalAlign: 'super', marginLeft: '2px' }}>
-        {parts[1]}
-      </span>
+    <span className="moneyDisplay">
+      {partes.map((parte, i) => (
+        <span key={`${parte.type}-${i}`} className={claseParteMoneda(parte.type)}>
+          {parte.value}
+        </span>
+      ))}
     </span>
   );
-};
+}
 
 export function StockDisplay(cant, stockMinimo, stockMaximo) {
   const { min, max } = getRangoStock(stockMinimo, stockMaximo);

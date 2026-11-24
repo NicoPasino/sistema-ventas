@@ -11,15 +11,20 @@ import {
   VentasIcon,
   WarningIcon,
 } from "../../assets/icons";
-import { formatearMoneda, formatearNumero, tendencia } from "../../utils/displayConvert";
+import { MoneyDisplay, formatearNumero, tendencia } from "../../utils/displayConvert";
 
-const MONEDA = (valor) => formatearMoneda(valor, { compacto: true });
 const NUMERO = (valor) => formatearNumero(valor);
 
 function valorKpi(fuente, valor, formato = NUMERO) {
   if (fuente?.loading) return "…";
   if (fuente?.error) return "—";
   return formato(valor ?? 0);
+}
+
+function ValorMonedaKpi({ fuente, valor }) {
+  if (fuente?.loading) return "…";
+  if (fuente?.error) return "—";
+  return <MoneyDisplay amount={valor ?? 0} compacto />;
 }
 
 function detalleKpi(fuente, valor, formato = NUMERO) {
@@ -52,7 +57,7 @@ export function ResumenKpis({ productos, clientes, ventas, resumen, dias }) {
           text="Facturación total"
           tono="primary"
           svg={<MoneyIcon />}
-          number={valorKpi(ventas, resumenVentas.facturacion, MONEDA)}
+          number={<ValorMonedaKpi fuente={ventas} valor={resumenVentas.facturacion} />}
           tendencia={tendenciaKpi(comparacion.facturacionPct, dias)}
           onClick={() => handleTab("Ventas")}
         />
@@ -62,7 +67,7 @@ export function ResumenKpis({ productos, clientes, ventas, resumen, dias }) {
           text="Ticket promedio"
           tono="success"
           svg={<TicketIcon />}
-          number={valorKpi(ventas, resumenVentas.ticketPromedio, MONEDA)}
+          number={<ValorMonedaKpi fuente={ventas} valor={resumenVentas.ticketPromedio} />}
           detalle={detalleKpi(ventas, resumenVentas.cantidadVentas, (valor) => `${NUMERO(valor)} ventas`)}
           tendencia={tendenciaKpi(comparacion.ticketPromedioPct, dias)}
           onClick={() => handleTab("Ventas")}
@@ -74,7 +79,7 @@ export function ResumenKpis({ productos, clientes, ventas, resumen, dias }) {
           tono="info"
           svg={<VentasIcon />}
           number={valorKpi(ventas, resumenVentas.hoy.ventas)}
-          detalle={detalleKpi(ventas, resumenVentas.hoy.facturacion, MONEDA)}
+          detalle={ventas?.loading || ventas?.error ? null : <MoneyDisplay amount={resumenVentas.hoy.facturacion ?? 0} compacto />}
           onClick={() => handleTab("Ventas")}
         />
 

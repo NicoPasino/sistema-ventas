@@ -1,11 +1,14 @@
 import { TarjetaBlanca } from "../../components/pages/tarjetas";
-import { formatearMoneda, formatearNumero, tendencia } from "../../utils/displayConvert";
+import { ToggleOpciones } from "../../components/pages/toggleOpciones";
+import { MoneyDisplay, formatearMoneda, formatearNumero, tendencia } from "../../utils/displayConvert";
 import { EstadoDatos } from "./estadosDatos";
 import { GraficoBarras } from "./graficoBarras";
 
-const OPCIONES = [7, 30, 90];
-
-const MONEDA = (valor) => formatearMoneda(valor, { compacto: true });
+const OPCIONES = [
+  { value: 7, label: '7d' },
+  { value: 30, label: '30d' },
+  { value: 90, label: '90d' },
+];
 
 export function SerieVentas({ ventas, serie, comparacion, dias, onCambiarDias }) {
   const totalVentas = serie.reduce((acc, dia) => acc + dia.ventas, 0);
@@ -13,19 +16,12 @@ export function SerieVentas({ ventas, serie, comparacion, dias, onCambiarDias })
   const variacion = tendencia(comparacion.facturacionPct);
 
   const acciones = (
-    <div className="serieToggle" role="group" aria-label="Período de la serie">
-      {OPCIONES.map((opcion) => (
-        <button
-          key={opcion}
-          type="button"
-          className={opcion === dias ? "activo" : ""}
-          aria-pressed={opcion === dias}
-          onClick={() => onCambiarDias(opcion)}
-        >
-          {opcion}d
-        </button>
-      ))}
-    </div>
+    <ToggleOpciones
+      ariaLabel="Período de la serie"
+      opciones={OPCIONES}
+      valor={dias}
+      onChange={onCambiarDias}
+    />
   );
 
   return (
@@ -37,7 +33,7 @@ export function SerieVentas({ ventas, serie, comparacion, dias, onCambiarDias })
       >
         <div className="serieResumen">
           <span><strong>{formatearNumero(totalVentas)}</strong> ventas</span>
-          <span><strong>{MONEDA(totalFacturacion)}</strong> facturados</span>
+          <span><strong><MoneyDisplay amount={totalFacturacion} compacto /></strong> facturados</span>
           {variacion && (
             <span className={`serieTendencia ${variacion.direccion}`} title={`vs. los ${dias} días previos`}>
               {variacion.texto} vs. período anterior
@@ -49,7 +45,7 @@ export function SerieVentas({ ventas, serie, comparacion, dias, onCambiarDias })
           datos={serie}
           valorDe={(dia) => dia.ventas}
           etiquetaDe={(dia) => dia.etiqueta}
-          tituloDe={(dia) => `${dia.etiqueta}: ${formatearNumero(dia.ventas)} ventas · ${MONEDA(dia.facturacion)}`}
+          tituloDe={(dia) => `${dia.etiqueta}: ${formatearNumero(dia.ventas)} ventas · ${formatearMoneda(dia.facturacion, { compacto: true })}`}
           ariaLabel={`Ventas por día de los últimos ${dias} días`}
         />
       </EstadoDatos>
