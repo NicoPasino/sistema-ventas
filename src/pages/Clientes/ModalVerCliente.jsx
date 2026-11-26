@@ -2,21 +2,16 @@ import { useContext, useMemo, useState } from "react";
 import { VentasContext } from "../../context/dataContext";
 import { Modal } from '../../components/shared/Modal';
 import { Button } from '../../components/shared/botones';
+import { AccionesContacto } from '../../components/shared/accionesModal';
 import { TablaGenerica } from '../../components/pages/tablaGenerica';
 import { CorreoDisplay, formatearMoneda, formatearNumero, GrayDisplay } from '../../utils/displayConvert';
 import { getEstadisticasCliente } from '../../utils/estadisticasCliente';
 import { aTimestamp, getDate } from '../../utils/getDate';
-import { MailIcon, PhoneIcon } from '../../assets/icons';
 import '../../components/pages/modals.css';
 import { totalVenta } from '../../utils/ventas';
 
 const VENTAS_RESUMEN = 5;
 const VENTAS_PASO = 10;
-
-function getLinkTelefono(telefono) {
-  const numero = String(telefono ?? "").replace(/\D/g, "");
-  return numero ? `tel:${numero}` : null;
-}
 
 export function ModalVerCliente({ cliente, onClose, onEditar }) {
   const ventas = useContext(VentasContext);
@@ -37,51 +32,16 @@ export function ModalVerCliente({ cliente, onClose, onEditar }) {
 
   const { documento, nombre, correo, telefono, fechaCreacion } = cliente;
   const registrado = getDate(fechaCreacion);
-  const linkTelefono = getLinkTelefono(telefono);
 
   const visibles = ventasOrdenadas.slice(0, cantidadVisible);
   const quedan = ventasOrdenadas.length - visibles.length;
-
-  const accionesContacto = (
-    <>
-      {correo ? (
-        <a
-          className="btn btn-icon btn-sm btn-outline-primary"
-          href={`mailto:${correo}`}
-          title={`Escribir a ${correo}`}
-          aria-label={`Escribir a ${correo}`}
-        >
-          <MailIcon />
-        </a>
-      ) : (
-        <span className="btn btn-icon btn-sm btn-outline-secondary btn-disabled" title="Sin correo" aria-label="Sin correo">
-          <MailIcon />
-        </span>
-      )}
-
-      {linkTelefono ? (
-        <a
-          className="btn btn-icon btn-sm btn-outline-success"
-          href={linkTelefono}
-          title={`Llamar a ${telefono}`}
-          aria-label={`Llamar a ${telefono}`}
-        >
-          <PhoneIcon />
-        </a>
-      ) : (
-        <span className="btn btn-icon btn-sm btn-outline-secondary btn-disabled" title="Sin teléfono" aria-label="Sin teléfono">
-          <PhoneIcon />
-        </span>
-      )}
-    </>
-  );
 
   return (
     <Modal
       title={nombre || `Cliente ${documento ?? "-"}`}
       onClose={onClose}
       className="modalCliente"
-      headerAcciones={accionesContacto}
+      headerAcciones={<AccionesContacto correo={correo} telefono={telefono} />}
       footer={
         <>
           <Button variant="danger" onClick={onClose}>Cerrar</Button>
@@ -111,9 +71,9 @@ export function ModalVerCliente({ cliente, onClose, onEditar }) {
         </div>
       </div>
 
-      <h3 className="modalSeccion modalClienteTituloSeccion">
+      <h3 className="modalSeccion modalConteoTitulo">
         Compras del cliente
-        <span className="modalClienteConteo">{formatearNumero(totalVentas)} compras</span>
+        <span className="modalConteo">{formatearNumero(totalVentas)} compras</span>
       </h3>
       <div className="modalClienteTabla">
         <TablaGenerica

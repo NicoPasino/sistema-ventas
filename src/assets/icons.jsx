@@ -251,6 +251,14 @@ export const PhoneIcon = () => {
   )
 }
 
+export const PrinterIcon = () => {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-5">
+      <path strokeLinecap="round" strokeLinejoin="round" d="M6.72 13.829c-.24.03-.48.062-.72.096m.72-.096a42.415 42.415 0 0 1 10.56 0m-10.56 0L6.34 18m10.94-4.171c.24.03.48.062.72.096m-.72-.096L17.66 18m0 0 .229-2.329a2.25 2.25 0 0 0-1.69-2.45 45.2 45.2 0 0 0-12.762 0 2.25 2.25 0 0 0-1.69 2.45L2.34 18m15.32 0H21a1.125 1.125 0 0 0 1.125-1.125V10.5a2.25 2.25 0 0 0-2.25-2.25h-1.5m-15.75 0H4.875A2.25 2.25 0 0 0 2.625 10.5v6.375A1.125 1.125 0 0 0 3.75 18m0 0h15.32M6.75 8.25V3.75a1.5 1.5 0 0 1 1.5-1.5h7.5a1.5 1.5 0 0 1 1.5 1.5v4.5M9 15h6" />
+    </svg>
+  );
+}
+
 export const ImageIcon = () => {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
