@@ -194,6 +194,49 @@ tr td{
   font-size: 0.9em;
   padding-block: 0;
 }
+  .tablaColDetalles .botonVerMas {
+    justify-self: start;
+    align-self: center;
+    background: none;
+    border: none;
+    padding: 0;
+    color: #69f;
+    font-size: 0.85em;
+    cursor: pointer;
+  }
+  .tablaColDetalles .botonVerMas:hover {
+    text-decoration: underline;
+  }
+.tablaColCantidad {
+  width: 100px;
+  text-align: end;
+}
+.tablaColPrecio{
+  width: 120px;
+  text-align: end;
+}
+.tablaColEstado{
+  width: 90px;
+}
+.tablaColFecha{
+  white-space: nowrap;
+  width: 120px;
+}
+.tablaColAcciones {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+  vertical-align: middle;
+  height: 100%;
+  width: auto;
+}
+
+@media (min-width: 768px) {
+  .tablaColID { width: 10px; }
+  .tablaColNombre { width: 15%; }
+}
+
 .productosTabla {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -211,23 +254,6 @@ tr td{
   border: 1px solid #4a4a4a50;
   border-radius: 4px;
   padding: 1px 4px;
-}
-.tablaColDetalles .botonVerMas {
-  justify-self: start;
-  align-self: center;
-  background: none;
-  border: none;
-  padding: 0;
-  color: #69f;
-  font-size: 0.85em;
-  cursor: pointer;
-}
-.tablaColDetalles .botonVerMas:hover {
-  text-decoration: underline;
-}
-.tablaColCantidad {
-  width: 100px;
-  text-align: end;
 }
 .stockCelda {
   display: flex;
@@ -261,17 +287,6 @@ tr td{
   background-color: currentColor;
   transition: width 0.2s;
 }
-.tablaColPrecio{
-  width: 120px;
-  text-align: end;
-}
-.tablaColEstado{
-  width: 90px;
-}
-.tablaColFecha{
-  white-space: nowrap;
-  width: 120px;
-}
 .tablaProductoDescripcion {
   margin-top: 2px;
   color: #bbb;
@@ -296,15 +311,6 @@ tr td{
 .estadoBadgeInactivo {
   background-color: rgba(220, 53, 69, 0.2);
   color: #ff7676;
-}
-.tablaColAcciones {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 4px;
-  vertical-align: middle;
-  height: 100%;
-  width: auto;
 }
 
 .botonAccion {

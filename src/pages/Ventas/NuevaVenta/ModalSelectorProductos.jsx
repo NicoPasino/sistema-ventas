@@ -6,7 +6,7 @@ import { esActivo, GrayDisplay, MoneyDisplay, StockDisplay } from '../../../util
 import { MasCantidadIcon, MenosCantidadIcon } from '../../../assets/icons';
 import '../../../components/pages/modals.css';
 
-const HEADERS = ['Código', 'Producto', 'Categoría', 'Stock', 'Precio'];
+const HEADERS = ['Código', 'Producto', 'Categoría', 'Proveedor', 'Stock', 'Precio'];
 
 function coincideBusqueda(producto, busqueda) {
   const campos = [producto.idPublica, producto.nombre, producto.descripcion, producto.categoria, producto.proveedor];
@@ -69,8 +69,9 @@ export function ModalSelectorProductos({ productosManage, carrito, onClose }) {
               return (
                 <tr key={producto.idPublica}>
                   <td className="tablaColID">{GrayDisplay(producto.idPublica)}</td>
-                  <td className="tablaColNombre">{producto.nombre}</td>
+                  <td className="tablaColProducto">{producto.nombre}</td>
                   <td className="tablaCol">{producto.categoria}</td>
+                  <td className="tablaCol">{producto.proveedor ?? GrayDisplay("(Sin proveedor)")}</td>
                   <td className="tablaColCantidad">
                     {StockDisplay(producto.cantidad, producto.stockMinimo, producto.stockMaximo)}
                     {enCarrito > 0 && (

@@ -150,3 +150,7 @@ main {
 @media (min-width: 768px) {
   .divBackground { width: 85%; }
 }
+
+@media (min-width: 1400px) {
+  .divBackground { width: 70%; }
+}

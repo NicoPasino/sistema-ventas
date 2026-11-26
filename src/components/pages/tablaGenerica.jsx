@@ -37,8 +37,6 @@ export function TablaGenerica ({itemsManage, headers, children, editable = false
                   title={`Ordenar por ${header} (${proxima})`}
                 >
                   <span>{header}</span>
-                  {/* Una sola flecha visible: la dirección actual en reposo y la
-                      contraria al hacer hover (la que aplicará el click). */}
                   <span
                     className={`thOrdenFlechas thOrdenFlechas${activo && direccion === "desc" ? "Desc" : "Asc"} ${activo ? "thOrdenFlechasActivo" : ""}`}
                     aria-hidden="true"

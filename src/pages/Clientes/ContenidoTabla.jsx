@@ -26,7 +26,7 @@ export function Contenido({ lista, setIdCliente, setClienteVer, cambiarActivo })
           </td>
           <td className='tablaColNombre'>{CorreoDisplay(correo)}</td>
           <td className='tablaColID'>{documento}</td>
-          <td className='tablaColID' title={tiempoTranscurrido}>{GrayDisplay(fecha)}</td>
+          <td className='tablaColFecha' title={tiempoTranscurrido}>{GrayDisplay(fecha)}</td>
           <td className='tablaColEstado'>{EstadoDisplay(activo)}</td>
           <td className='tablaColAccionesCelda'>
             <div className='tablaColAcciones'>
