@@ -3,6 +3,7 @@ import { ClientesContext } from '../../context/dataContext';
 import { Modal } from '../../components/shared/Modal';
 import { Button } from '../../components/shared/botones';
 import { AccionesContacto, BotonImprimir } from '../../components/shared/accionesModal';
+import { imprimirComprobanteVenta } from './imprimirComprobanteVenta.jsx';
 import { TablaGenerica } from '../../components/pages/tablaGenerica';
 import { CorreoDisplay, GrayDisplay, MoneyDisplay, formatearMoneda, formatearNumero } from '../../utils/displayConvert';
 import { getDate } from '../../utils/getDate';
@@ -35,7 +36,7 @@ export function ModalVerVenta({ venta, onClose }) {
       headerAcciones={
         <>
           <AccionesContacto correo={cliente.correo} telefono={cliente.telefono} />
-          <BotonImprimir />
+          <BotonImprimir onClick={() => imprimirComprobanteVenta({ venta, cliente })} />
         </>
       }
       footer={<Button variant="danger" onClick={onClose}>Cerrar</Button>}

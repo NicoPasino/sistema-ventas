@@ -58,10 +58,9 @@ export function AccionesContacto({ correo, telefono }) {
   );
 }
 
-// La impresión todavía no está implementada: sin onClick el botón queda deshabilitado.
 export function BotonImprimir({ onClick, disabled = false, ...props }) {
   const inactivo = disabled || typeof onClick !== 'function';
-  const title = inactivo ? "Imprimir (próximamente)" : "Imprimir";
+  const title = inactivo ? "Imprimir (no disponible)" : "Imprimir";
 
   if (inactivo) {
     return (
