@@ -192,8 +192,38 @@ tr td{
   text-align: start;
   color: #bbb;
   font-size: 0.9em;
-  width: 34%;
   padding-block: 0;
+}
+.productosTabla {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: 8px;
+  row-gap: 2px;
+}
+.productosTabla > span {
+  display: block;
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  background-color: #20202050;
+  color: #aaa;
+  border: 1px solid #4a4a4a50;
+  border-radius: 4px;
+  padding: 1px 4px;
+}
+.tablaColDetalles .botonVerMas {
+  justify-self: start;
+  align-self: center;
+  background: none;
+  border: none;
+  padding: 0;
+  color: #69f;
+  font-size: 0.85em;
+  cursor: pointer;
+}
+.tablaColDetalles .botonVerMas:hover {
+  text-decoration: underline;
 }
 .tablaColCantidad {
   width: 100px;
@@ -232,7 +262,7 @@ tr td{
   transition: width 0.2s;
 }
 .tablaColPrecio{
-  width: 100px;
+  width: 120px;
   text-align: end;
 }
 .tablaColEstado{
@@ -240,6 +270,7 @@ tr td{
 }
 .tablaColFecha{
   white-space: nowrap;
+  width: 120px;
 }
 .tablaProductoDescripcion {
   margin-top: 2px;
