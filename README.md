@@ -6,6 +6,9 @@ Frontend de un sistema de ventas para gestionar productos, clientes y ventas des
 
 **Repo Backend API:** [https://github.com/NicoPasino/Sistema-Ventas-API](https://github.com/NicoPasino/Sistema-Ventas-API)
 
+**Changelog:** [CHANGELOG.md](CHANGELOG.md)
+
+![Versión](https://img.shields.io/badge/version-1.1.0-4B32C3)
 ![React](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=white)
 ![Vite](https://img.shields.io/badge/Vite-6-646CFF?logo=vite&logoColor=white)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4-06B6D4?logo=tailwindcss&logoColor=white)
@@ -18,30 +21,34 @@ Frontend de un sistema de ventas para gestionar productos, clientes y ventas des
 
 ### Dashboard (Inicio)
 - Bienvenida con la fecha actual y el nombre del usuario.
-- Tarjetas de resumen: total de productos, ventas, clientes, categorías, unidades vendidas, facturación total, ventas de los últimos 30 días y valor del stock.
-- Productos con bajo stock, top 5 de clientes por facturación y productos más vendidos.
+- KPIs: total de productos, ventas, clientes, categorías, unidades vendidas, facturación total, ticket promedio y valor del stock (sin productos inactivos).
+- Gráfico de barras de ventas por día con rango 7/30/90 días, comparación con el período anterior y estados de carga/sin datos.
+- Productos con bajo stock, top 5 de clientes y productos más vendidos, con toggle entre facturación y cantidad.
+- Últimas ventas y tarjetas clickeables para acceder a cada sección.
 
 ### Productos
 - CRUD completo con alta, edición, detalle y eliminación.
 - Activación/desactivación lógica de productos (por defecto se listan solo los activos).
 - Búsqueda local, filtro por estado (activos/inactivos/todos) y filtro por categoría.
-- Ordenamiento por cualquiera de las columnas y paginación configurable.
-- Validación de datos y control de stock.
+- Ordenamiento desde los encabezados de la tabla y paginación configurable.
+- Validación de datos y control de stock, con mínimo destacado en rojo.
 
 ### Clientes
 - CRUD completo con alta, edición, detalle y eliminación.
 - Búsqueda local, ordenamiento por columna y paginación.
-- Vista de detalle con estadísticas de compras del cliente.
+- Vista de detalle compacta con estadísticas de compras, contactos en el header y botón "ver más".
 
 ### Ventas
-- Historial de ventas con búsqueda, ordenamiento y paginación.
-- Registro de nuevas ventas con carrito: selección de cliente, búsqueda de productos, control de cantidades y cálculo de subtotales y total.
-- Validación de stock en tiempo real (incluye lo ya agregado al carrito) antes de confirmar.
-- Detalle de venta con productos, cantidades y totales.
+- Historial de ventas con búsqueda, ordenamiento y paginación; hasta 4 productos por fila con tooltip para ver el resto.
+- Registro de nuevas ventas rediseñado: selección de cliente, buscador de sugerencias reutilizable, modal selector de productos con búsqueda y paginación, atajo "Nuevo cliente", control de cantidades y cálculo de subtotales y total.
+- Validación de stock en tiempo real (incluye lo ya agregado al carrito) antes de confirmar; el `Detalle` se envía en el POST.
+- Detalle de venta compacto con productos, cantidades, totales y comprobante imprimible.
 
 ### Transversal
-- Notificaciones y alertas para el resultado de las operaciones (éxito, error, advertencia).
+- Notificaciones y alertas para el resultado de las operaciones, mostrando el mensaje real de error de la API.
 - Estados de carga, listas vacías y mensajes de error en todas las vistas.
+- Tablas compactas y responsive con orden por encabezado, tooltips, nombres clickeables y botones de acción accesibles.
+- Modales compactos con acciones compartidas (correo, teléfono e impresión).
 - Diseño responsive con sidebar y header.
 - Persistencia de la pestaña activa, el nombre de usuario y el tamaño de página en `localStorage`.
 
@@ -117,23 +124,25 @@ sistema-ventas/
     ├── components/
     │   ├── layout/               # Header y Sidebar
     │   ├── notification/         # Alert y Popup
-    │   ├── pages/                # Tablas, paginación, tarjetas, buscador
-    │   └── shared/               # Botones y modal reutilizables
+    │   ├── pages/                # Tablas, paginación, tarjetas, toolbar y BuscadorSugerencias
+    │   └── shared/               # Botones, modal y acciones reutilizables
     ├── context/
     │   ├── dataContext.jsx       # Estado global: productos, clientes, ventas
     │   ├── notificationContext.jsx
     │   └── userSettingsContext.jsx
     ├── Hooks/
     │   ├── useItems.js           # Datos + CRUD, filtros, búsqueda y orden
+    │   ├── useCarritoVenta.js    # Carrito de Nueva Venta (duplicados, subtotales, validaciones)
     │   ├── usePaginacion.js      # Paginación client-side
+    │   ├── useResumenDashboard.js # Agregaciones del dashboard
     │   └── userSettings.js       # Pestaña activa y usuario
     ├── layouts/
     │   └── MainLayout.jsx        # Sidebar + Header + contenido
     ├── pages/
-    │   ├── Inicio/               # Dashboard y tarjetas de resumen
+    │   ├── Inicio/               # Hero, KPIs, serie, gráfico y tarjetas del dashboard
     │   ├── Productos/
     │   ├── Clientes/
-    │   └── Ventas/
+    │   └── Ventas/               # Listado, detalle, comprobante y NuevaVenta/
     ├── services/
     │   └── api.js                # Capa de acceso a la API (CRUD)
     ├── utils/                    # Fechas, moneda, stock, estadísticas, ventas
@@ -164,11 +173,16 @@ Las respuestas se normalizan a `{ ok, data }` o `{ ok, error, status }`, y se pr
 - Filtros locales por búsqueda y estado, ordenamiento y recarga.
 - Conversión de fechas de UTC a hora local.
 
+Las vistas con lógica propia usan hooks dedicados: `useResumenDashboard` centraliza las agregaciones del Inicio y `useCarritoVenta` gestiona el carrito de Nueva Venta.
+
 ### Navegación
 No se usa react-router. `App.jsx` resuelve la vista a partir de la pestaña activa (`getTab`) contra un mapa de componentes. La pestaña y el usuario se persisten en `localStorage`.
 
 ### Tablas y paginación
 Las vistas de listado usan `TablaPaginada`, que combina `TablaGenerica` + `Paginacion`. La paginación es 100 % client-side: recibe la lista filtrada completa y corta en tiempo de render. El tamaño de página (10/25/50/100, por defecto 25) se guarda en `localStorage` bajo `paginaSize_<clave>`.
+
+### Impresión de comprobantes
+El detalle de una venta permite imprimir su comprobante: `imprimirComprobanteVenta.jsx` renderiza `ComprobanteVenta` con `renderToStaticMarkup` (cargado bajo demanda) y `utils/imprimir.js` lo inyecta en un iframe oculto con CSS de impresión, sin alterar la vista actual.
 
 ### UI
 Componentes reutilizables separados por área. Tailwind v4 se configura únicamente desde Vite (sin `tailwind.config.js` ni PostCSS), con clases globales en `src/index.css`.
@@ -176,6 +190,8 @@ Componentes reutilizables separados por área. Tailwind v4 se configura únicame
 ---
 
 ## 🖼️ Capturas de pantalla
+
+Capturas actualizadas a la v1.1.0.
 
 ### Dashboard
 
@@ -201,7 +217,7 @@ Componentes reutilizables separados por área. Tailwind v4 se configura únicame
 
 ![Detalle de venta](public/capturas/Venta-Detalle.jpg)
 
-### Validación de stock en nueva venta
+### Nueva venta con validación de stock
 
 ![Error de stock al cargar una venta](public/capturas/Nueva-Venta-Error-Stock.jpg)
 
@@ -210,7 +226,7 @@ Componentes reutilizables separados por área. Tailwind v4 se configura únicame
 ## 🗺️ Roadmap
 
 - Gestión de cuentas y autenticación.
-- Dashboard con gráficos interactivos.
+- Gráficos interactivos avanzados (biblioteca de charts).
 - Base de datos local para modo offline (IndexedDB).
 - Modal propio para confirmaciones (reemplazo de `confirm()`).
 
